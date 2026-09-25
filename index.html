@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>PrepTrack</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b0d12;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 480px;
+      min-height: 100vh;
+      margin: auto;
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #7c5cff, #4c8dff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 10px 35px rgba(100, 90, 255, .3);
+      margin-bottom: 45px;
+    }
+
+    .small {
+      color: #8d93a3;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 38px;
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      color: #9298a8;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 38px;
+    }
+
+    .input {
+      width: 100%;
+      background: #171a22;
+      border: 1px solid #292e3a;
+      color: white;
+      padding: 17px;
+      border-radius: 15px;
+      font-size: 16px;
+      outline: none;
+      margin-bottom: 15px;
+    }
+
+    .input:focus {
+      border-color: #7562ff;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      padding: 17px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #765cff, #557cff);
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(90, 80, 255, .25);
+    }
+
+    .features {
+      margin-top: auto;
+      padding-top: 45px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .feature {
+      background: #14171e;
+      border: 1px solid #242833;
+      padding: 15px 8px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 7px;
+    }
+
+    .feature span {
+      color: #9da3b1;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <div class="logo">P</div>
+
+    <div class="small">Your personal study companion</div>
+
+    <h1>What's your<br>name?</h1>
+
+    <p class="subtitle">
+      Let's personalize your preparation and help you stay on track every day.
+    </p>
+
+    <input
+      id="name"
+      class="input"
+      type="text"
+      placeholder="Enter your name"
+      autocomplete="off"
+    >
+
+    <button class="btn" onclick="continueApp()">
+      Continue →
+    </button>
+
+    <div class="features">
+
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <span>Daily Targets</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <span>Progress</span>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🔥</div>
+        <span>Streaks</span>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    function continueApp() {
+      const name = document.getElementById("name").value.trim();
+
+      if (!name) {
+        alert("Please enter your name");
+        return;
+      }
+
+      localStorage.setItem("prepTrackName", name);
+
+      alert("Welcome to PrepTrack, " + name + "!");
+    }
+  </script>
+
+</body>
+</html>
