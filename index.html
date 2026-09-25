@@ -164,7 +164,6 @@ border-color:var(--forest);
 }
 
 /* DASHBOARD */
-
 .dashboard{
 padding:22px;
 padding-bottom:100px;
@@ -259,7 +258,6 @@ background:white;
 .empty-icon{font-size:32px;margin-bottom:8px}
 
 /* TARGET CARD */
-
 .target-card{
 background:white;
 border:1px solid var(--border);
@@ -309,7 +307,6 @@ font-size:17px;
 }
 
 /* MODAL */
-
 .modal{
 position:fixed;
 inset:0;
@@ -358,7 +355,6 @@ margin-top:13px;
 }
 
 /* NAV */
-
 .bottom-nav{
 position:fixed;
 bottom:0;
@@ -393,8 +389,7 @@ font-size:19px;
 margin-bottom:3px;
 }
 
-/* ==================== CALENDAR CSS ==================== */
-
+/* CALENDAR CSS */
 .calendar-screen{
   min-height:100vh;
   padding:22px;
@@ -621,9 +616,7 @@ body{padding:25px}
 }
 </style>
 </head>
-
 <body>
-
 <div class="app">
 
 <!-- NAME -->
@@ -779,8 +772,8 @@ Let's personalize your preparation and help you stay consistent every day.
 <span class="nav-icon">👤</span>Profile
 </button>
 </nav>
-</div>
 
+</div>
 <script>
 // ==================== DASHBOARD LOGIC ====================
 const exams = [
@@ -814,7 +807,14 @@ GATE:["Engineering Mathematics","Core Subject","General Aptitude"],
 };
 
 let selectedExams=[];
-let targets=JSON.parse(localStorage.getItem("prepTrackTargets")||"[]");
+let targets = [];
+
+// FIX: Catching bad localstorage data
+try {
+  targets = JSON.parse(localStorage.getItem("prepTrackTargets") || "[]");
+} catch(e) {
+  targets = [];
+}
 
 function today(){
   const d=new Date();
@@ -912,4 +912,265 @@ function openTargetModal(){
 
 function closeTargetModal(){ document.getElementById("targetModal").classList.add("hidden"); }
 
-func
+function saveTarget(){
+  const exam=document.getElementById("targetExam").value;
+  const subject=document.getElementById("targetSubject").value;
+  const chapter=document.getElementById("targetChapter").value.trim();
+  const type=document.getElementById("targetType").value;
+  const title=document.getElementById("targetTitle").value.trim();
+  const date=document.getElementById("targetDate").value;
+  const time=document.getElementById("targetTime").value;
+  const notes=document.getElementById("targetNotes").value.trim();
+
+  if(!exam||!subject||!title||!date){ alert("Please fill Exam, Subject, Target Title and Date."); return; }
+
+  const target={ id:Date.now(), exam, subject, chapter, type, title, date, time, notes, completed:false, createdAt:new Date().toISOString() };
+  targets.push(target);
+  localStorage.setItem("prepTrackTargets",JSON.stringify(targets));
+  
+  closeTargetModal();
+  clearTargetForm();
+  renderTargets();
+  
+  if(!document.getElementById("calendarScreen").classList.contains("hidden")){
+    renderCalendar();
+  }
+}
+
+function clearTargetForm(){
+  document.getElementById("targetChapter").value="";
+  document.getElementById("targetTitle").value="";
+  document.getElementById("targetNotes").value="";
+  document.getElementById("targetSubject").value="";
+}
+
+function renderTargets(){
+  const list=document.getElementById("targetsList");
+  const todayTargets=targets.filter(t=>t.date===today());
+  if(todayTargets.length===0){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">🌱</div><b>No targets yet</b><p style="margin-top:6px">Add your first target for today.</p></div>`;
+  }else{
+    list.innerHTML="";
+    todayTargets.forEach(target=>{
+      list.innerHTML+=`
+      <div class="target-card ${target.completed?"done":""}">
+        <button class="check" onclick="toggleTarget(${target.id})">${target.completed?"✓":""}</button>
+        <div>
+          <div class="target-title">${escapeHTML(target.title)}</div>
+          <div class="target-meta">${escapeHTML(target.subject)} ${target.chapter?" • "+escapeHTML(target.chapter):""}<br>${escapeHTML(target.type)} • ${escapeHTML(target.time)}</div>
+        </div>
+        <button class="delete-target" onclick="deleteTarget(${target.id})">🗑️</button>
+      </div>`;
+    });
+  }
+  updateProgress();
+}
+
+function toggleTarget(id){
+  targets=targets.map(target=>{ if(target.id===id){ return {...target, completed:!target.completed}; } return target; });
+  localStorage.setItem("prepTrackTargets",JSON.stringify(targets));
+  renderTargets();
+  if(!document.getElementById("calendarScreen").classList.contains("hidden")){
+    renderCalendar();
+  }
+}
+
+function deleteTarget(id){
+  if(!confirm("Delete this target?")) return;
+  targets=targets.filter(t=>t.id!==id);
+  localStorage.setItem("prepTrackTargets",JSON.stringify(targets));
+  renderTargets();
+  if(!document.getElementById("calendarScreen").classList.contains("hidden")){
+    renderCalendar();
+  }
+}
+
+function updateProgress(){
+  const todayTargets=targets.filter(t=>t.date===today());
+  const total=todayTargets.length;
+  const completed=todayTargets.filter(t=>t.completed).length;
+  const percentage=total===0?0:Math.round((completed/total)*100);
+  document.getElementById("completedText").textContent=completed;
+  document.getElementById("totalText").textContent=total;
+  document.getElementById("progressPercent").textContent=percentage+"%";
+  document.getElementById("progressRing").style.setProperty("--progress",percentage+"%");
+}
+
+function escapeHTML(text){
+  return text.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+
+// ==================== CALENDAR LOGIC ====================
+let calendarDate = new Date();
+let selectedCalendarDate = today();
+
+function formatCalendarDate(date){
+  return date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
+}
+
+function renderCalendar(){
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+  const monthTitle = new Date(year,month,1).toLocaleDateString("en-US", { month:"long", year:"numeric" });
+  document.getElementById("calendarMonthTitle").textContent = monthTitle;
+  
+  const daysContainer = document.getElementById("calendarDays");
+  daysContainer.innerHTML="";
+  
+  const firstDay = new Date(year,month,1).getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  const previousMonthDays = new Date(year,month,0).getDate();
+
+  for(let i=firstDay-1;i>=0;i--){
+    const dayNumber = previousMonthDays-i;
+    const d = new Date(year,month-1,dayNumber);
+    addCalendarDay(daysContainer,d,true);
+  }
+
+  for(let day=1;day<=daysInMonth;day++){
+    const d = new Date(year,month,day);
+    addCalendarDay(daysContainer,d,false);
+  }
+
+  const totalCells = firstDay+daysInMonth;
+  const remaining = (7-(totalCells%7))%7;
+  for(let day=1;day<=remaining;day++){
+    const d = new Date(year,month+1,day);
+    addCalendarDay(daysContainer,d,true);
+  }
+
+  renderCalendarTargets();
+}
+
+function addCalendarDay(container,date,otherMonth){
+  const dateString = formatCalendarDate(date);
+  const button = document.createElement("button");
+  button.className="calendar-day";
+  
+  if(otherMonth) button.classList.add("other-month");
+  if(dateString===today()) button.classList.add("today");
+  if(dateString===selectedCalendarDate) button.classList.add("selected");
+  button.textContent = date.getDate();
+  
+  const hasTargets = targets.some(target=>target.date===dateString);
+  if(hasTargets){
+    const dot = document.createElement("span");
+    dot.className="calendar-dot";
+    button.appendChild(dot);
+  }
+
+  button.onclick=function(){
+    selectedCalendarDate=dateString;
+    renderCalendar();
+  };
+  container.appendChild(button);
+}
+
+function changeCalendarMonth(direction){
+  calendarDate.setMonth(calendarDate.getMonth()+direction);
+  renderCalendar();
+}
+
+function goToCalendarToday(){
+  const now=new Date();
+  calendarDate=new Date(now.getFullYear(),now.getMonth(),1);
+  selectedCalendarDate=today();
+  renderCalendar();
+}
+
+function renderCalendarTargets(){
+  const container = document.getElementById("calendarTargets");
+  const title = document.getElementById("calendarSelectedTitle");
+  const selectedDate = new Date(selectedCalendarDate+"T00:00:00");
+  
+  title.textContent = selectedDate.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
+  
+  const dayTargets = targets.filter(target=>target.date===selectedCalendarDate);
+  if(dayTargets.length===0){
+    container.innerHTML=`<div class="calendar-empty"><div class="calendar-empty-icon">🌱</div><b>No targets for this day</b><p style="margin-top:6px">Tap + to add a target.</p></div>`;
+    return;
+  }
+
+  container.innerHTML="";
+  dayTargets.forEach(target=>{
+    const card = document.createElement("div");
+    card.className = "calendar-target "+(target.completed?"done":"");
+    card.innerHTML=`
+      <button class="calendar-check" onclick="toggleCalendarTarget(${target.id})">${target.completed?"✓":""}</button>
+      <div class="calendar-target-content">
+        <div class="calendar-target-title">${escapeHTML(target.title)}</div>
+        <div class="calendar-target-meta">${escapeHTML(target.subject)} ${target.chapter?" • "+escapeHTML(target.chapter):""}<br>${escapeHTML(target.type)} • ${escapeHTML(target.time)}</div>
+      </div>
+      <button class="calendar-delete" onclick="deleteCalendarTarget(${target.id})">🗑️</button>`;
+    container.appendChild(card);
+  });
+}
+
+function toggleCalendarTarget(id){
+  toggleTarget(id); 
+}
+
+function deleteCalendarTarget(id){
+  deleteTarget(id);
+}
+
+function addTargetFromCalendar(){
+  openTargetModal();
+  document.getElementById("targetDate").value=selectedCalendarDate;
+}
+
+// ==================== NAVIGATION LOGIC ====================
+function openCalendar(){
+  document.getElementById("dashboardScreen").classList.add("hidden");
+  document.getElementById("calendarScreen").classList.remove("hidden");
+  renderCalendar();
+}
+
+function openHome(){
+  document.getElementById("calendarScreen").classList.add("hidden");
+  document.getElementById("dashboardScreen").classList.remove("hidden");
+  renderTargets();
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  const navButtons = document.querySelectorAll("#bottomNav .nav-btn");
+  
+  const navHome = document.getElementById("navHome");
+  if(navHome){
+      navHome.onclick = function(){
+        navButtons.forEach(btn => btn.classList.remove("active"));
+        this.classList.add("active");
+        openHome();
+      };
+  }
+
+  const navCalendar = document.getElementById("navCalendar");
+  if(navCalendar){
+      navCalendar.onclick = function(){
+        navButtons.forEach(btn => btn.classList.remove("active"));
+        this.classList.add("active");
+        openCalendar();
+      };
+  }
+});
+
+
+// ==================== LOAD SAVED DATA ====================
+const savedName = localStorage.getItem("prepTrackName");
+let savedExams = [];
+
+try {
+  savedExams = JSON.parse(localStorage.getItem("prepTrackExams") || "[]");
+} catch(e) {
+  savedExams = [];
+}
+
+if(savedName && savedExams.length){
+  selectedExams = savedExams;
+  showDashboard();
+}
+
+</script>
+</body>
+</html>
