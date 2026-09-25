@@ -27,6 +27,8 @@ color:var(--text);
 min-height:100vh;
 }
 
+button,input,select,textarea{font-family:inherit}
+
 .app{
 width:100%;
 max-width:520px;
@@ -35,109 +37,64 @@ margin:auto;
 background:var(--cream);
 }
 
-.screen{
-min-height:100vh;
-padding:28px 22px;
-}
-
+.screen{min-height:100vh;padding:28px 22px}
 .hidden{display:none!important}
 
 .logo{
 width:64px;height:64px;border-radius:21px;
 background:var(--forest);color:white;
 display:flex;align-items:center;justify-content:center;
-font-size:28px;font-weight:800;
-margin-bottom:40px;
+font-size:28px;font-weight:800;margin-bottom:40px;
 }
 
 .eyebrow{
-color:var(--sage);
-font-size:13px;font-weight:800;
-letter-spacing:1px;text-transform:uppercase;
-margin-bottom:12px;
+color:var(--sage);font-size:13px;font-weight:800;
+letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;
 }
 
 h1{
-font-size:36px;
-line-height:1.1;
-letter-spacing:-1px;
-margin-bottom:15px;
+font-size:36px;line-height:1.1;
+letter-spacing:-1px;margin-bottom:15px;
 }
 
-.subtitle{
-color:var(--muted);
-font-size:15px;
-line-height:1.6;
-}
+.subtitle{color:var(--muted);font-size:15px;line-height:1.6}
 
 .input,.select,.textarea{
-width:100%;
-margin-top:12px;
-padding:16px;
-border:1px solid var(--border);
-border-radius:16px;
-background:white;
-color:var(--text);
-font-size:15px;
-outline:none;
+width:100%;margin-top:12px;padding:16px;
+border:1px solid var(--border);border-radius:16px;
+background:white;color:var(--text);font-size:15px;outline:none;
 }
 
-.textarea{
-min-height:90px;
-resize:vertical;
-}
+.textarea{min-height:90px;resize:vertical}
 
-.input:focus,.select:focus,.textarea:focus{
-border-color:var(--sage);
-}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--sage)}
 
 .primary{
-width:100%;
-margin-top:14px;
-padding:17px;
-border:0;
-border-radius:17px;
-background:var(--forest);
-color:white;
-font-size:16px;
-font-weight:800;
-cursor:pointer;
+width:100%;margin-top:14px;padding:17px;border:0;
+border-radius:17px;background:var(--forest);color:white;
+font-size:16px;font-weight:800;cursor:pointer;
 }
 
 .secondary{
-width:100%;
-margin-top:10px;
-padding:15px;
-border:1px solid var(--border);
-border-radius:16px;
-background:white;
-color:var(--forest);
-font-weight:800;
+width:100%;margin-top:10px;padding:15px;
+border:1px solid var(--border);border-radius:16px;
+background:white;color:var(--forest);font-weight:800;
 }
 
 .exam-scroll{
-display:flex;
-gap:13px;
-overflow-x:auto;
-padding:10px 2px 18px;
-scrollbar-width:none;
+display:flex;gap:13px;overflow-x:auto;
+padding:10px 2px 18px;scrollbar-width:none;
 }
-
 .exam-scroll::-webkit-scrollbar{display:none}
 
 .exam-card{
-min-width:145px;
-padding:20px;
-background:white;
-border:1px solid var(--border);
-border-radius:22px;
-cursor:pointer;
-text-align:left;
+min-width:145px;padding:20px;background:white;
+border:1px solid var(--border);border-radius:22px;
+cursor:pointer;text-align:left;
 }
 
 .exam-card.selected{
-background:var(--light);
-border:2px solid var(--forest);
+background:var(--light);border:2px solid var(--forest);
 }
 
 .exam-icon{font-size:28px;margin-bottom:10px}
@@ -145,36 +102,25 @@ border:2px solid var(--forest);
 .exam-desc{font-size:12px;color:var(--muted);margin-top:4px}
 
 .exam-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:11px;
+display:grid;grid-template-columns:1fr 1fr;gap:11px;
 }
 
 .mini-exam{
-padding:15px;
-border:1px solid var(--border);
-background:white;
-border-radius:18px;
-text-align:left;
+padding:15px;border:1px solid var(--border);
+background:white;border-radius:18px;text-align:left;
 }
 
 .mini-exam.selected{
-background:var(--light);
-border-color:var(--forest);
+background:var(--light);border-color:var(--forest);
 }
 
 /* DASHBOARD */
 
-.dashboard{
-padding:22px;
-padding-bottom:100px;
-}
+.dashboard{padding:22px;padding-bottom:100px}
 
 .topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:22px;
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:22px;
 }
 
 .hello{font-size:13px;color:var(--muted)}
@@ -189,9 +135,7 @@ font-weight:800;
 
 .hero{
 background:linear-gradient(135deg,#315c45,#52775c);
-color:white;
-padding:23px;
-border-radius:26px;
+color:white;padding:23px;border-radius:26px;
 box-shadow:0 18px 35px rgba(49,92,69,.20);
 }
 
@@ -199,199 +143,240 @@ box-shadow:0 18px 35px rgba(49,92,69,.20);
 .hero-title{font-size:24px;font-weight:850;margin-top:5px}
 
 .progress-area{
-display:flex;
-align-items:center;
-gap:20px;
-margin-top:22px;
+display:flex;align-items:center;gap:20px;margin-top:22px;
 }
 
 .ring{
-width:82px;height:82px;
-border-radius:50%;
-background:conic-gradient(white var(--progress),rgba(255,255,255,.22) 0);
+width:82px;height:82px;border-radius:50%;
+background:conic-gradient(white var(--progress),
+rgba(255,255,255,.22) 0);
 display:flex;align-items:center;justify-content:center;
 }
 
 .ring-inner{
 width:66px;height:66px;border-radius:50%;
-background:#315c45;
-display:flex;align-items:center;justify-content:center;
-font-weight:850;
+background:#315c45;display:flex;align-items:center;
+justify-content:center;font-weight:850;
 }
 
 .hero-info{font-size:13px;line-height:1.6}
 
 .quote{
-margin-top:18px;
-padding:12px;
-border-radius:14px;
-background:rgba(255,255,255,.10);
-font-size:12px;
+margin-top:18px;padding:12px;border-radius:14px;
+background:rgba(255,255,255,.10);font-size:12px;
 }
 
 .section{margin-top:26px}
 
 .section-head{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:12px;
+display:flex;align-items:center;
+justify-content:space-between;margin-bottom:12px;
 }
 
 .section-title{font-size:18px;font-weight:850}
 
 .add-btn{
-width:44px;height:44px;
-border:0;border-radius:14px;
-background:var(--forest);
-color:white;font-size:25px;
+width:44px;height:44px;border:0;border-radius:14px;
+background:var(--forest);color:white;font-size:25px;
 }
 
 .empty{
-padding:25px;
-border:1px dashed #cbd8cc;
-border-radius:20px;
-text-align:center;
-color:var(--muted);
-background:white;
+padding:25px;border:1px dashed #cbd8cc;
+border-radius:20px;text-align:center;
+color:var(--muted);background:white;
 }
 
 .empty-icon{font-size:32px;margin-bottom:8px}
 
-/* TARGET CARD */
+/* TARGET */
 
 .target-card{
-background:white;
-border:1px solid var(--border);
-border-radius:20px;
-padding:15px;
-margin-bottom:10px;
-display:flex;
-gap:13px;
-align-items:center;
+background:white;border:1px solid var(--border);
+border-radius:20px;padding:15px;margin-bottom:10px;
+display:flex;gap:13px;align-items:center;
 }
 
 .check{
-width:27px;height:27px;
-border-radius:9px;
-border:2px solid #b8c8bb;
-background:white;
-flex-shrink:0;
-cursor:pointer;
+width:27px;height:27px;border-radius:9px;
+border:2px solid #b8c8bb;background:white;
+flex-shrink:0;cursor:pointer;font-weight:bold;
 }
 
 .target-card.done .check{
-background:var(--forest);
-border-color:var(--forest);
+background:var(--forest);border-color:var(--forest);
+color:white;
 }
 
 .target-card.done .target-title{
-text-decoration:line-through;
-opacity:.55;
+text-decoration:line-through;opacity:.55;
 }
 
-.target-title{
-font-weight:800;
-font-size:15px;
-}
-
-.target-meta{
-font-size:12px;
-color:var(--muted);
-margin-top:5px;
-}
+.target-title{font-weight:800;font-size:15px}
+.target-meta{font-size:12px;color:var(--muted);margin-top:5px}
 
 .delete-target{
-margin-left:auto;
-border:0;
-background:none;
-font-size:17px;
+margin-left:auto;border:0;background:none;font-size:17px;
+}
+
+/* CALENDAR */
+
+.calendar-head{
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:18px;
+}
+
+.calendar-title{font-size:23px;font-weight:850}
+
+.month-buttons{display:flex;gap:7px}
+
+.month-btn{
+width:38px;height:38px;border:1px solid var(--border);
+background:white;border-radius:12px;font-size:18px;
+}
+
+.calendar{
+background:white;border:1px solid var(--border);
+border-radius:22px;padding:15px;
+}
+
+.weekdays,.calendar-grid{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:5px;
+}
+
+.weekday{
+text-align:center;font-size:11px;
+font-weight:800;color:var(--muted);
+padding:7px 0;
+}
+
+.day{
+min-height:48px;border:0;background:white;
+border-radius:13px;position:relative;
+font-size:13px;color:var(--text);
+}
+
+.day.empty-day{background:transparent}
+
+.day.today{
+background:var(--light);
+font-weight:900;
+outline:2px solid var(--forest);
+}
+
+.day.selected-day{
+background:var(--forest);
+color:white;
+}
+
+.day.has-target:after{
+content:"";
+position:absolute;
+bottom:5px;
+left:50%;
+transform:translateX(-50%);
+width:5px;height:5px;border-radius:50%;
+background:var(--sage);
+}
+
+.day.completed-day:after{
+background:#8bc34a;
+}
+
+.day.selected-day.has-target:after{
+background:white;
+}
+
+.calendar-summary{
+margin-top:15px;
+padding:17px;background:white;
+border:1px solid var(--border);
+border-radius:18px;
+}
+
+.calendar-summary-title{
+font-weight:850;font-size:17px;margin-bottom:8px;
+}
+
+.calendar-stat{
+font-size:13px;color:var(--muted);margin-top:4px;
+}
+
+/* SIMPLE PAGES */
+
+.page-title{
+font-size:28px;font-weight:850;margin-bottom:5px;
+}
+
+.page-subtitle{
+color:var(--muted);font-size:14px;margin-bottom:20px;
+}
+
+.plan-card,.friend-card,.profile-card{
+background:white;border:1px solid var(--border);
+border-radius:20px;padding:18px;margin-bottom:12px;
+}
+
+.plan-card h3,.friend-card h3{
+font-size:17px;margin-bottom:6px;
+}
+
+.plan-card p,.friend-card p,.profile-card p{
+font-size:13px;color:var(--muted);line-height:1.6;
 }
 
 /* MODAL */
 
 .modal{
-position:fixed;
-inset:0;
-background:rgba(20,30,24,.55);
-display:flex;
-align-items:flex-end;
-justify-content:center;
+position:fixed;inset:0;background:rgba(20,30,24,.55);
+display:flex;align-items:flex-end;justify-content:center;
 z-index:100;
 }
 
 .modal-box{
-width:min(520px,100%);
-max-height:92vh;
-overflow:auto;
-background:var(--cream);
-border-radius:28px 28px 0 0;
+width:min(520px,100%);max-height:92vh;overflow:auto;
+background:var(--cream);border-radius:28px 28px 0 0;
 padding:24px 22px 30px;
 }
 
 .modal-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px;
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:15px;
 }
 
-.modal-title{
-font-size:23px;
-font-weight:850;
-}
+.modal-title{font-size:23px;font-weight:850}
 
 .close{
-border:0;
-background:white;
-width:38px;height:38px;
-border-radius:12px;
-font-size:20px;
+border:0;background:white;width:38px;height:38px;
+border-radius:12px;font-size:20px;
 }
 
 .label{
-display:block;
-font-size:12px;
-font-weight:800;
-color:var(--muted);
-margin-top:13px;
+display:block;font-size:12px;font-weight:800;
+color:var(--muted);margin-top:13px;
 }
 
 /* NAV */
 
 .bottom-nav{
-position:fixed;
-bottom:0;
-left:50%;
+position:fixed;bottom:0;left:50%;
 transform:translateX(-50%);
 width:min(520px,100%);
-display:grid;
-grid-template-columns:repeat(5,1fr);
-padding:9px 6px;
-background:rgba(255,255,255,.95);
+display:grid;grid-template-columns:repeat(5,1fr);
+padding:9px 6px;background:rgba(255,255,255,.95);
 backdrop-filter:blur(16px);
-border-top:1px solid var(--border);
-z-index:20;
+border-top:1px solid var(--border);z-index:20;
 }
 
 .nav-btn{
-border:0;
-background:transparent;
-color:#89938b;
-padding:6px 2px;
-font-size:10px;
+border:0;background:transparent;color:#89938b;
+padding:6px 2px;font-size:10px;cursor:pointer;
 }
 
-.nav-btn.active{
-color:var(--forest);
-font-weight:800;
-}
+.nav-btn.active{color:var(--forest);font-weight:800}
 
-.nav-icon{
-display:block;
-font-size:19px;
-margin-bottom:3px;
-}
+.nav-icon{display:block;font-size:19px;margin-bottom:3px}
 
 @media(min-width:700px){
 body{padding:25px}
@@ -442,7 +427,6 @@ Choose one or more preparations.
 </p>
 
 <div id="examCarousel" class="exam-scroll"></div>
-
 <div id="examGrid" class="exam-grid"></div>
 
 <button class="primary" onclick="finishSetup()">
@@ -457,20 +441,16 @@ Continue →
 <section id="dashboardScreen" class="screen dashboard hidden">
 
 <div class="topbar">
-
 <div>
 <div class="hello" id="greeting"></div>
 <div class="user-name" id="userName"></div>
 </div>
-
 <div class="avatar" id="avatar"></div>
-
 </div>
 
 <div class="hero">
 
 <div class="hero-small">ACTIVE PREPARATION</div>
-
 <div class="hero-title" id="activeExam"></div>
 
 <div class="progress-area">
@@ -495,22 +475,125 @@ Today's progress
 
 </div>
 
-
 <div class="section">
 
 <div class="section-head">
-
-<div class="section-title">
-Today's Targets
-</div>
-
+<div class="section-title">Today's Targets</div>
 <button class="add-btn" onclick="openTargetModal()">+</button>
-
 </div>
 
 <div id="targetsList"></div>
 
 </div>
+
+</section>
+
+
+<!-- CALENDAR -->
+
+<section id="calendarScreen" class="screen dashboard hidden">
+
+<div class="page-title">Calendar 📅</div>
+<div class="page-subtitle">
+Track your targets and daily progress.
+</div>
+
+<div class="calendar-head">
+
+<div class="calendar-title" id="calendarMonth"></div>
+
+<div class="month-buttons">
+<button class="month-btn" onclick="changeMonth(-1)">‹</button>
+<button class="month-btn" onclick="goToday()">•</button>
+<button class="month-btn" onclick="changeMonth(1)">›</button>
+</div>
+
+</div>
+
+<div class="calendar">
+
+<div class="weekdays">
+<div class="weekday">Sun</div>
+<div class="weekday">Mon</div>
+<div class="weekday">Tue</div>
+<div class="weekday">Wed</div>
+<div class="weekday">Thu</div>
+<div class="weekday">Fri</div>
+<div class="weekday">Sat</div>
+</div>
+
+<div id="calendarGrid" class="calendar-grid"></div>
+
+</div>
+
+<div id="calendarSummary" class="calendar-summary"></div>
+
+<button class="primary" onclick="openTargetModal(selectedCalendarDate || today())">
++ Add Target for Selected Day
+</button>
+
+</section>
+
+
+<!-- PLANS -->
+
+<section id="plansScreen" class="screen dashboard hidden">
+
+<div class="page-title">Plans 🎯</div>
+<div class="page-subtitle">Your active preparations.</div>
+
+<div id="plansList"></div>
+
+</section>
+
+
+<!-- FRIENDS -->
+
+<section id="friendsScreen" class="screen dashboard hidden">
+
+<div class="page-title">Friends 👥</div>
+<div class="page-subtitle">Study together and stay motivated.</div>
+
+<div class="friend-card">
+<h3>Friends system</h3>
+<p>
+Your real online friends system will be connected with Supabase in the backend phase.
+</p>
+</div>
+
+<div class="friend-card">
+<h3>🔍 Find study partners</h3>
+<p>Username search, friend requests and progress sharing will be added with real authentication.</p>
+</div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="profileScreen" class="screen dashboard hidden">
+
+<div class="page-title">Profile 👤</div>
+<div class="page-subtitle">Your PrepTrack profile.</div>
+
+<div class="profile-card">
+<p>Name</p>
+<h3 id="profileName" style="margin-top:5px"></h3>
+</div>
+
+<div class="profile-card">
+<p>Active preparation</p>
+<h3 id="profileExam" style="margin-top:5px"></h3>
+</div>
+
+<div class="profile-card">
+<p>Total targets</p>
+<h3 id="profileTargets" style="margin-top:5px"></h3>
+</div>
+
+<button class="secondary" onclick="resetApp()">
+Reset local PrepTrack data
+</button>
 
 </section>
 
@@ -523,40 +606,27 @@ Today's Targets
 
 <div class="modal-head">
 
-<div class="modal-title">
-Add Target 🎯
-</div>
+<div class="modal-title">Add Target 🎯</div>
 
 <button class="close" onclick="closeTargetModal()">×</button>
 
 </div>
 
-
 <label class="label">Exam / Plan</label>
-
 <select id="targetExam" class="select"></select>
 
-
 <label class="label">Subject</label>
-
 <select id="targetSubject" class="select">
 <option value="">Select subject</option>
 </select>
 
-
 <label class="label">Chapter / Topic</label>
-
-<input
-id="targetChapter"
-class="input"
-placeholder="e.g. Human Physiology"
->
-
+<input id="targetChapter" class="input"
+placeholder="e.g. Human Physiology">
 
 <label class="label">Task Type</label>
 
 <select id="targetType" class="select">
-
 <option>📖 Lecture</option>
 <option>🔁 Revision</option>
 <option>📝 Practice</option>
@@ -566,32 +636,20 @@ placeholder="e.g. Human Physiology"
 <option>✍️ Notes</option>
 <option>🧠 Flashcards</option>
 <option>🎯 Custom</option>
-
 </select>
-
 
 <label class="label">Target Title</label>
 
-<input
-id="targetTitle"
-class="input"
-placeholder="e.g. Revise Digestion chapter"
->
-
+<input id="targetTitle" class="input"
+placeholder="e.g. Revise Digestion chapter">
 
 <label class="label">Date</label>
 
-<input
-id="targetDate"
-class="input"
-type="date"
->
-
+<input id="targetDate" class="input" type="date">
 
 <label class="label">Estimated Study Time</label>
 
 <select id="targetTime" class="select">
-
 <option>15 minutes</option>
 <option>30 minutes</option>
 <option>45 minutes</option>
@@ -599,25 +657,18 @@ type="date"
 <option>1.5 hours</option>
 <option>2 hours</option>
 <option>3 hours</option>
-
 </select>
-
 
 <label class="label">Notes (optional)</label>
 
-<textarea
-id="targetNotes"
-class="textarea"
-placeholder="Anything you want to remember..."
-></textarea>
-
+<textarea id="targetNotes" class="textarea"
+placeholder="Anything you want to remember..."></textarea>
 
 <button class="primary" onclick="saveTarget()">
 Save Target ✓
 </button>
 
 </div>
-
 </div>
 
 
@@ -625,27 +676,27 @@ Save Target ✓
 
 <nav id="bottomNav" class="bottom-nav hidden">
 
-<button class="nav-btn active">
+<button class="nav-btn active" onclick="showPage('dashboard',this)">
 <span class="nav-icon">🏠</span>
 Home
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showPage('calendar',this)">
 <span class="nav-icon">📅</span>
 Calendar
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showPage('plans',this)">
 <span class="nav-icon">🎯</span>
 Plans
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showPage('friends',this)">
 <span class="nav-icon">👥</span>
 Friends
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showPage('profile',this)">
 <span class="nav-icon">👤</span>
 Profile
 </button>
@@ -689,6 +740,9 @@ GATE:["Engineering Mathematics","Core Subject","General Aptitude"],
 
 let selectedExams=[];
 let targets=JSON.parse(localStorage.getItem("prepTrackTargets")||"[]");
+
+let calendarDate=new Date();
+let selectedCalendarDate=today();
 
 
 function today(){
@@ -812,11 +866,13 @@ const name=localStorage.getItem("prepTrackName");
 
 document.getElementById("nameScreen").classList.add("hidden");
 document.getElementById("examScreen").classList.add("hidden");
+
+hideAllPages();
+
 document.getElementById("dashboardScreen").classList.remove("hidden");
 document.getElementById("bottomNav").classList.remove("hidden");
 
 document.getElementById("userName").textContent=name;
-
 document.getElementById("avatar").textContent=
 name.charAt(0).toUpperCase();
 
@@ -824,10 +880,64 @@ document.getElementById("activeExam").textContent=
 selectedExams.join(" • ");
 
 setGreeting();
-
 populateExamSelect();
-
 renderTargets();
+renderPlans();
+renderProfile();
+
+}
+
+
+function hideAllPages(){
+
+[
+"dashboardScreen",
+"calendarScreen",
+"plansScreen",
+"friendsScreen",
+"profileScreen"
+].forEach(id=>{
+document.getElementById(id).classList.add("hidden");
+});
+
+}
+
+
+function showPage(page,button){
+
+hideAllPages();
+
+if(page==="dashboard"){
+document.getElementById("dashboardScreen").classList.remove("hidden");
+renderTargets();
+}
+
+if(page==="calendar"){
+document.getElementById("calendarScreen").classList.remove("hidden");
+renderCalendar();
+}
+
+if(page==="plans"){
+document.getElementById("plansScreen").classList.remove("hidden");
+renderPlans();
+}
+
+if(page==="friends"){
+document.getElementById("friendsScreen").classList.remove("hidden");
+}
+
+if(page==="profile"){
+document.getElementById("profileScreen").classList.remove("hidden");
+renderProfile();
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn=>{
+btn.classList.remove("active");
+});
+
+button.classList.add("active");
+
+window.scrollTo(0,0);
 
 }
 
@@ -848,313 +958,4 @@ document.getElementById("greeting").textContent=text;
 
 function populateExamSelect(){
 
-const select=document.getElementById("targetExam");
-
-select.innerHTML="";
-
-selectedExams.forEach(exam=>{
-
-select.innerHTML+=
-`<option value="${exam}">${exam}</option>`;
-
-});
-
-updateSubjects();
-
-}
-
-
-document.getElementById("targetExam").addEventListener(
-"change",
-updateSubjects
-);
-
-
-function updateSubjects(){
-
-const exam=document.getElementById("targetExam").value;
-
-const select=document.getElementById("targetSubject");
-
-select.innerHTML='<option value="">Select subject</option>';
-
-(subjects[exam]||[]).forEach(subject=>{
-
-select.innerHTML+=
-`<option value="${subject}">${subject}</option>`;
-
-});
-
-}
-
-
-function openTargetModal(){
-
-document.getElementById("targetModal").classList.remove("hidden");
-
-document.getElementById("targetDate").value=today();
-
-populateExamSelect();
-
-}
-
-
-function closeTargetModal(){
-
-document.getElementById("targetModal").classList.add("hidden");
-
-}
-
-
-function saveTarget(){
-
-const exam=document.getElementById("targetExam").value;
-
-const subject=document.getElementById("targetSubject").value;
-
-const chapter=document.getElementById("targetChapter").value.trim();
-
-const type=document.getElementById("targetType").value;
-
-const title=document.getElementById("targetTitle").value.trim();
-
-const date=document.getElementById("targetDate").value;
-
-const time=document.getElementById("targetTime").value;
-
-const notes=document.getElementById("targetNotes").value.trim();
-
-
-if(!exam||!subject||!title||!date){
-
-alert("Please fill Exam, Subject, Target Title and Date.");
-
-return;
-
-}
-
-
-const target={
-
-id:Date.now(),
-
-exam,
-subject,
-chapter,
-type,
-title,
-date,
-time,
-notes,
-completed:false,
-createdAt:new Date().toISOString()
-
-};
-
-
-targets.push(target);
-
-localStorage.setItem(
-"prepTrackTargets",
-JSON.stringify(targets)
-);
-
-closeTargetModal();
-
-clearTargetForm();
-
-renderTargets();
-
-}
-
-
-function clearTargetForm(){
-
-document.getElementById("targetChapter").value="";
-document.getElementById("targetTitle").value="";
-document.getElementById("targetNotes").value="";
-document.getElementById("targetSubject").value="";
-
-}
-
-
-function renderTargets(){
-
-const list=document.getElementById("targetsList");
-
-const todayTargets=
-targets.filter(t=>t.date===today());
-
-if(todayTargets.length===0){
-
-list.innerHTML=`
-<div class="empty">
-
-<div class="empty-icon">🌱</div>
-
-<b>No targets yet</b>
-
-<p style="margin-top:6px">
-Add your first target for today.
-</p>
-
-</div>
-`;
-
-}else{
-
-list.innerHTML="";
-
-todayTargets.forEach(target=>{
-
-list.innerHTML+=`
-
-<div class="target-card ${
-target.completed?"done":""
-}">
-
-<button
-class="check"
-onclick="toggleTarget(${target.id})"
->
-${target.completed?"✓":""}
-</button>
-
-<div>
-
-<div class="target-title">
-${escapeHTML(target.title)}
-</div>
-
-<div class="target-meta">
-${escapeHTML(target.subject)}
-${target.chapter?" • "+escapeHTML(target.chapter):""}
-<br>
-${escapeHTML(target.type)} • ${escapeHTML(target.time)}
-</div>
-
-</div>
-
-<button
-class="delete-target"
-onclick="deleteTarget(${target.id})"
->
-🗑️
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-updateProgress();
-
-}
-
-
-function toggleTarget(id){
-
-targets=targets.map(target=>{
-
-if(target.id===id){
-
-return {
-...target,
-completed:!target.completed
-};
-
-}
-
-return target;
-
-});
-
-localStorage.setItem(
-"prepTrackTargets",
-JSON.stringify(targets)
-);
-
-renderTargets();
-
-}
-
-
-function deleteTarget(id){
-
-if(!confirm("Delete this target?")) return;
-
-targets=targets.filter(t=>t.id!==id);
-
-localStorage.setItem(
-"prepTrackTargets",
-JSON.stringify(targets)
-);
-
-renderTargets();
-
-}
-
-
-function updateProgress(){
-
-const todayTargets=
-targets.filter(t=>t.date===today());
-
-const total=todayTargets.length;
-
-const completed=
-todayTargets.filter(t=>t.completed).length;
-
-const percentage=
-total===0?0:Math.round((completed/total)*100);
-
-document.getElementById("completedText").textContent=completed;
-
-document.getElementById("totalText").textContent=total;
-
-document.getElementById("progressPercent").textContent=
-percentage+"%";
-
-document.getElementById("progressRing").style
-.setProperty("--progress",percentage+"%");
-
-}
-
-
-function escapeHTML(text){
-
-return text
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
-}
-
-
-/* LOAD SAVED DATA */
-
-const savedName=
-localStorage.getItem("prepTrackName");
-
-const savedExams=
-JSON.parse(
-localStorage.getItem("prepTrackExams")||"[]"
-);
-
-if(savedName && savedExams.length){
-
-selectedExams=savedExams;
-
-showDashboard();
-
-}
-
-</script>
-
-</body>
-</html>
+const select=docu
