@@ -397,6 +397,32 @@ margin-bottom:3px;
 body{padding:25px}
 .app{border-radius:28px;box-shadow:0 20px 70px rgba(0,0,0,.08)}
 }
+
+/* CALENDAR */
+.calendar-screen{min-height:100vh;padding:22px;padding-bottom:100px}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.calendar-title{font-size:27px;font-weight:850}
+.calendar-subtitle{font-size:13px;color:var(--muted);margin-top:4px}
+.calendar-actions{display:flex;gap:8px}
+.icon-btn{width:42px;height:42px;border:1px solid var(--border);border-radius:13px;background:white;color:var(--forest);font-size:18px;font-weight:800}
+.calendar-card{background:white;border:1px solid var(--border);border-radius:24px;padding:16px;box-shadow:0 8px 25px rgba(32,49,40,.05)}
+.month-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.month-name{font-size:18px;font-weight:850}
+.month-arrow{width:36px;height:36px;border:0;border-radius:11px;background:var(--light);color:var(--forest);font-size:20px;font-weight:800}
+.weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.weekday{text-align:center;font-size:10px;color:var(--muted);font-weight:800;padding:5px 0}
+.day{min-height:45px;border:0;border-radius:13px;background:transparent;color:var(--text);position:relative;font-size:13px;font-weight:700}
+.day.muted-day{color:#bdc6bf}
+.day.today-day{border:1px solid var(--sage)}
+.day.selected-day{background:var(--forest);color:white}
+.day.has-target:after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--sage)}
+.day.selected-day.has-target:after{background:white}
+.calendar-selected{margin-top:18px}
+.selected-date-title{font-size:17px;font-weight:850;margin-bottom:11px}
+.calendar-target-list .target-card{margin-bottom:8px}
+.calendar-empty{padding:22px;border:1px dashed #cbd8cc;border-radius:18px;text-align:center;color:var(--muted);background:white}
+.today-btn{width:100%;margin-top:12px;padding:13px;border:1px solid var(--border);border-radius:15px;background:white;color:var(--forest);font-weight:800}
+
 </style>
 </head>
 
@@ -515,6 +541,41 @@ Today's Targets
 </section>
 
 
+
+<!-- CALENDAR -->
+<section id="calendarScreen" class="calendar-screen hidden">
+  <div class="calendar-head">
+    <div>
+      <div class="eyebrow">Your Schedule</div>
+      <div class="calendar-title">Calendar 📅</div>
+      <div class="calendar-subtitle">See your targets by date.</div>
+    </div>
+    <button class="icon-btn" onclick="openTargetModal()">+</button>
+  </div>
+
+  <div class="calendar-card">
+    <div class="month-row">
+      <button class="month-arrow" onclick="changeCalendarMonth(-1)">‹</button>
+      <div class="month-name" id="calendarMonth"></div>
+      <button class="month-arrow" onclick="changeCalendarMonth(1)">›</button>
+    </div>
+    <div class="weekdays">
+      <div class="weekday">SUN</div><div class="weekday">MON</div>
+      <div class="weekday">TUE</div><div class="weekday">WED</div>
+      <div class="weekday">THU</div><div class="weekday">FRI</div>
+      <div class="weekday">SAT</div>
+    </div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+  </div>
+
+  <button class="today-btn" onclick="goCalendarToday()">Today</button>
+
+  <div class="calendar-selected">
+    <div class="selected-date-title" id="selectedDateTitle"></div>
+    <div id="calendarTargetList" class="calendar-target-list"></div>
+  </div>
+</section>
+
 <!-- ADD TARGET MODAL -->
 
 <div id="targetModal" class="modal hidden">
@@ -625,27 +686,27 @@ Save Target ✓
 
 <nav id="bottomNav" class="bottom-nav hidden">
 
-<button class="nav-btn active">
+<button class="nav-btn active" onclick="showTab('home')">
 <span class="nav-icon">🏠</span>
 Home
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showTab('calendar')">
 <span class="nav-icon">📅</span>
 Calendar
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showTab('plans')">
 <span class="nav-icon">🎯</span>
 Plans
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showTab('friends')">
 <span class="nav-icon">👥</span>
 Friends
 </button>
 
-<button class="nav-btn">
+<button class="nav-btn" onclick="showTab('profile')">
 <span class="nav-icon">👤</span>
 Profile
 </button>
@@ -855,7 +916,7 @@ select.innerHTML="";
 selectedExams.forEach(exam=>{
 
 select.innerHTML+=
-`<option value="${exam}">${exam}</option>`;
+`<option value="\( {exam}"> \){exam}</option>`;
 
 });
 
@@ -881,7 +942,7 @@ select.innerHTML='<option value="">Select subject</option>';
 (subjects[exam]||[]).forEach(subject=>{
 
 select.innerHTML+=
-`<option value="${subject}">${subject}</option>`;
+`<option value="\( {subject}"> \){subject}</option>`;
 
 });
 
@@ -974,187 +1035,3 @@ document.getElementById("targetChapter").value="";
 document.getElementById("targetTitle").value="";
 document.getElementById("targetNotes").value="";
 document.getElementById("targetSubject").value="";
-
-}
-
-
-function renderTargets(){
-
-const list=document.getElementById("targetsList");
-
-const todayTargets=
-targets.filter(t=>t.date===today());
-
-if(todayTargets.length===0){
-
-list.innerHTML=`
-<div class="empty">
-
-<div class="empty-icon">🌱</div>
-
-<b>No targets yet</b>
-
-<p style="margin-top:6px">
-Add your first target for today.
-</p>
-
-</div>
-`;
-
-}else{
-
-list.innerHTML="";
-
-todayTargets.forEach(target=>{
-
-list.innerHTML+=`
-
-<div class="target-card ${
-target.completed?"done":""
-}">
-
-<button
-class="check"
-onclick="toggleTarget(${target.id})"
->
-${target.completed?"✓":""}
-</button>
-
-<div>
-
-<div class="target-title">
-${escapeHTML(target.title)}
-</div>
-
-<div class="target-meta">
-${escapeHTML(target.subject)}
-${target.chapter?" • "+escapeHTML(target.chapter):""}
-<br>
-${escapeHTML(target.type)} • ${escapeHTML(target.time)}
-</div>
-
-</div>
-
-<button
-class="delete-target"
-onclick="deleteTarget(${target.id})"
->
-🗑️
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-updateProgress();
-
-}
-
-
-function toggleTarget(id){
-
-targets=targets.map(target=>{
-
-if(target.id===id){
-
-return {
-...target,
-completed:!target.completed
-};
-
-}
-
-return target;
-
-});
-
-localStorage.setItem(
-"prepTrackTargets",
-JSON.stringify(targets)
-);
-
-renderTargets();
-
-}
-
-
-function deleteTarget(id){
-
-if(!confirm("Delete this target?")) return;
-
-targets=targets.filter(t=>t.id!==id);
-
-localStorage.setItem(
-"prepTrackTargets",
-JSON.stringify(targets)
-);
-
-renderTargets();
-
-}
-
-
-function updateProgress(){
-
-const todayTargets=
-targets.filter(t=>t.date===today());
-
-const total=todayTargets.length;
-
-const completed=
-todayTargets.filter(t=>t.completed).length;
-
-const percentage=
-total===0?0:Math.round((completed/total)*100);
-
-document.getElementById("completedText").textContent=completed;
-
-document.getElementById("totalText").textContent=total;
-
-document.getElementById("progressPercent").textContent=
-percentage+"%";
-
-document.getElementById("progressRing").style
-.setProperty("--progress",percentage+"%");
-
-}
-
-
-function escapeHTML(text){
-
-return text
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
-}
-
-
-/* LOAD SAVED DATA */
-
-const savedName=
-localStorage.getItem("prepTrackName");
-
-const savedExams=
-JSON.parse(
-localStorage.getItem("prepTrackExams")||"[]"
-);
-
-if(savedName && savedExams.length){
-
-selectedExams=savedExams;
-
-showDashboard();
-
-}
-
-</script>
-
-</body>
-</html>
