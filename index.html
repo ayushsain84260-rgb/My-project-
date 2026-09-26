@@ -163,7 +163,6 @@ background:var(--light);
 border-color:var(--forest);
 }
 
-/* DASHBOARD */
 .dashboard{
 padding:22px;
 padding-bottom:100px;
@@ -257,7 +256,6 @@ background:white;
 
 .empty-icon{font-size:32px;margin-bottom:8px}
 
-/* TARGET CARD */
 .target-card{
 background:white;
 border:1px solid var(--border);
@@ -306,7 +304,6 @@ background:none;
 font-size:17px;
 }
 
-/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -354,7 +351,6 @@ color:var(--muted);
 margin-top:13px;
 }
 
-/* NAV */
 .bottom-nav{
 position:fixed;
 bottom:0;
@@ -389,7 +385,6 @@ font-size:19px;
 margin-bottom:3px;
 }
 
-/* CALENDAR CSS */
 .calendar-screen{
   min-height:100vh;
   padding:22px;
@@ -610,16 +605,657 @@ margin-bottom:3px;
   margin-bottom:8px;
 }
 
+.pt-extra-screen{
+  display:none;
+  min-height:100vh;
+  padding:22px;
+  padding-bottom:100px;
+  background:var(--cream);
+}
+
+.pt-extra-screen.active{
+  display:block;
+}
+
+.pt-page-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+}
+
+.pt-page-title{
+  font-size:28px;
+  font-weight:850;
+  color:var(--text);
+}
+
+.pt-page-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+}
+
+.pt-add{
+  width:45px;
+  height:45px;
+  border:0;
+  border-radius:15px;
+  background:var(--forest);
+  color:white;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.pt-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:21px;
+  padding:17px;
+  margin-bottom:12px;
+}
+
+.pt-card-title{
+  font-size:17px;
+  font-weight:850;
+}
+
+.pt-muted{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.pt-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.pt-progress{
+  width:100%;
+  height:8px;
+  background:#e8eee8;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:12px;
+}
+
+.pt-progress-fill{
+  height:100%;
+  width:0%;
+  background:var(--forest);
+  border-radius:20px;
+  transition:.3s;
+}
+
+.pt-progress-text{
+  display:flex;
+  justify-content:space-between;
+  margin-top:7px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.pt-plan-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:10px;
+}
+
+.pt-pill{
+  background:var(--light);
+  color:var(--forest);
+  padding:6px 9px;
+  border-radius:10px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.pt-plan-buttons{
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+}
+
+.pt-small-btn{
+  flex:1;
+  border:1px solid var(--border);
+  background:white;
+  color:var(--forest);
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.pt-small-btn.primary{
+  background:var(--forest);
+  color:white;
+  border-color:var(--forest);
+}
+
+.pt-empty{
+  padding:30px 20px;
+  background:white;
+  border:1px dashed #cbd8cc;
+  border-radius:20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.pt-empty-icon{
+  font-size:36px;
+  margin-bottom:9px;
+}
+
+.pt-stat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.pt-stat{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+}
+
+.pt-stat-icon{
+  font-size:22px;
+}
+
+.pt-stat-value{
+  font-size:23px;
+  font-weight:850;
+  margin-top:6px;
+}
+
+.pt-stat-label{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.pt-streak{
+  background:linear-gradient(135deg,#315c45,#52775c);
+  color:white;
+  border-radius:22px;
+  padding:20px;
+  margin-bottom:13px;
+}
+
+.pt-streak-number{
+  font-size:38px;
+  font-weight:900;
+}
+
+.pt-streak-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  margin-top:15px;
+}
+
+.pt-day{
+  text-align:center;
+  font-size:10px;
+  opacity:.75;
+}
+
+.pt-day-circle{
+  width:30px;
+  height:30px;
+  margin:5px auto 0;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.12);
+  font-size:12px;
+}
+
+.pt-day-circle.done{
+  background:white;
+  color:var(--forest);
+}
+
+.pt-section-title{
+  font-size:18px;
+  font-weight:850;
+  margin:24px 0 12px;
+}
+
+.pt-profile-head{
+  text-align:center;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:25px 18px;
+}
+
+.pt-profile-avatar{
+  width:70px;
+  height:70px;
+  margin:auto;
+  border-radius:23px;
+  background:var(--forest);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  font-weight:900;
+}
+
+.pt-profile-name{
+  font-size:24px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+.pt-profile-exam{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+}
+
+.pt-summary{
+  background:var(--light);
+  border-radius:18px;
+  padding:15px;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.pt-setting-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.pt-setting-row:last-child{
+  border-bottom:0;
+}
+
+.pt-setting-title{
+  font-weight:800;
+  font-size:14px;
+}
+
+.pt-setting-desc{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.pt-toggle{
+  width:45px;
+  height:25px;
+  border-radius:20px;
+  border:0;
+  background:#cbd5cd;
+  position:relative;
+  cursor:pointer;
+}
+
+.pt-toggle.on{
+  background:var(--forest);
+}
+
+.pt-toggle::after{
+  content:"";
+  width:19px;
+  height:19px;
+  position:absolute;
+  top:3px;
+  left:3px;
+  background:white;
+  border-radius:50%;
+  transition:.2s;
+}
+
+.pt-toggle.on::after{
+  left:23px;
+}
+
+.pt-club-screen{
+  display:none;
+  min-height:100vh;
+  padding:22px;
+  padding-bottom:110px;
+  background:var(--cream,#f7f4ea);
+}
+
+.pt-club-screen.active{
+  display:block;
+}
+
+.pt-club-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.pt-club-title{
+  font-size:28px;
+  font-weight:850;
+  color:var(--text,#172018);
+}
+
+.pt-club-subtitle{
+  color:var(--muted,#718071);
+  font-size:13px;
+  margin-top:4px;
+}
+
+.pt-club-settings{
+  border:0;
+  background:white;
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.pt-club-card{
+  background:white;
+  border:1px solid var(--border,#dce5dc);
+  border-radius:25px;
+  padding:18px;
+  margin-bottom:15px;
+}
+
+.pt-club-name{
+  font-size:21px;
+  font-weight:850;
+}
+
+.pt-club-count{
+  color:var(--muted,#718071);
+  font-size:12px;
+  margin-top:4px;
+}
+
+.pt-club-circle{
+  width:310px;
+  height:310px;
+  max-width:100%;
+  margin:22px auto;
+  position:relative;
+  border-radius:50%;
+  background:radial-gradient(circle,#f8fbf7 0%,#edf4ed 65%,#e5eee5 100%);
+  border:1px solid #d7e2d7;
+}
+
+.pt-club-center{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:76px;
+  height:76px;
+  border-radius:50%;
+  background:var(--forest,#285c3b);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  box-shadow:0 6px 20px rgba(0,0,0,.12);
+  z-index:5;
+}
+
+.pt-club-center-avatar{
+  font-size:24px;
+  line-height:1;
+}
+
+.pt-club-center-name{
+  font-size:10px;
+  margin-top:4px;
+  max-width:65px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.pt-club-member{
+  position:absolute;
+  width:58px;
+  height:58px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:white;
+  border:2px solid #d8e3d8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.pt-club-member-avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eaf1ea;
+  color:#285c3b;
+  font-size:18px;
+}
+
+.pt-club-member-name{
+  position:absolute;
+  top:61px;
+  left:50%;
+  transform:translateX(-50%);
+  width:75px;
+  text-align:center;
+  font-size:10px;
+  font-weight:750;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.pt-club-add{
+  border:2px dashed #b9cdb9;
+  background:#f7faf7;
+  color:#285c3b;
+  font-size:25px;
+}
+
+.pt-club-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.pt-club-btn{
+  border:1px solid var(--border,#dce5dc);
+  background:white;
+  color:var(--forest,#285c3b);
+  border-radius:14px;
+  padding:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.pt-club-btn.primary{
+  background:var(--forest,#285c3b);
+  color:white;
+  border-color:var(--forest,#285c3b);
+}
+
+.pt-members-title{
+  font-size:17px;
+  font-weight:850;
+  margin:20px 0 10px;
+}
+
+.pt-member-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  background:white;
+  border:1px solid var(--border,#dce5dc);
+  border-radius:16px;
+  margin-bottom:8px;
+}
+
+.pt-member-row-avatar{
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#eaf1ea;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#285c3b;
+}
+
+.pt-member-row-info{
+  flex:1;
+}
+
+.pt-member-row-name{
+  font-weight:800;
+  font-size:14px;
+}
+
+.pt-member-row-status{
+  font-size:11px;
+  color:#718071;
+  margin-top:2px;
+}
+
+.pt-modal, .pt-club-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(20,30,24,.55);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:500;
+}
+
+.pt-club-modal {
+  align-items:center;
+  padding:20px;
+}
+
+.pt-modal.hidden, .pt-club-modal.hidden{
+  display:none;
+}
+
+.pt-modal-box{
+  width:min(520px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:var(--cream);
+  border-radius:28px 28px 0 0;
+  padding:24px 22px 30px;
+}
+
+.pt-club-modal-box{
+  width:100%;
+  max-width:420px;
+  background:white;
+  border-radius:24px;
+  padding:20px;
+}
+
+
+.pt-modal-head, .pt-club-modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.pt-modal-title, .pt-club-modal-title{
+  font-size:23px;
+  font-weight:850;
+}
+.pt-club-modal-title{ font-size:20px; }
+
+.pt-close, .pt-club-close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:12px;
+  background:white;
+  font-size:20px;
+  cursor:pointer;
+}
+.pt-club-close{ background:#f0f3f0; border-radius:11px; width:35px; height:35px; }
+
+
+.pt-label{
+  display:block;
+  margin-top:13px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+
+.pt-input, .pt-club-input{
+  width:100%;
+  padding:14px;
+  margin-top:7px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:white;
+  color:var(--text);
+  outline:none;
+}
+.pt-club-input { box-sizing:border-box; border-color:#d7e0d7; border-radius:13px; padding:13px; margin-bottom:10px; margin-top:0;}
+
+.pt-save, .pt-club-modal-btn{
+  width:100%;
+  margin-top:16px;
+  padding:15px;
+  border:0;
+  border-radius:16px;
+  background:var(--forest);
+  color:white;
+  font-weight:850;
+  cursor:pointer;
+}
+.pt-club-modal-btn { border-radius:13px; padding:13px; margin-top:5px; }
+
+.pt-club-note{
+  font-size:11px;
+  color:#718071;
+  line-height:1.5;
+  margin:8px 0 12px;
+}
+
+
 @media(min-width:700px){
 body{padding:25px}
-.app{border-radius:28px;box-shadow:0 20px 70px rgba(0,0,0,.08)}
+.app{border-radius:28px;box-shadow:0 20px 70px rgba(0,0,0,.08);overflow:hidden;}
 }
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- NAME -->
 <section id="nameScreen" class="screen">
 <div class="logo">P</div>
 <div class="eyebrow">Welcome to PrepTrack</div>
@@ -631,8 +1267,7 @@ Let's personalize your preparation and help you stay consistent every day.
 <button class="primary" onclick="saveName()">Let's get started →</button>
 </section>
 
-<!-- EXAM -->
-<section id="examScreen" class="screen hidden">
+<sectional id="examScreen" class="screen hidden">
 <div class="logo">🎯</div>
 <div class="eyebrow">Step 2</div>
 <h1>What are you preparing for? 🎯</h1>
@@ -642,7 +1277,6 @@ Let's personalize your preparation and help you stay consistent every day.
 <button class="primary" onclick="finishSetup()">Continue →</button>
 </section>
 
-<!-- DASHBOARD -->
 <section id="dashboardScreen" class="screen dashboard hidden">
 <div class="topbar">
 <div>
@@ -676,7 +1310,6 @@ Let's personalize your preparation and help you stay consistent every day.
 </div>
 </section>
 
-<!-- CALENDAR -->
 <section id="calendarScreen" class="calendar-screen hidden">
   <div class="calendar-top">
     <div>
@@ -706,6 +1339,163 @@ Let's personalize your preparation and help you stay consistent every day.
     <div id="calendarTargets"></div>
   </div>
 </section>
+
+<section id="ptPlansScreen" class="pt-extra-screen">
+  <div class="pt-page-head">
+    <div>
+      <div class="pt-page-title">My Plans 🎯</div>
+      <div class="pt-page-subtitle">Organize your preparation</div>
+    </div>
+    <button class="pt-add" onclick="PT.openPlanModal()">+</button>
+  </div>
+  <div id="ptPlansList"></div>
+</section>
+
+<section id="ptProfileScreen" class="pt-extra-screen">
+  <div class="pt-page-head">
+    <div>
+      <div class="pt-page-title">Profile 👤</div>
+      <div class="pt-page-subtitle">Your preparation overview</div>
+    </div>
+  </div>
+
+  <div class="pt-profile-head">
+    <div id="ptProfileAvatar" class="pt-profile-avatar">A</div>
+    <div id="ptProfileName" class="pt-profile-name">Student</div>
+    <div id="ptProfileExam" class="pt-profile-exam">PrepTracks</div>
+  </div>
+
+  <div class="pt-section-title">Study Statistics 📊</div>
+  <div class="pt-stat-grid">
+    <div class="pt-stat">
+      <div class="pt-stat-icon">🎯</div>
+      <div id="ptTotalTargets" class="pt-stat-value">0</div>
+      <div class="pt-stat-label">Total Targets</div>
+    </div>
+    <div class="pt-stat">
+      <div class="pt-stat-icon">✅</div>
+      <div id="ptCompletedTargets" class="pt-stat-value">0</div>
+      <div class="pt-stat-label">Completed</div>
+    </div>
+    <div class="pt-stat">
+      <div class="pt-stat-icon">📊</div>
+      <div id="ptCompletion" class="pt-stat-value">0%</div>
+      <div class="pt-stat-label">Completion</div>
+    </div>
+    <div class="pt-stat">
+      <div class="pt-stat-icon">🔥</div>
+      <div id="ptCurrentStreak" class="pt-stat-value">0</div>
+      <div class="pt-stat-label">Current Streak</div>
+    </div>
+  </div>
+
+  <div class="pt-section-title">Streak 🔥</div>
+  <div class="pt-streak">
+    <div style="font-size:12px;opacity:.75;">CURRENT STREAK</div>
+    <div>
+      <span id="ptStreakNumber" class="pt-streak-number">0</span>
+      <span style="font-size:14px;"> days</span>
+    </div>
+    <div style="font-size:12px;opacity:.75;margin-top:3px;">Keep going!</div>
+    <div id="ptStreakDays" class="pt-streak-days"></div>
+  </div>
+
+  <div class="pt-section-title">Weekly Progress 📈</div>
+  <div class="pt-card">
+    <div class="pt-row">
+      <b>This Week</b>
+      <b id="ptWeeklyPercent">0%</b>
+    </div>
+    <div class="pt-progress">
+      <div id="ptWeeklyBar" class="pt-progress-fill"></div>
+    </div>
+  </div>
+
+  <div class="pt-section-title">Study Summary 📝</div>
+  <div id="ptSummary" class="pt-summary">Loading summary...</div>
+
+  <div class="pt-section-title">Goals 🎯</div>
+  <div class="pt-card">
+    <div class="pt-setting-row">
+      <div>
+        <div class="pt-setting-title">Daily Study</div>
+        <div id="ptDailyGoalText" class="pt-setting-desc">Not set</div>
+      </div>
+      <button class="pt-small-btn" onclick="PT.editGoals()">Edit</button>
+    </div>
+    <div class="pt-setting-row">
+      <div>
+        <div class="pt-setting-title">Weekly Targets</div>
+        <div id="ptWeeklyGoalText" class="pt-setting-desc">Not set</div>
+      </div>
+    </div>
+    <div class="pt-setting-row">
+      <div>
+        <div class="pt-setting-title">Target Score</div>
+        <div id="ptScoreGoalText" class="pt-setting-desc">Not set</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-section-title">Settings ⚙️</div>
+  <div class="pt-card">
+    <div class="pt-setting-row">
+      <div>
+        <div class="pt-setting-title">Notifications</div>
+        <div class="pt-setting-desc">Study reminders</div>
+      </div>
+      <button id="ptNotificationToggle" class="pt-toggle" onclick="PT.toggleSetting('notifications')"></button>
+    </div>
+    <div class="pt-setting-row">
+      <div>
+        <div class="pt-setting-title">Dark Mode</div>
+        <div class="pt-setting-desc">Change appearance</div>
+      </div>
+      <button id="ptDarkToggle" class="pt-toggle" onclick="PT.toggleSetting('dark')"></button>
+    </div>
+  </div>
+
+  <div class="pt-section-title">Data 💾</div>
+  <div class="pt-card">
+    <button class="pt-small-btn" style="width:100%;margin-bottom:8px;" onclick="PT.exportData()">Export Progress</button>
+    <button class="pt-small-btn" style="width:100%;" onclick="PT.resetData()">Reset PrepTracks Data</button>
+  </div>
+</section>
+
+<section id="ptClubScreen" class="pt-club-screen">
+  <div class="pt-club-head">
+    <div>
+      <div class="pt-club-title">My Club 👥</div>
+      <div class="pt-club-subtitle">Study together. Grow together.</div>
+    </div>
+    <button class="pt-club-settings" onclick="PTClub.openClubSettings()">⚙️</button>
+  </div>
+
+  <div class="pt-club-card">
+    <div id="ptClubName" class="pt-club-name">My Study Club</div>
+    <div id="ptClubCount" class="pt-club-count">1 / 6 members</div>
+
+    <!-- CIRCLE -->
+    <div id="ptClubCircle" class="pt-club-circle">
+      <!-- YOU -->
+      <div class="pt-club-center">
+        <div id="ptClubMyAvatar" class="pt-club-center-avatar">👤</div>
+        <div id="ptClubMyName" class="pt-club-center-name">You</div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="pt-club-actions">
+      <button class="pt-club-btn primary" onclick="PTClub.openInvite()">➕ Add Member</button>
+      <button class="pt-club-btn" onclick="PTClub.copyInvite()">🔗 Invite Link</button>
+    </div>
+  </div>
+
+  <!-- MEMBER LIST -->
+  <div class="pt-members-title">Club Members 👥</div>
+  <div id="ptClubMemberList"></div>
+</section>
+
 
 <!-- ADD TARGET MODAL -->
 <div id="targetModal" class="modal hidden">
@@ -754,7 +1544,74 @@ Let's personalize your preparation and help you stay consistent every day.
 </div>
 </div>
 
-<!-- NAV -->
+<!-- CREATE PLAN MODAL -->
+<div id="ptPlanModal" class="pt-modal hidden">
+  <div class="pt-modal-box">
+    <div class="pt-modal-head">
+      <div class="pt-modal-title">Create Plan 🎯</div>
+      <button class="pt-close" onclick="PT.closePlanModal()">×</button>
+    </div>
+    <label class="pt-label">Plan Name</label>
+    <input id="ptPlanName" class="pt-input" placeholder="e.g. SSC CHSL Preparation">
+    <label class="pt-label">Exam</label>
+    <select id="ptPlanExam" class="pt-input"></select>
+    <label class="pt-label">Start Date</label>
+    <input id="ptPlanStart" class="pt-input" type="date">
+    <label class="pt-label">Exam / End Date</label>
+    <input id="ptPlanEnd" class="pt-input" type="date">
+    <label class="pt-label">Daily Study Hours</label>
+    <select id="ptPlanHours" class="pt-input">
+      <option value="1">1 hour</option>
+      <option value="2">2 hours</option>
+      <option value="3">3 hours</option>
+      <option value="4">4 hours</option>
+      <option value="5" selected>5 hours</option>
+      <option value="6">6 hours</option>
+      <option value="8">8 hours</option>
+      <option value="10">10 hours</option>
+    </select>
+    <label class="pt-label">Priority</label>
+    <select id="ptPlanPriority" class="pt-input">
+      <option>Low</option>
+      <option selected>Medium</option>
+      <option>High</option>
+    </select>
+    <label class="pt-label">Target Score</label>
+    <input id="ptPlanScore" class="pt-input" placeholder="e.g. 140/160">
+    <label class="pt-label">Notes</label>
+    <textarea id="ptPlanNotes" class="pt-input" style="min-height:90px;" placeholder="Your plan notes..."></textarea>
+    <button class="pt-save" onclick="PT.savePlan()">Save Plan ✓</button>
+  </div>
+</div>
+
+<!-- INVITE MODAL -->
+<div id="ptClubInviteModal" class="pt-club-modal hidden">
+  <div class="pt-club-modal-box">
+    <div class="pt-club-modal-head">
+      <div class="pt-club-modal-title">Add Member 👥</div>
+      <button class="pt-club-close" onclick="PTClub.closeInvite()">×</button>
+    </div>
+    <div class="pt-club-note">
+      Share your club invite link with your friend.
+      Maximum 6 members can be in one club.
+    </div>
+    <input id="ptClubInviteLink" class="pt-club-input" readonly placeholder="Invite link">
+    <button class="pt-club-modal-btn" onclick="PTClub.copyInvite()">📋 Copy Invite Link</button>
+  </div>
+</div>
+
+<!-- CLUB SETTINGS MODAL -->
+<div id="ptClubSettingsModal" class="pt-club-modal hidden">
+  <div class="pt-club-modal-box">
+    <div class="pt-club-modal-head">
+      <div class="pt-club-modal-title">Club Settings ⚙️</div>
+      <button class="pt-club-close" onclick="PTClub.closeClubSettings()">×</button>
+    </div>
+    <input id="ptClubNewName" class="pt-club-input" placeholder="Club name">
+    <button class="pt-club-modal-btn" onclick="PTClub.saveClubName()">Save Club Name</button>
+  </div>
+</div>
+
 <nav id="bottomNav" class="bottom-nav hidden">
 <button class="nav-btn active" id="navHome">
 <span class="nav-icon">🏠</span>Home
@@ -762,13 +1619,13 @@ Let's personalize your preparation and help you stay consistent every day.
 <button class="nav-btn" id="navCalendar">
 <span class="nav-icon">📅</span>Calendar
 </button>
-<button class="nav-btn">
+<button class="nav-btn" id="navPlans">
 <span class="nav-icon">🎯</span>Plans
 </button>
-<button class="nav-btn">
+<button class="nav-btn" id="navFriends">
 <span class="nav-icon">👥</span>Friends
 </button>
-<button class="nav-btn">
+<button class="nav-btn" id="navProfile">
 <span class="nav-icon">👤</span>Profile
 </button>
 </nav>
@@ -809,7 +1666,6 @@ GATE:["Engineering Mathematics","Core Subject","General Aptitude"],
 let selectedExams=[];
 let targets = [];
 
-// FIX: Catching bad localstorage data
 try {
   targets = JSON.parse(localStorage.getItem("prepTrackTargets") || "[]");
 } catch(e) {
@@ -819,6 +1675,10 @@ try {
 function today(){
   const d=new Date();
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function escapeHTML(text){
+  return String(text||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 
 function saveName(){
@@ -951,7 +1811,7 @@ function renderTargets(){
     list.innerHTML=`<div class="empty"><div class="empty-icon">🌱</div><b>No targets yet</b><p style="margin-top:6px">Add your first target for today.</p></div>`;
   }else{
     list.innerHTML="";
-    todayTargets.forEach(target=>{
+        todayTargets.forEach(target=>{
       list.innerHTML+=`
       <div class="target-card ${target.completed?"done":""}">
         <button class="check" onclick="toggleTarget(${target.id})">${target.completed?"✓":""}</button>
@@ -995,11 +1855,6 @@ function updateProgress(){
   document.getElementById("progressPercent").textContent=percentage+"%";
   document.getElementById("progressRing").style.setProperty("--progress",percentage+"%");
 }
-
-function escapeHTML(text){
-  return text.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-
 
 // ==================== CALENDAR LOGIC ====================
 let calendarDate = new Date();
@@ -1120,17 +1975,550 @@ function addTargetFromCalendar(){
   document.getElementById("targetDate").value=selectedCalendarDate;
 }
 
-// ==================== NAVIGATION LOGIC ====================
-function openCalendar(){
-  document.getElementById("dashboardScreen").classList.add("hidden");
-  document.getElementById("calendarScreen").classList.remove("hidden");
-  renderCalendar();
-}
+// ==================== PT ADD-ON MODULE (PLANS + PROFILE) ====================
+window.PT = (function(){
+  let plans = JSON.parse(localStorage.getItem("prepTrackPlans") || "[]");
+  let goals = JSON.parse(localStorage.getItem("prepTrackGoals") || "{}");
+  let settings = JSON.parse(localStorage.getItem("prepTrackSettings") || "{}");
 
+  function getTargets(){
+    try{ return JSON.parse(localStorage.getItem("prepTrackTargets") || "[]"); }
+    catch(e){ return []; }
+  }
+
+  function getName(){ return localStorage.getItem("prepTrackName") || "Student"; }
+
+  function getExams(){
+    try{ return JSON.parse(localStorage.getItem("prepTrackExams") || "[]"); }
+    catch(e){ return []; }
+  }
+
+  function savePlans(){
+    localStorage.setItem("prepTrackPlans", JSON.stringify(plans));
+  }
+
+  function hideExtraScreens(){
+    document.getElementById("ptPlansScreen")?.classList.remove("active");
+    document.getElementById("ptProfileScreen")?.classList.remove("active");
+    document.getElementById("ptClubScreen")?.classList.remove("active");
+  }
+
+  function showPlans(){
+    hideExtraScreens();
+    document.getElementById("dashboardScreen")?.classList.add("hidden");
+    document.getElementById("calendarScreen")?.classList.add("hidden");
+    document.getElementById("ptPlansScreen")?.classList.add("active");
+    renderPlans();
+  }
+
+  function showProfile(){
+    hideExtraScreens();
+    document.getElementById("dashboardScreen")?.classList.add("hidden");
+    document.getElementById("calendarScreen")?.classList.add("hidden");
+    document.getElementById("ptProfileScreen")?.classList.add("active");
+    renderProfile();
+  }
+
+  function openPlanModal(){
+    const modal = document.getElementById("ptPlanModal");
+    if(!modal) return;
+    modal.classList.remove("hidden");
+
+    const examSelect = document.getElementById("ptPlanExam");
+    examSelect.innerHTML = "";
+    const examsList = getExams();
+
+    if(examsList.length){
+      examsList.forEach(exam=>{
+        examSelect.innerHTML += `<option value="${escapeHTML(exam)}">${escapeHTML(exam)}</option>`;
+      });
+    } else {
+      examSelect.innerHTML = `<option value="">Select exam</option>`;
+    }
+    document.getElementById("ptPlanStart").value = today();
+  }
+
+  function closePlanModal(){
+    document.getElementById("ptPlanModal")?.classList.add("hidden");
+  }
+
+  function savePlan(){
+    const name = document.getElementById("ptPlanName").value.trim();
+    const exam = document.getElementById("ptPlanExam").value;
+    const start = document.getElementById("ptPlanStart").value;
+    const end = document.getElementById("ptPlanEnd").value;
+    const hours = document.getElementById("ptPlanHours").value;
+    const priority = document.getElementById("ptPlanPriority").value;
+    const score = document.getElementById("ptPlanScore").value.trim();
+    const notes = document.getElementById("ptPlanNotes").value.trim();
+
+    if(!name){ alert("Please enter a plan name."); return; }
+    if(!start){ alert("Please select a start date."); return; }
+
+    const plan = {
+      id: Date.now(),
+      name, exam, start, end, hours, priority, score, notes,
+      createdAt: new Date().toISOString()
+    };
+
+    plans.push(plan);
+    savePlans();
+    closePlanModal();
+
+    document.getElementById("ptPlanName").value="";
+    document.getElementById("ptPlanEnd").value="";
+    document.getElementById("ptPlanScore").value="";
+    document.getElementById("ptPlanNotes").value="";
+
+    renderPlans();
+  }
+
+  function planProgress(plan){
+    const tgs = getTargets();
+    let related = tgs.filter(t => {
+      if(t.exam !== plan.exam) return false;
+      if(plan.start && t.date < plan.start) return false;
+      if(plan.end && t.date > plan.end) return false;
+      return true;
+    });
+
+    if(!related.length) return 0;
+    const completed = related.filter(t=>t.completed).length;
+    return Math.round((completed / related.length) * 100);
+  }
+
+  function daysRemaining(plan){
+    if(!plan.end) return "No end date";
+    const end = new Date(plan.end + "T23:59:59");
+    const now = new Date();
+    const diff = Math.ceil((end-now) / 86400000);
+    if(diff < 0) return "Ended";
+    if(diff === 0) return "Today";
+    return diff + " days left";
+  }
+
+  function renderPlans(){
+    const list = document.getElementById("ptPlansList");
+    if(!list) return;
+
+    if(plans.length === 0){
+      list.innerHTML = `
+      <div class="pt-empty">
+        <div class="pt-empty-icon">🎯</div>
+        <b>No plans yet</b>
+        <div class="pt-muted" style="margin-top:5px">Create a study plan to organize your prep.</div>
+      </div>`;
+      return;
+    }
+
+    list.innerHTML = "";
+    plans.forEach(plan => {
+      const prog = planProgress(plan);
+      const rem = daysRemaining(plan);
+      list.innerHTML += `
+      <div class="pt-card">
+        <div class="pt-row">
+          <div class="pt-card-title">${escapeHTML(plan.name)}</div>
+          <button class="delete-target" style="padding:0" onclick="PT.deletePlan(${plan.id})">🗑️</button>
+        </div>
+        <div class="pt-plan-meta">
+          <div class="pt-pill">${escapeHTML(plan.exam)}</div>
+          <div class="pt-pill">⏳ ${rem}</div>
+          ${plan.score ? `<div class="pt-pill">🎯 ${escapeHTML(plan.score)}</div>` : ''}
+        </div>
+        <div class="pt-progress">
+          <div class="pt-progress-fill" style="width:${prog}%"></div>
+        </div>
+        <div class="pt-progress-text">
+          <span>Progress</span>
+          <span>${prog}%</span>
+        </div>
+      </div>`;
+    });
+  }
+
+  function deletePlan(id){
+    if(!confirm("Are you sure you want to delete this plan?")) return;
+    plans = plans.filter(p => p.id !== id);
+    savePlans();
+    renderPlans();
+  }
+
+  function renderProfile(){
+    const userName = getName();
+    document.getElementById("ptProfileName").textContent = userName;
+    document.getElementById("ptProfileAvatar").textContent = userName.charAt(0).toUpperCase();
+    document.getElementById("ptProfileExam").textContent = getExams().join(" • ") || "No exams selected";
+
+    const allTargets = getTargets();
+    const completed = allTargets.filter(t => t.completed).length;
+    const total = allTargets.length;
+    const pct = total ? Math.round((completed / total) * 100) : 0;
+
+    document.getElementById("ptTotalTargets").textContent = total;
+    document.getElementById("ptCompletedTargets").textContent = completed;
+    document.getElementById("ptCompletion").textContent = pct + "%";
+
+    // Streak Logic
+    let streak = 0;
+    let checkDate = new Date();
+    let todayStr = today();
+    let yestDate = new Date();
+    yestDate.setDate(yestDate.getDate() - 1);
+    let yestStr = yestDate.toISOString().split('T')[0];
+
+    let hasToday = allTargets.some(t => t.date === todayStr && t.completed);
+    let hasYest = allTargets.some(t => t.date === yestStr && t.completed);
+
+    if(!hasToday && hasYest) {
+      checkDate.setDate(checkDate.getDate() - 1);
+    }
+
+    while(true){
+      let dStr = checkDate.toISOString().split('T')[0];
+      if(allTargets.some(t => t.date === dStr && t.completed)){
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    document.getElementById("ptCurrentStreak").textContent = streak;
+    document.getElementById("ptStreakNumber").textContent = streak;
+
+    const streakDaysContainer = document.getElementById("ptStreakDays");
+    streakDaysContainer.innerHTML = "";
+    const dayNames = ["S","M","T","W","T","F","S"];
+    for(let i=6; i>=0; i--){
+      let d = new Date();
+      d.setDate(d.getDate() - i);
+      let dStr = d.toISOString().split('T')[0];
+      let isDone = allTargets.some(t => t.date === dStr && t.completed);
+      streakDaysContainer.innerHTML += `
+      <div class="pt-day">
+        ${dayNames[d.getDay()]}
+        <div class="pt-day-circle ${isDone ? 'done' : ''}">${isDone ? '✓' : ''}</div>
+      </div>`;
+    }
+
+    // Weekly Progress
+    let weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - 7);
+    let weekStartStr = weekStart.toISOString().split('T')[0];
+    let weekTargets = allTargets.filter(t => t.date >= weekStartStr);
+    let weekComp = weekTargets.filter(t => t.completed).length;
+    let weekPct = weekTargets.length ? Math.round((weekComp / weekTargets.length) * 100) : 0;
+
+    document.getElementById("ptWeeklyPercent").textContent = weekPct + "%";
+    document.getElementById("ptWeeklyBar").style.width = weekPct + "%";
+
+    document.getElementById("ptSummary").innerHTML = `Awesome job! You have completed <b>${completed}</b> out of <b>${total}</b> total study targets. Keep pushing!`;
+
+    // Goals & Settings
+    document.getElementById("ptDailyGoalText").textContent = goals.daily || "Not set";
+    document.getElementById("ptWeeklyGoalText").textContent = goals.weekly || "Not set";
+    document.getElementById("ptScoreGoalText").textContent = goals.score || "Not set";
+
+    const notifToggle = document.getElementById("ptNotificationToggle");
+    const darkToggle = document.getElementById("ptDarkToggle");
+    
+    if(settings.notifications) notifToggle.classList.add("on");
+    else notifToggle.classList.remove("on");
+
+    if(settings.dark){
+      darkToggle.classList.add("on");
+      document.body.style.filter = "invert(1) hue-rotate(180deg)";
+    } else {
+      darkToggle.classList.remove("on");
+      document.body.style.filter = "none";
+    }
+  }
+
+  function editGoals(){
+    const daily = prompt("Enter daily study goal (e.g., 5 hours):", goals.daily || "");
+    if(daily !== null) goals.daily = daily;
+    
+    const weekly = prompt("Enter weekly targets goal (e.g., 20 targets):", goals.weekly || "");
+    if(weekly !== null) goals.weekly = weekly;
+    
+    const score = prompt("Enter target score (e.g., 150/200):", goals.score || "");
+    if(score !== null) goals.score = score;
+    
+    localStorage.setItem("prepTrackGoals", JSON.stringify(goals));
+    renderProfile();
+  }
+
+  function toggleSetting(key){
+    settings[key] = !settings[key];
+    localStorage.setItem("prepTrackSettings", JSON.stringify(settings));
+    renderProfile();
+  }
+
+  function exportData(){
+    const data = {
+      name: getName(),
+      exams: getExams(),
+      targets: getTargets(),
+      plans, goals, settings
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "preptrack_backup.json";
+    a.click();
+  }
+
+  function resetData(){
+    if(confirm("Warning: This will permanently delete ALL your PrepTrack data! Are you sure?")){
+      localStorage.clear();
+      location.reload();
+    }
+  }
+
+  return {
+    hideExtraScreens,
+    showPlans,
+    showProfile,
+    openPlanModal,
+    closePlanModal,
+    savePlan,
+    deletePlan,
+    editGoals,
+    toggleSetting,
+    exportData,
+    resetData
+  };
+
+})();
+
+// ==================== PT CLUB MODULE ====================
+window.PTClub = (function(){
+  const MAX_MEMBERS = 6;
+  let club = null;
+  let members = [];
+
+  function getCurrentUser(){
+    const name = localStorage.getItem("prepTrackName") || "Student";
+    return {
+      id: localStorage.getItem("prepTrackUserId") || "local-user",
+      name: name
+    };
+  }
+
+  function loadLocalClub(){
+    try{
+      club = JSON.parse(localStorage.getItem("prepTrackClub") || "null");
+      members = JSON.parse(localStorage.getItem("prepTrackClubMembers") || "[]");
+    }catch(e){
+      club = null;
+      members = [];
+    }
+
+    if(!club){
+      club = {
+        id: localStorage.getItem("prepTrackClubId") || crypto.randomUUID(),
+        name:"My Study Club"
+      };
+      localStorage.setItem("prepTrackClub", JSON.stringify(club));
+    }
+
+    const user = getCurrentUser();
+
+    if(!members.some(m => m.id === user.id)){
+      members.unshift({
+        id: user.id,
+        name: user.name,
+        isOwner: true
+      });
+    }
+
+    if(members.length > MAX_MEMBERS){
+      members = members.slice(0, MAX_MEMBERS);
+    }
+    saveLocal();
+  }
+
+  function saveLocal(){
+    localStorage.setItem("prepTrackClub", JSON.stringify(club));
+    localStorage.setItem("prepTrackClubMembers", JSON.stringify(members));
+  }
+
+  function showClub(){
+    loadLocalClub();
+    if(window.PT) window.PT.hideExtraScreens();
+    document.getElementById("dashboardScreen")?.classList.add("hidden");
+    document.getElementById("calendarScreen")?.classList.add("hidden");
+    document.getElementById("ptClubScreen")?.classList.add("active");
+    render();
+  }
+
+  function render(){
+    loadLocalClub();
+    const user = getCurrentUser();
+    document.getElementById("ptClubName").textContent = club.name;
+    document.getElementById("ptClubCount").textContent = `${members.length} / ${MAX_MEMBERS} members`;
+    document.getElementById("ptClubMyName").textContent = user.name;
+    renderCircle();
+    renderMemberList();
+  }
+
+  function renderCircle(){
+    const circle = document.getElementById("ptClubCircle");
+    if(!circle) return;
+    
+    circle.querySelectorAll(".pt-club-member").forEach(el => el.remove());
+    
+    const friends = members.filter(m => m.id !== getCurrentUser().id);
+    const totalPositions = 5;
+
+    friends.forEach((member,index)=>{
+      const angle = (360 / totalPositions) * index - 90;
+      const radius = 105;
+      const x = 50 + (radius / 155) * Math.cos(angle * Math.PI / 180) * 50;
+      const y = 50 + (radius / 155) * Math.sin(angle * Math.PI / 180) * 50;
+      
+      const el = document.createElement("div");
+      el.className = "pt-club-member";
+      el.style.left = x + "%";
+      el.style.top = y + "%";
+      
+      const first = (member.name || "U").charAt(0).toUpperCase();
+      el.innerHTML = `
+        <div class="pt-club-member-avatar">${escapeHTML(first)}</div>
+        <div class="pt-club-member-name">${escapeHTML(member.name || "Member")}</div>
+      `;
+      circle.appendChild(el);
+    });
+
+    for(let i = friends.length; i < totalPositions; i++){
+      const angle = (360 / totalPositions) * i - 90;
+            const radius = 105;
+      const x = 50 + (radius / 155) * Math.cos(angle * Math.PI / 180) * 50;
+      const y = 50 + (radius / 155) * Math.sin(angle * Math.PI / 180) * 50;
+      
+      const el = document.createElement("div");
+      el.className = "pt-club-member pt-club-add";
+      el.style.left = x + "%";
+      el.style.top = y + "%";
+      el.innerHTML = "+";
+      el.onclick = openInvite;
+      circle.appendChild(el);
+    }
+  }
+
+  function renderMemberList(){
+    const container = document.getElementById("ptClubMemberList");
+    if(!container) return;
+    container.innerHTML = "";
+
+    members.forEach(member=>{
+      const row = document.createElement("div");
+      row.className = "pt-member-row";
+      const first = (member.name || "U").charAt(0).toUpperCase();
+      
+      row.innerHTML = `
+        <div class="pt-member-row-avatar">${escapeHTML(first)}</div>
+        <div class="pt-member-row-info">
+          <div class="pt-member-row-name">${escapeHTML(member.name || "Member")}</div>
+          <div class="pt-member-row-status">${member.isOwner ? "Club Owner" : "Club Member"}</div>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function generateInvite(){
+    const base = window.location.origin + window.location.pathname;
+    return (base + "?joinClub=" + encodeURIComponent(club.id));
+  }
+
+  function openInvite(){
+    loadLocalClub();
+    if(members.length >= MAX_MEMBERS){
+      alert("This club is full. Maximum 6 members allowed.");
+      return;
+    }
+    const modal = document.getElementById("ptClubInviteModal");
+    const input = document.getElementById("ptClubInviteLink");
+    input.value = generateInvite();
+    modal.classList.remove("hidden");
+  }
+
+  function closeInvite(){
+    document.getElementById("ptClubInviteModal")?.classList.add("hidden");
+  }
+
+  async function copyInvite(){
+    loadLocalClub();
+    if(members.length >= MAX_MEMBERS){
+      alert("This club is full.");
+      return;
+    }
+    const link = generateInvite();
+    try{
+      await navigator.clipboard.writeText(link);
+      alert("Invite link copied! 🔗");
+    }catch(e){
+      const input = document.getElementById("ptClubInviteLink");
+      if(input){
+        input.value = link;
+        input.select();
+        document.execCommand("copy");
+        alert("Invite link copied! 🔗");
+      }
+    }
+  }
+
+  function openClubSettings(){
+    loadLocalClub();
+    document.getElementById("ptClubNewName").value = club.name;
+    document.getElementById("ptClubSettingsModal").classList.remove("hidden");
+  }
+
+  function closeClubSettings(){
+    document.getElementById("ptClubSettingsModal")?.classList.add("hidden");
+  }
+
+  function saveClubName(){
+    const input = document.getElementById("ptClubNewName");
+    const name = input.value.trim();
+    if(!name){ alert("Please enter a club name."); return; }
+    club.name = name.substring(0, 40);
+    saveLocal();
+    closeClubSettings();
+    render();
+  }
+
+  return {
+    showClub, render, openInvite, closeInvite, copyInvite,
+    openClubSettings, closeClubSettings, saveClubName
+  };
+})();
+
+// Auto open logic from URL
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const joinClub = params.get("joinClub");
+  if(joinClub){
+    localStorage.setItem("prepTrackPendingClub", joinClub);
+  }
+})();
+
+// ==================== NAVIGATION LOGIC ====================
 function openHome(){
+  if(window.PT) window.PT.hideExtraScreens();
   document.getElementById("calendarScreen").classList.add("hidden");
   document.getElementById("dashboardScreen").classList.remove("hidden");
   renderTargets();
+}
+
+function openCalendar(){
+  if(window.PT) window.PT.hideExtraScreens();
+  document.getElementById("dashboardScreen").classList.add("hidden");
+  document.getElementById("calendarScreen").classList.remove("hidden");
+  renderCalendar();
 }
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -1153,8 +2541,37 @@ document.addEventListener("DOMContentLoaded", function(){
         openCalendar();
       };
   }
-});
 
+  // ADD-ON NAV HOOKS (Plans & Profile)
+  const navPlans = document.getElementById("navPlans");
+  if(navPlans){
+    navPlans.onclick = function(){
+      navButtons.forEach(btn => btn.classList.remove("active"));
+      this.classList.add("active");
+      if(window.PT) window.PT.showPlans();
+    };
+  }
+
+  const navProfile = document.getElementById("navProfile");
+  if(navProfile){
+    navProfile.onclick = function(){
+      navButtons.forEach(btn => btn.classList.remove("active"));
+      this.classList.add("active");
+      if(window.PT) window.PT.showProfile();
+    };
+  }
+
+  // ADD-ON NAV HOOK (Club / Friends)
+  const navFriends = document.getElementById("navFriends");
+  if(navFriends){
+    navFriends.innerHTML = '<span class="nav-icon">👥</span>Club';
+    navFriends.onclick = function(){
+      navButtons.forEach(btn => btn.classList.remove("active"));
+      this.classList.add("active");
+      if(window.PTClub) window.PTClub.showClub();
+    };
+  }
+});
 
 // ==================== LOAD SAVED DATA ====================
 const savedName = localStorage.getItem("prepTrackName");
@@ -1170,7 +2587,6 @@ if(savedName && savedExams.length){
   selectedExams = savedExams;
   showDashboard();
 }
-
 </script>
 </body>
 </html>
