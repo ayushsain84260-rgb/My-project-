@@ -687,9 +687,7 @@ margin-bottom:3px;
   background:var(--forest);
   border-radius:20px;
   transition:.3s;
-}
-
-.pt-progress-text{
+}.pt-progress-text{
   display:flex;
   justify-content:space-between;
   margin-top:7px;
@@ -1267,7 +1265,7 @@ Let's personalize your preparation and help you stay consistent every day.
 <button class="primary" onclick="saveName()">Let's get started →</button>
 </section>
 
-<sectional id="examScreen" class="screen hidden">
+<section id="examScreen" class="screen hidden">
 <div class="logo">🎯</div>
 <div class="eyebrow">Step 2</div>
 <h1>What are you preparing for? 🎯</h1>
@@ -1387,9 +1385,7 @@ Let's personalize your preparation and help you stay consistent every day.
       <div id="ptCurrentStreak" class="pt-stat-value">0</div>
       <div class="pt-stat-label">Current Streak</div>
     </div>
-  </div>
-
-  <div class="pt-section-title">Streak 🔥</div>
+  </div>  <div class="pt-section-title">Streak 🔥</div>
   <div class="pt-streak">
     <div style="font-size:12px;opacity:.75;">CURRENT STREAK</div>
     <div>
@@ -1811,7 +1807,7 @@ function renderTargets(){
     list.innerHTML=`<div class="empty"><div class="empty-icon">🌱</div><b>No targets yet</b><p style="margin-top:6px">Add your first target for today.</p></div>`;
   }else{
     list.innerHTML="";
-        todayTargets.forEach(target=>{
+    todayTargets.forEach(target=>{
       list.innerHTML+=`
       <div class="target-card ${target.completed?"done":""}">
         <button class="check" onclick="toggleTarget(${target.id})">${target.completed?"✓":""}</button>
@@ -2095,9 +2091,7 @@ window.PT = (function(){
     if(diff < 0) return "Ended";
     if(diff === 0) return "Today";
     return diff + " days left";
-  }
-
-  function renderPlans(){
+  }  function renderPlans(){
     const list = document.getElementById("ptPlansList");
     if(!list) return;
 
@@ -2275,9 +2269,7 @@ window.PT = (function(){
       localStorage.clear();
       location.reload();
     }
-  }
-
-  return {
+  }  return {
     hideExtraScreens,
     showPlans,
     showProfile,
@@ -2394,7 +2386,7 @@ window.PTClub = (function(){
 
     for(let i = friends.length; i < totalPositions; i++){
       const angle = (360 / totalPositions) * i - 90;
-            const radius = 105;
+      const radius = 105;
       const x = 50 + (radius / 155) * Math.cos(angle * Math.PI / 180) * 50;
       const y = 50 + (radius / 155) * Math.sin(angle * Math.PI / 180) * 50;
       
@@ -2411,9 +2403,7 @@ window.PTClub = (function(){
   function renderMemberList(){
     const container = document.getElementById("ptClubMemberList");
     if(!container) return;
-    container.innerHTML = "";
-
-    members.forEach(member=>{
+    container.innerHTML = "";    members.forEach(member=>{
       const row = document.createElement("div");
       row.className = "pt-member-row";
       const first = (member.name || "U").charAt(0).toUpperCase();
@@ -2489,9 +2479,7 @@ window.PTClub = (function(){
     saveLocal();
     closeClubSettings();
     render();
-  }
-
-  return {
+  }  return {
     showClub, render, openInvite, closeInvite, copyInvite,
     openClubSettings, closeClubSettings, saveClubName
   };
@@ -2571,9 +2559,7 @@ document.addEventListener("DOMContentLoaded", function(){
       if(window.PTClub) window.PTClub.showClub();
     };
   }
-});
-
-// ==================== LOAD SAVED DATA ====================
+});// ==================== LOAD SAVED DATA ====================
 const savedName = localStorage.getItem("prepTrackName");
 let savedExams = [];
 
