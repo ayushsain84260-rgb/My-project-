@@ -2,2577 +2,1869 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#315c45">
-<title>PrepTrack</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0f" id="meta-theme">
+<title>PrepTrack Elite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Lightweight External Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+:root {
+  /* Dynamic Accent Colors (Default Cyan) */
+  --sys-accent-primary: #00f2fe;
+  --sys-accent-secondary: #4facfe;
+  
+  /* Ultra Premium Dark Theme (Default) */
+  --bg-base: #0a0a0f;
+  --bg-surface: rgba(22, 22, 30, 0.65);
+  --bg-surface-hover: rgba(255, 255, 255, 0.08);
+  --bg-surface-solid: #16161e;
+  --bg-input: rgba(0, 0, 0, 0.4);
+  
+  --accent-1: var(--sys-accent-primary);
+  --accent-2: var(--sys-accent-secondary);
+  --accent-3: #f093fb; /* Neon Pink */
+  --accent-4: #f5576c; /* Crimson */
+  --success: #00e676;
+  --danger: #ff1744;
+  --warning: #ffb300;
+  
+  --glass-blur: blur(24px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5);
+  --inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-inverse: #050508;
+  
+  --font-main: 'Outfit', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  
+  --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-slow: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-pill: 100px;
+}
+
+body.light-mode {
+  --bg-base: #f4f6f8;
+  --bg-surface: rgba(255, 255, 255, 0.85);
+  --bg-surface-hover: rgba(0, 0, 0, 0.03);
+  --bg-surface-solid: #ffffff;
+  --bg-input: #ffffff;
+  
+  --accent-1: var(--sys-accent-secondary); /* Usually deeper in light mode for contrast */
+  --accent-2: var(--sys-accent-primary);
+  --accent-3: #d12bd1;
+  --accent-4: #e01b3c;
+  
+  --glass-border: 1px solid rgba(0, 0, 0, 0.06);
+  --glass-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.08);
+  --inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
+
+/* Global Focus Styles */
+*:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+
+/* Smooth Fallbacks */
+@supports not (backdrop-filter: blur(10px)) {
+  :root { --bg-surface: #1a1a24; }
+  body.light-mode { --bg-surface: #ffffff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Smooth Scrolling & Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.2); border-radius: 10px; }
+
+/* Animated Ambient Orbs */
+.ambient-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; transition: var(--transition-slow); }
+.orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.25; animation: floatOrb 25s infinite alternate ease-in-out; }
+body.light-mode .orb { opacity: 0.15; filter: blur(80px); }
+.orb:nth-child(1) { width: 400px; height: 400px; background: var(--accent-1); top: -15%; left: -15%; animation-duration: 25s; }
+.orb:nth-child(2) { width: 500px; height: 500px; background: var(--accent-3); bottom: -15%; right: -15%; animation-duration: 30s; animation-delay: -5s; }
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, -60px) scale(1.1); }
+  100% { transform: translate(-40px, 40px) scale(0.9); }
+}
+
+/* Welcome Screen */
+#welcome-screen { position: fixed; inset: 0; background: var(--bg-base); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s; }
+.welcome-logo { font-size: 64px; background: linear-gradient(135deg, var(--accent-3), var(--accent-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 24px; opacity: 0; transform: scale(0.8); animation: welcPop 1s cubic-bezier(0.2,0.8,0.2,1) forwards 0.2s; }
+.welcome-title { font-family: var(--font-display); font-size: 42px; margin-bottom: 12px; color: var(--text-main); opacity: 0; transform: translateY(20px); animation: welcUp 1s forwards 0.4s; letter-spacing: -1px; font-weight: 700; }
+.welcome-tag { color: var(--text-muted); font-size: 16px; opacity: 0; animation: welcFade 1s forwards 0.8s; font-weight: 500; }
+@keyframes welcPop { to { opacity: 1; transform: scale(1); } }
+@keyframes welcUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes welcFade { to { opacity: 1; } }
+
+.app-container {
+  width: 100%; max-width: 500px; height: 100vh; position: relative; display: flex; flex-direction: column;
+}
+@media(min-width: 520px) {
+  body { align-items: center; padding: 20px; }
+  .app-container { 
+    height: 94vh; border-radius: 40px; 
+    box-shadow: 0 0 0 10px rgba(0,0,0,0.02), 0 40px 100px -20px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.05); overflow: hidden; 
+    background: var(--bg-base); 
+  }
+}
+
+.screens-wrapper { flex: 1; position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+.screen {
+  padding: 40px 24px 130px; min-height: 100%; position: absolute; inset: 0;
+  opacity: 0; pointer-events: none; transform: translateY(15px) scale(0.98); 
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex; flex-direction: column;
+}
+.screen.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); position: relative; }
+
+/* Typography */
+h1 { font-family: var(--font-display); font-size: 34px; line-height: 1.15; margin-bottom: 12px; letter-spacing: -0.5px; }
+.text-gradient { background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-family: var(--font-display); font-size: 22px; margin-bottom: 16px; letter-spacing: -0.3px; }
+p.subtitle { color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
+
+/* Components */
+.glass-card {
+  background: var(--bg-surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--glass-shadow);
+  box-shadow: var(--inner-glow), var(--glass-shadow);
+  transition: var(--transition); position: relative; overflow: hidden;
+}
+
+.input-group { margin-bottom: 20px; text-align: left; }
+.input-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.input, .select {
+  width: 100%; padding: 16px 20px; background: var(--bg-input); border: 1px solid rgba(150,150,150,0.15);
+  border-radius: var(--radius-sm); color: var(--text-main); font-size: 16px; font-weight: 500; outline: none; transition: var(--transition);
+  backdrop-filter: blur(10px); -webkit-appearance: none;
+}
+.input:focus, .select:focus { border-color: var(--accent-1); box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.1); background: var(--bg-surface-solid); }
+.input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.6; cursor: pointer; }
+body.light-mode .input[type="date"]::-webkit-calendar-picker-indicator { filter: none; }
+body.light-mode select option { background: #fff; color: #000; }
+
+.btn-glow {
+  width: 100%; padding: 16px 24px; border: none; border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff;
+  font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  cursor: pointer; position: relative; overflow: hidden; transition: var(--transition);
+  box-shadow: 0 8px 25px rgba(0, 242, 254, 0.25); display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+.btn-glow::after { content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.2), transparent); opacity:0; transition:var(--transition); }
+.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 242, 254, 0.35); }
+.btn-glow:hover::after { opacity:1; }
+.btn-glow:active { transform: translateY(1px); }
+
+.btn-secondary { background: var(--bg-surface); color: var(--text-main); border: var(--glass-border); box-shadow: none; }
+.btn-secondary:hover { background: var(--bg-surface-hover); color: var(--text-main); box-shadow: var(--glass-shadow); }
+
+.btn-icon-square {
+  width: 42px; height: 42px; border-radius: 14px; border: var(--glass-border); background: var(--bg-surface);
+  color: var(--text-main); font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--transition);
+}
+.btn-icon-square:hover { background: var(--bg-surface-hover); color: var(--accent-1); border-color: rgba(0,242,254,0.3); transform: translateY(-2px); }
+
+.icon-hero {
+  font-size: 56px; margin-bottom: 20px; background: linear-gradient(135deg, var(--accent-3), var(--accent-1));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
+}
+
+/* Grids & Layouts */
+.exam-grid-premium { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
+.exam-item {
+  background: var(--bg-surface); border: var(--glass-border); border-radius: var(--radius-md);
+  padding: 24px 16px; text-align: center; cursor: pointer; transition: var(--transition); position: relative;
+}
+.exam-item i { font-size: 28px; margin-bottom: 12px; color: var(--text-muted); transition: var(--transition); }
+.exam-item .name { font-weight: 700; font-size: 15px; }
+.exam-item:hover { background: var(--bg-surface-hover); transform: translateY(-3px); }
+.exam-item.selected {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(79, 172, 254, 0.1));
+  border-color: var(--accent-1); box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1);
+}
+.exam-item.selected i { color: var(--accent-1); }
+.exam-item.selected::after {
+  content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute;
+  top: 12px; right: 12px; color: var(--accent-1); font-size: 14px;
+}
+
+/* Dashboard UI */
+.top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; animation: fadeInDown 0.5s ease; }
+@keyframes fadeInDown { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+
+/* Dynamic Greeting Adjustments */
+.greeting { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 2px; text-transform: none; letter-spacing: -0.5px; }
+.user-subtitle-display { font-size: 14px; font-family: var(--font-main); color: var(--text-muted); font-weight: 500; }
+
+.profile-avatar {
+  width: 48px; height: 48px; border-radius: 16px; background: linear-gradient(135deg, var(--accent-3), var(--accent-4));
+  display: flex; justify-content: center; align-items: center; font-size: 20px; font-family: var(--font-display); font-weight: 700; color: #fff;
+  box-shadow: 0 8px 20px rgba(245, 87, 108, 0.25); border: 2px solid rgba(255,255,255,0.15); cursor: pointer; transition: var(--transition);
+  background-size: cover; background-position: center;
+}
+.profile-avatar:hover { transform: scale(1.05) rotate(5deg); }
+
+.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+/* Days Left Hero Card */
+.hero-countdown {
+  grid-column: span 2;
+  background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(0, 242, 254, 0.05) 100%);
+  border: var(--glass-border); border-radius: var(--radius-lg); padding: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  box-shadow: var(--inner-glow), 0 12px 30px rgba(0,0,0,0.2);
+  position: relative; overflow: hidden;
+}
+.hero-countdown::before {
+  content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.1) 0%, transparent 70%); pointer-events: none;
+}
+.hc-info { z-index: 1; }
+.hc-domain { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-1); margin-bottom: 4px; }
+.hc-date { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text-main); }
+.hc-stats {
+  z-index: 1; text-align: right; background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hc-stats h2 { font-size: 42px; line-height: 1; margin: 0; font-weight: 900; letter-spacing: -1px; }
+.hc-stats span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+
+/* Progress & Streak Mini Cards */
+.mini-stat-card {
+  background: var(--bg-surface); border: var(--glass-border); border-radius: var(--radius-md); padding: 20px;
+  display: flex; align-items: center; gap: 16px; box-shadow: var(--glass-shadow); transition: var(--transition);
+}
+.mini-stat-card:hover { background: var(--bg-surface-hover); transform: translateY(-2px); }
+
+.progress-circle-wrap { width: 54px; height: 54px; position: relative; flex-shrink: 0; }
+.circular-chart { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+.circle-bg { fill: none; stroke: rgba(150,150,150,0.15); stroke-width: 3.5; }
+.circle { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke: var(--accent-1); transition: stroke-dasharray 1s cubic-bezier(0.2,0.8,0.2,1); }
+.percentage { fill: var(--text-main); font-family: var(--font-display); font-size: 10px; font-weight: 700; text-anchor: middle; transform: rotate(90deg) translate(0, -14px); }
+
+.stat-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.stat-info p { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+.daily-quote-card {
+  background: var(--bg-surface); border: var(--glass-border); border-radius: var(--radius-md);
+  padding: 16px 20px; display: flex; gap: 16px; align-items: center; margin-bottom: 24px;
+}
+.quote-icon { font-size: 20px; color: var(--accent-3); opacity: 0.8; }
+.quote-text { font-size: 13px; font-style: italic; line-height: 1.5; color: var(--text-main); margin-bottom: 4px; }
+.quote-author { font-size: 10px; font-weight: 700; color: var(--accent-1); text-transform: uppercase; letter-spacing: 1px; }
+
+/* Daily Score Card */
+.score-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+  border: var(--glass-border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px;
+  display: flex; justify-content: space-between; align-items: center; box-shadow: var(--glass-shadow);
+}
+.sc-left h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+.sc-left p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+.sc-right { text-align: right; }
+.sc-val { font-family: var(--font-display); font-size: 32px; font-weight: 800; background: linear-gradient(135deg, var(--accent-1), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+.sc-lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-top: 4px; }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; margin: 32px 0 16px; }
+.section-header h2 { margin: 0; font-size: 18px; }
+
+/* Directives (Targets) */
+.target-list { display: flex; flex-direction: column; gap: 12px; }
+.target-row {
+  display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--bg-surface); border: var(--glass-border);
+  border-radius: var(--radius-md); transition: var(--transition); position: relative; overflow: hidden;
+  touch-action: pan-y; /* For swipe gestures */
+}
+.target-row:hover { background: var(--bg-surface-hover); }
+.target-row.done { opacity: 0.65; background: rgba(0, 230, 118, 0.05); border-color: rgba(0, 230, 118, 0.1); }
+.target-row.done .t-title { text-decoration: line-through; color: var(--text-muted); }
+
+.chk-elite {
+  width: 26px; height: 26px; border-radius: 8px; border: 2px solid rgba(150,150,150,0.3); display: flex; justify-content: center; align-items: center;
+  cursor: pointer; transition: var(--transition); flex-shrink: 0; color: transparent; font-size: 12px;
+}
+.target-row.done .chk-elite { background: var(--success); border-color: var(--success); color: #050508; box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3); }
+
+.t-info { flex: 1; }
+.t-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); transition: var(--transition); }
+.t-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { padding: 4px 10px; border-radius: 6px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge.sub { color: var(--accent-2); background: rgba(79, 172, 254, 0.1); }
+.badge.typ { color: var(--accent-3); background: rgba(240, 147, 251, 0.1); }
+
+/* Swipe Actions */
+.swipe-actions { position: absolute; right: 0; top: 0; bottom: 0; display: flex; transform: translateX(100%); transition: transform 0.3s ease; }
+.target-row.swiped .swipe-actions { transform: translateX(0); }
+.swipe-btn { width: 60px; display: flex; justify-content: center; align-items: center; color: white; border: none; cursor: pointer; font-size: 18px; transition: opacity 0.2s; }
+.swipe-btn:active { opacity: 0.7; }
+.sb-focus { background: var(--accent-2); }
+.sb-del { background: var(--danger); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+.target-row.swiped .t-content-wrap { transform: translateX(-120px); }
+.t-content-wrap { display: flex; align-items: center; gap: 16px; width: 100%; transition: transform 0.3s ease; }
+
+
+/* Premium Empty States */
+.premium-empty {
+  text-align: center; padding: 48px 24px; background: var(--bg-surface); border: 1px dashed rgba(150,150,150,0.15);
+  border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.premium-empty i { font-size: 42px; margin-bottom: 16px; opacity: 0.4; background: linear-gradient(135deg, var(--text-muted), var(--text-main)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.premium-empty h3 { font-size: 16px; margin-bottom: 8px; color: var(--text-main); }
+.premium-empty p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-surface-hover) 50%, var(--bg-surface) 75%);
+  background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius-sm); color: transparent !important; pointer-events: none;
+}
+.skeleton * { opacity: 0; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* Calendar Timeline */
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+.cal-day-name { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+.cal-date {
+  aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition);
+  position: relative; border: 1px solid transparent; background: rgba(150,150,150,0.03);
+}
+.cal-date:hover { background: rgba(150,150,150,0.08); }
+.cal-date.other { color: var(--text-muted); opacity: 0.3; }
+.cal-date.today { border-color: rgba(240, 147, 251, 0.4); color: var(--accent-3); }
+.cal-date.selected { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; font-weight: 800; transform: scale(1.05); border:none; z-index: 2; box-shadow: 0 8px 20px rgba(0, 242, 254, 0.3); }
+.cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--success); position: absolute; bottom: 6px; }
+.cal-date.selected .cal-dot { background: #fff; }
+
+/* Bottom Navigation */
+.floating-nav {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 40px); max-width: 420px;
+  background: var(--bg-surface-solid); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border); border-radius: var(--radius-pill);
+  display: flex; justify-content: space-between; align-items: center; padding: 6px 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 100;
+}
+body.light-mode .floating-nav { box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: rgba(255,255,255,0.9); }
+.nav-btn {
+  background: transparent; border: none; color: var(--text-muted); font-size: 18px; width: 48px; height: 48px;
+  border-radius: 50%; display: flex; justify-content: center; align-items: center;
+  cursor: pointer; transition: var(--transition); position: relative;
+}
+.nav-btn i { transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; }
+.nav-indicator {
+  position: absolute; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 242, 254, 0.15); /* Accent handled in JS */
+  top: 6px; left: 12px; transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; pointer-events: none;
+}
+.nav-btn.active { color: var(--accent-1); }
+.nav-btn.active i { transform: translateY(-2px); }
+body.light-mode .nav-btn.active { color: var(--accent-2); }
+body.light-mode .nav-indicator { background: rgba(0, 85, 255, 0.1); }
+
+/* Syndicate Orbit & Notice */
+.club-notice {
+  background: linear-gradient(135deg, rgba(255,179,0,0.1), rgba(255,179,0,0.02)); border: 1px solid rgba(255,179,0,0.3);
+  border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; display: flex; gap: 12px; align-items: flex-start;
+}
+.cn-icon { font-size: 20px; color: var(--warning); margin-top: 2px; }
+.cn-text h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--warning); display: flex; align-items: center; gap: 8px; }
+.cn-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+.cn-badge { background: var(--warning); color: #000; font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
+
+.orbit-stage { height: 260px; position: relative; display: flex; justify-content: center; align-items: center; margin: 32px 0; opacity: 0.6; pointer-events: none; }
+.orbit-ring { position: absolute; width: 220px; height: 220px; border-radius: 50%; border: 1px dashed rgba(150,150,150,0.2); animation: spin 40s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.orbit-center {
+  width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); border-radius: 50%;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff;
+  box-shadow: 0 0 30px rgba(0, 242, 254, 0.4); z-index: 10; position: relative;
+}
+.orbit-node {
+  position: absolute; width: 50px; height: 50px; background: var(--bg-surface-solid); border: var(--glass-border);
+  border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; color: var(--text-main);
+  transform: translate(-50%, -50%); backdrop-filter: blur(5px); animation: spin-rev 40s linear infinite; box-shadow: var(--glass-shadow); cursor: not-allowed; transition: var(--transition);
+}
+@keyframes spin-rev { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+/* Profile & Settings */
+.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid rgba(150,150,150,0.1); cursor: pointer; }
+.settings-row:last-child { border-bottom: none; }
+.toggle-switch {
+  width: 46px; height: 26px; background: rgba(150,150,150,0.2); border-radius: 13px; position: relative; cursor: pointer; transition: 0.3s;
+}
+.toggle-switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px;
+  background: white; border-radius: 50%; transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.toggle-switch.on { background: var(--success); }
+.toggle-switch.on::after { left: 22px; }
+
+/* Color Picker */
+.color-picker-wrap { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.c-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; }
+.c-dot.selected { border-color: white; transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.c-dot.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+/* Avatar Picker */
+.avatar-picker-wrap { display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.avatar-picker-wrap::-webkit-scrollbar { display: none; }
+.a-opt { width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0; cursor: pointer; border: 2px solid transparent; transition: 0.2s; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 700; color: white; background-size: cover; background-position: center; }
+.a-opt.selected { border-color: var(--accent-1); transform: scale(1.05); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+/* Personal Prep Card (Exportable) */
+.prep-card-wrap {
+  background: linear-gradient(145deg, rgba(22, 22, 30, 0.9) 0%, rgba(10, 10, 15, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg); padding: 32px 24px;
+  position: relative; overflow: hidden; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  margin-bottom: 24px; color: #ffffff; /* Forced for uniform export */
+}
+body.light-mode .prep-card-wrap {
+  background: linear-gradient(145deg, #ffffff 0%, #f0f2f5 100%); border-color: rgba(0, 0, 0, 0.1); color: #0f172a;
+}
+.pc-bg-glow { position: absolute; width: 250px; height: 250px; background: var(--accent-1); filter: blur(90px); opacity: 0.15; top: -80px; right: -80px; border-radius: 50%; pointer-events: none; }
+.pc-header { display: flex; justify-content: center; margin-bottom: 24px; position: relative; z-index: 1; }
+.pc-brand { font-size: 11px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); opacity: 0.8; }
+.pc-body { text-align: center; position: relative; z-index: 1; }
+.pc-avatar { width: 64px; height: 64px; border-radius: 20px; background: var(--accent-1); margin: 0 auto 12px; display: flex; justify-content: center; align-items: center; font-size: 28px; font-weight: 700; color: white; background-size: cover; background-position: center; border: 2px solid rgba(255,255,255,0.2); }
+.pc-name { font-family: var(--font-display); font-size: 24px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+.pc-exam { color: var(--accent-1); font-weight: 800; font-size: 12px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 2px; }
+.pc-exam-date { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 24px; letter-spacing: 0.5px; }
+.pc-big-stat { margin-bottom: 32px; }
+.pc-big-stat h3 { font-family: var(--font-display); font-size: 64px; line-height: 1; margin: 0; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.pc-big-stat span { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+.pc-bottom-stats { display: flex; justify-content: space-around; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.05); }
+body.light-mode .pc-bottom-stats { background: rgba(0, 0, 0, 0.03); border-color: rgba(0, 0, 0, 0.05); }
+.pc-stat { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+.pc-actions { display: flex; gap: 12px; margin-bottom: 32px; }
+
+/* Premium Analytics Chart */
+.chart-container { height: 160px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: 16px; padding-bottom: 20px; border-bottom: 1px solid rgba(150,150,150,0.1); }
+.chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+.chart-bar { width: 100%; background: linear-gradient(to top, rgba(0, 242, 254, 0.2), var(--accent-1)); border-radius: 4px; transition: height 1s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 100%; min-height: 4px; }
+.chart-lbl { font-size: 10px; color: var(--text-muted); margin-top: 8px; text-transform: uppercase; font-weight: 700; position: absolute; bottom: -20px; }
+
+/* Dev Credit */
+.dev-credit { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 40px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.dev-credit span { color: var(--accent-4); font-size: 13px; margin: 0 2px; }
+
+/* Overlay & Modals */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  z-index: 1000; opacity: 0; pointer-events: none; transition: var(--transition); display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+body.light-mode .overlay { background: rgba(255,255,255,0.4); }
+.overlay.show { opacity: 1; pointer-events: auto; }
+
+.dialog-box {
+  background: var(--bg-surface-solid); border: var(--glass-border); border-radius: var(--radius-lg); padding: 32px 24px; width: 100%; max-width: 340px;
+  text-align: center; transform: scale(0.95) translateY(10px); transition: var(--transition); box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+body.light-mode .dialog-box { box-shadow: 0 20px 50px rgba(0,0,0,0.15); background: #fff; }
+.overlay.show .dialog-box { transform: scale(1) translateY(0); }
+.dialog-icon { font-size: 42px; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Celebration/Milestone Modal */
+.cel-modal { background: var(--bg-surface-solid); text-align: center; border-radius: var(--radius-lg); padding: 40px 24px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); position: relative; overflow: hidden; transform: scale(0.9) translateY(20px); transition: var(--transition); width: 100%; max-width: 360px; border: var(--glass-border); }
+body.light-mode .cel-modal { background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.15); }
+.overlay.show .cel-modal { transform: scale(1) translateY(0); }
+.cel-icon { font-size: 56px; margin-bottom: 16px; display: inline-block; animation: celBounce 2s infinite ease-in-out; }
+@keyframes celBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Mobile Bottom Sheets */
+.sheet-wrap {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; display: flex; align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+body.light-mode .sheet-wrap { background: rgba(255,255,255,0.3); }
+.sheet-wrap.show { opacity: 1; pointer-events: auto; }
+.sheet-content {
+  background: var(--bg-surface-solid); border-top: var(--glass-border); border-radius: 32px 32px 0 0; padding: 24px 24px 40px;
+  width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 -20px 60px rgba(0,0,0,0.5); touch-action: pan-y;
+}
+body.light-mode .sheet-content { box-shadow: 0 -10px 40px rgba(0,0,0,0.1); background: #ffffff; }
+.sheet-wrap.show .sheet-content { transform: translateY(0); }
+.sheet-drag { width: 48px; height: 6px; background: rgba(150,150,150,0.2); border-radius: 10px; margin: 0 auto 24px; }
+
+/* How To Use Cards */
+.how-to-card { display: flex; gap: 16px; background: var(--bg-surface); border: var(--glass-border); border-radius: var(--radius-md); padding: 16px; align-items: flex-start; }
+.ht-icon { width: 32px; height: 32px; flex-shrink: 0; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 14px; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.3); }
+.ht-text h4 { font-size: 15px; margin-bottom: 4px; color: var(--text-main); }
+.ht-text p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* Floating Focus Bar */
+.focus-bar-wrap {
+  position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 400px;
+  background: rgba(22, 22, 30, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 242, 254, 0.3); border-radius: var(--radius-lg); padding: 12px 20px;
+  display: flex; justify-content: space-between; align-items: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  z-index: 400; transition: top 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+body.light-mode .focus-bar-wrap { background: rgba(255, 255, 255, 0.95); border-color: rgba(0, 85, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.focus-bar-wrap.active { top: 24px; }
+.fb-info { display: flex; align-items: center; gap: 12px; }
+.fb-time { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--accent-1); width: 75px; }
+.fb-title { font-size: 13px; font-weight: 600; color: var(--text-main); max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fb-actions { display: flex; gap: 8px; }
+.fb-btn { width: 36px; height: 36px; border-radius: 12px; border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; font-size: 14px; }
+.fb-pause { background: rgba(255, 179, 0, 0.1); color: var(--warning); }
+.fb-pause:hover { background: rgba(255, 179, 0, 0.2); }
+.fb-stop { background: rgba(255, 23, 68, 0.1); color: var(--danger); }
+.fb-stop:hover { background: rgba(255, 23, 68, 0.2); }
 
-:root{
---forest:#315c45;
---sage:#6f9277;
---light:#e8f0e7;
---cream:#f7f8f3;
---white:#fff;
---text:#203128;
---muted:#78847c;
---border:#dfe7df;
-}
-
-body{
-font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-background:var(--cream);
-color:var(--text);
-min-height:100vh;
-}
-
-.app{
-width:100%;
-max-width:520px;
-min-height:100vh;
-margin:auto;
-background:var(--cream);
-}
-
-.screen{
-min-height:100vh;
-padding:28px 22px;
-}
-
-.hidden{display:none!important}
-
-.logo{
-width:64px;height:64px;border-radius:21px;
-background:var(--forest);color:white;
-display:flex;align-items:center;justify-content:center;
-font-size:28px;font-weight:800;
-margin-bottom:40px;
-}
-
-.eyebrow{
-color:var(--sage);
-font-size:13px;font-weight:800;
-letter-spacing:1px;text-transform:uppercase;
-margin-bottom:12px;
-}
-
-h1{
-font-size:36px;
-line-height:1.1;
-letter-spacing:-1px;
-margin-bottom:15px;
-}
-
-.subtitle{
-color:var(--muted);
-font-size:15px;
-line-height:1.6;
-}
-
-.input,.select,.textarea{
-width:100%;
-margin-top:12px;
-padding:16px;
-border:1px solid var(--border);
-border-radius:16px;
-background:white;
-color:var(--text);
-font-size:15px;
-outline:none;
-}
-
-.textarea{
-min-height:90px;
-resize:vertical;
-}
-
-.input:focus,.select:focus,.textarea:focus{
-border-color:var(--sage);
-}
-
-.primary{
-width:100%;
-margin-top:14px;
-padding:17px;
-border:0;
-border-radius:17px;
-background:var(--forest);
-color:white;
-font-size:16px;
-font-weight:800;
-cursor:pointer;
-}
-
-.secondary{
-width:100%;
-margin-top:10px;
-padding:15px;
-border:1px solid var(--border);
-border-radius:16px;
-background:white;
-color:var(--forest);
-font-weight:800;
-}
-
-.exam-scroll{
-display:flex;
-gap:13px;
-overflow-x:auto;
-padding:10px 2px 18px;
-scrollbar-width:none;
-}
-
-.exam-scroll::-webkit-scrollbar{display:none}
-
-.exam-card{
-min-width:145px;
-padding:20px;
-background:white;
-border:1px solid var(--border);
-border-radius:22px;
-cursor:pointer;
-text-align:left;
-}
-
-.exam-card.selected{
-background:var(--light);
-border:2px solid var(--forest);
-}
-
-.exam-icon{font-size:28px;margin-bottom:10px}
-.exam-name{font-weight:800}
-.exam-desc{font-size:12px;color:var(--muted);margin-top:4px}
-
-.exam-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:11px;
-}
-
-.mini-exam{
-padding:15px;
-border:1px solid var(--border);
-background:white;
-border-radius:18px;
-text-align:left;
-}
-
-.mini-exam.selected{
-background:var(--light);
-border-color:var(--forest);
-}
-
-.dashboard{
-padding:22px;
-padding-bottom:100px;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:22px;
-}
-
-.hello{font-size:13px;color:var(--muted)}
-.user-name{font-size:25px;font-weight:850;margin-top:4px}
-
-.avatar{
-width:46px;height:46px;border-radius:15px;
-background:var(--forest);color:white;
-display:flex;align-items:center;justify-content:center;
-font-weight:800;
-}
-
-.hero{
-background:linear-gradient(135deg,#315c45,#52775c);
-color:white;
-padding:23px;
-border-radius:26px;
-box-shadow:0 18px 35px rgba(49,92,69,.20);
-}
-
-.hero-small{font-size:12px;opacity:.75}
-.hero-title{font-size:24px;font-weight:850;margin-top:5px}
-
-.progress-area{
-display:flex;
-align-items:center;
-gap:20px;
-margin-top:22px;
-}
-
-.ring{
-width:82px;height:82px;
-border-radius:50%;
-background:conic-gradient(white var(--progress),rgba(255,255,255,.22) 0);
-display:flex;align-items:center;justify-content:center;
-}
-
-.ring-inner{
-width:66px;height:66px;border-radius:50%;
-background:#315c45;
-display:flex;align-items:center;justify-content:center;
-font-weight:850;
-}
-
-.hero-info{font-size:13px;line-height:1.6}
-
-.quote{
-margin-top:18px;
-padding:12px;
-border-radius:14px;
-background:rgba(255,255,255,.10);
-font-size:12px;
-}
-
-.section{margin-top:26px}
-
-.section-head{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:12px;
-}
-
-.section-title{font-size:18px;font-weight:850}
-
-.add-btn{
-width:44px;height:44px;
-border:0;border-radius:14px;
-background:var(--forest);
-color:white;font-size:25px;
-}
-
-.empty{
-padding:25px;
-border:1px dashed #cbd8cc;
-border-radius:20px;
-text-align:center;
-color:var(--muted);
-background:white;
-}
-
-.empty-icon{font-size:32px;margin-bottom:8px}
-
-.target-card{
-background:white;
-border:1px solid var(--border);
-border-radius:20px;
-padding:15px;
-margin-bottom:10px;
-display:flex;
-gap:13px;
-align-items:center;
-}
-
-.check{
-width:27px;height:27px;
-border-radius:9px;
-border:2px solid #b8c8bb;
-background:white;
-flex-shrink:0;
-cursor:pointer;
-}
-
-.target-card.done .check{
-background:var(--forest);
-border-color:var(--forest);
-}
-
-.target-card.done .target-title{
-text-decoration:line-through;
-opacity:.55;
-}
-
-.target-title{
-font-weight:800;
-font-size:15px;
-}
-
-.target-meta{
-font-size:12px;
-color:var(--muted);
-margin-top:5px;
-}
-
-.delete-target{
-margin-left:auto;
-border:0;
-background:none;
-font-size:17px;
-}
-
-.modal{
-position:fixed;
-inset:0;
-background:rgba(20,30,24,.55);
-display:flex;
-align-items:flex-end;
-justify-content:center;
-z-index:100;
-}
-
-.modal-box{
-width:min(520px,100%);
-max-height:92vh;
-overflow:auto;
-background:var(--cream);
-border-radius:28px 28px 0 0;
-padding:24px 22px 30px;
-}
-
-.modal-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px;
-}
-
-.modal-title{
-font-size:23px;
-font-weight:850;
-}
-
-.close{
-border:0;
-background:white;
-width:38px;height:38px;
-border-radius:12px;
-font-size:20px;
-}
-
-.label{
-display:block;
-font-size:12px;
-font-weight:800;
-color:var(--muted);
-margin-top:13px;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:min(520px,100%);
-display:grid;
-grid-template-columns:repeat(5,1fr);
-padding:9px 6px;
-background:rgba(255,255,255,.95);
-backdrop-filter:blur(16px);
-border-top:1px solid var(--border);
-z-index:20;
-}
-
-.nav-btn{
-border:0;
-background:transparent;
-color:#89938b;
-padding:6px 2px;
-font-size:10px;
-}
-
-.nav-btn.active{
-color:var(--forest);
-font-weight:800;
-}
-
-.nav-icon{
-display:block;
-font-size:19px;
-margin-bottom:3px;
-}
-
-.calendar-screen{
-  min-height:100vh;
-  padding:22px;
-  padding-bottom:110px;
-  background:var(--cream);
-}
-
-.calendar-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-}
-
-.calendar-heading{
-  font-size:25px;
-  font-weight:850;
-}
-
-.calendar-subtitle{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-.calendar-actions{
-  display:flex;
-  gap:8px;
-}
-
-.calendar-nav{
-  width:40px;
-  height:40px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:white;
-  color:var(--forest);
-  font-size:18px;
-  font-weight:800;
-}
-
-.calendar-today{
-  border:0;
-  border-radius:12px;
-  padding:10px 13px;
-  background:var(--forest);
-  color:white;
-  font-weight:800;
-}
-
-.calendar-month{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:15px;
-}
-
-.calendar-month-title{
-  text-align:center;
-  font-size:18px;
-  font-weight:850;
-  margin-bottom:15px;
-}
-
-.calendar-weekdays,
-.calendar-days{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:6px;
-}
-
-.calendar-weekdays div{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:800;
-  padding:5px 0;
-}
-
-.calendar-day{
-  position:relative;
-  height:43px;
-  border:0;
-  border-radius:12px;
-  background:transparent;
-  color:var(--text);
-  font-size:14px;
-  font-weight:700;
-}
-
-.calendar-day:hover{
-  background:var(--light);
-}
-
-.calendar-day.today{
-  background:var(--light);
-  color:var(--forest);
-  box-shadow:inset 0 0 0 2px var(--forest);
-}
-
-.calendar-day.selected{
-  background:var(--forest);
-  color:white;
-}
-
-.calendar-day.other-month{
-  color:#c3cbc5;
-}
-
-.calendar-dot{
-  position:absolute;
-  width:5px;
-  height:5px;
-  border-radius:50%;
-  background:var(--sage);
-  left:50%;
-  bottom:5px;
-  transform:translateX(-50%);
-}
-
-.calendar-day.selected .calendar-dot{
-  background:white;
-}
-
-.calendar-selected{
-  margin-top:22px;
-}
-
-.calendar-selected-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-
-.calendar-selected-title{
-  font-size:18px;
-  font-weight:850;
-}
-
-.calendar-add{
-  width:42px;
-  height:42px;
-  border:0;
-  border-radius:13px;
-  background:var(--forest);
-  color:white;
-  font-size:23px;
-}
-
-.calendar-target{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:19px;
-  padding:15px;
-  margin-bottom:10px;
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-}
-
-.calendar-check{
-  width:27px;
-  height:27px;
-  flex-shrink:0;
-  border-radius:9px;
-  border:2px solid #b8c8bb;
-  background:white;
-  color:white;
-  cursor:pointer;
-  font-weight:800;
-}
-
-.calendar-target.done .calendar-check{
-  background:var(--forest);
-  border-color:var(--forest);
-}
-
-.calendar-target.done .calendar-target-title{
-  text-decoration:line-through;
-  opacity:.55;
-}
-
-.calendar-target-content{
-  flex:1;
-}
-
-.calendar-target-title{
-  font-size:15px;
-  font-weight:800;
-}
-
-.calendar-target-meta{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-  margin-top:5px;
-}
-
-.calendar-delete{
-  border:0;
-  background:none;
-  font-size:17px;
-  cursor:pointer;
-}
-
-.calendar-empty{
-  background:white;
-  border:1px dashed #cbd8cc;
-  border-radius:20px;
-  padding:25px 15px;
-  text-align:center;
-  color:var(--muted);
-}
-
-.calendar-empty-icon{
-  font-size:30px;
-  margin-bottom:8px;
-}
-
-.pt-extra-screen{
-  display:none;
-  min-height:100vh;
-  padding:22px;
-  padding-bottom:100px;
-  background:var(--cream);
-}
-
-.pt-extra-screen.active{
-  display:block;
-}
-
-.pt-page-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:22px;
-}
-
-.pt-page-title{
-  font-size:28px;
-  font-weight:850;
-  color:var(--text);
-}
-
-.pt-page-subtitle{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:4px;
-}
-
-.pt-add{
-  width:45px;
-  height:45px;
-  border:0;
-  border-radius:15px;
-  background:var(--forest);
-  color:white;
-  font-size:25px;
-  cursor:pointer;
-}
-
-.pt-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:21px;
-  padding:17px;
-  margin-bottom:12px;
-}
-
-.pt-card-title{
-  font-size:17px;
-  font-weight:850;
-}
-
-.pt-muted{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.pt-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
-
-.pt-progress{
-  width:100%;
-  height:8px;
-  background:#e8eee8;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:12px;
-}
-
-.pt-progress-fill{
-  height:100%;
-  width:0%;
-  background:var(--forest);
-  border-radius:20px;
-  transition:.3s;
-}.pt-progress-text{
-  display:flex;
-  justify-content:space-between;
-  margin-top:7px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.pt-plan-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:10px;
-}
-
-.pt-pill{
-  background:var(--light);
-  color:var(--forest);
-  padding:6px 9px;
-  border-radius:10px;
-  font-size:11px;
-  font-weight:800;
-}
-
-.pt-plan-buttons{
-  display:flex;
-  gap:8px;
-  margin-top:14px;
-}
-
-.pt-small-btn{
-  flex:1;
-  border:1px solid var(--border);
-  background:white;
-  color:var(--forest);
-  border-radius:12px;
-  padding:10px;
-  font-size:12px;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.pt-small-btn.primary{
-  background:var(--forest);
-  color:white;
-  border-color:var(--forest);
-}
-
-.pt-empty{
-  padding:30px 20px;
-  background:white;
-  border:1px dashed #cbd8cc;
-  border-radius:20px;
-  text-align:center;
-  color:var(--muted);
-}
-
-.pt-empty-icon{
-  font-size:36px;
-  margin-bottom:9px;
-}
-
-.pt-stat-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.pt-stat{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-}
-
-.pt-stat-icon{
-  font-size:22px;
-}
-
-.pt-stat-value{
-  font-size:23px;
-  font-weight:850;
-  margin-top:6px;
-}
-
-.pt-stat-label{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-
-.pt-streak{
-  background:linear-gradient(135deg,#315c45,#52775c);
-  color:white;
-  border-radius:22px;
-  padding:20px;
-  margin-bottom:13px;
-}
-
-.pt-streak-number{
-  font-size:38px;
-  font-weight:900;
-}
-
-.pt-streak-days{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:6px;
-  margin-top:15px;
-}
-
-.pt-day{
-  text-align:center;
-  font-size:10px;
-  opacity:.75;
-}
-
-.pt-day-circle{
-  width:30px;
-  height:30px;
-  margin:5px auto 0;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,.12);
-  font-size:12px;
-}
-
-.pt-day-circle.done{
-  background:white;
-  color:var(--forest);
-}
-
-.pt-section-title{
-  font-size:18px;
-  font-weight:850;
-  margin:24px 0 12px;
-}
-
-.pt-profile-head{
-  text-align:center;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:25px 18px;
-}
-
-.pt-profile-avatar{
-  width:70px;
-  height:70px;
-  margin:auto;
-  border-radius:23px;
-  background:var(--forest);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:28px;
-  font-weight:900;
-}
-
-.pt-profile-name{
-  font-size:24px;
-  font-weight:900;
-  margin-top:12px;
-}
-
-.pt-profile-exam{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:4px;
-}
-
-.pt-summary{
-  background:var(--light);
-  border-radius:18px;
-  padding:15px;
-  font-size:13px;
-  line-height:1.8;
-}
-
-.pt-setting-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.pt-setting-row:last-child{
-  border-bottom:0;
-}
-
-.pt-setting-title{
-  font-weight:800;
-  font-size:14px;
-}
-
-.pt-setting-desc{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-
-.pt-toggle{
-  width:45px;
-  height:25px;
-  border-radius:20px;
-  border:0;
-  background:#cbd5cd;
-  position:relative;
-  cursor:pointer;
-}
-
-.pt-toggle.on{
-  background:var(--forest);
-}
-
-.pt-toggle::after{
-  content:"";
-  width:19px;
-  height:19px;
-  position:absolute;
-  top:3px;
-  left:3px;
-  background:white;
-  border-radius:50%;
-  transition:.2s;
-}
-
-.pt-toggle.on::after{
-  left:23px;
-}
-
-.pt-club-screen{
-  display:none;
-  min-height:100vh;
-  padding:22px;
-  padding-bottom:110px;
-  background:var(--cream,#f7f4ea);
-}
-
-.pt-club-screen.active{
-  display:block;
-}
-
-.pt-club-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.pt-club-title{
-  font-size:28px;
-  font-weight:850;
-  color:var(--text,#172018);
-}
-
-.pt-club-subtitle{
-  color:var(--muted,#718071);
-  font-size:13px;
-  margin-top:4px;
-}
-
-.pt-club-settings{
-  border:0;
-  background:white;
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  font-size:20px;
-  cursor:pointer;
-}
-
-.pt-club-card{
-  background:white;
-  border:1px solid var(--border,#dce5dc);
-  border-radius:25px;
-  padding:18px;
-  margin-bottom:15px;
-}
-
-.pt-club-name{
-  font-size:21px;
-  font-weight:850;
-}
-
-.pt-club-count{
-  color:var(--muted,#718071);
-  font-size:12px;
-  margin-top:4px;
-}
-
-.pt-club-circle{
-  width:310px;
-  height:310px;
-  max-width:100%;
-  margin:22px auto;
-  position:relative;
-  border-radius:50%;
-  background:radial-gradient(circle,#f8fbf7 0%,#edf4ed 65%,#e5eee5 100%);
-  border:1px solid #d7e2d7;
-}
-
-.pt-club-center{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:76px;
-  height:76px;
-  border-radius:50%;
-  background:var(--forest,#285c3b);
-  color:white;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  box-shadow:0 6px 20px rgba(0,0,0,.12);
-  z-index:5;
-}
-
-.pt-club-center-avatar{
-  font-size:24px;
-  line-height:1;
-}
-
-.pt-club-center-name{
-  font-size:10px;
-  margin-top:4px;
-  max-width:65px;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.pt-club-member{
-  position:absolute;
-  width:58px;
-  height:58px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:white;
-  border:2px solid #d8e3d8;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
-}
-
-.pt-club-member-avatar{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#eaf1ea;
-  color:#285c3b;
-  font-size:18px;
-}
-
-.pt-club-member-name{
-  position:absolute;
-  top:61px;
-  left:50%;
-  transform:translateX(-50%);
-  width:75px;
-  text-align:center;
-  font-size:10px;
-  font-weight:750;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.pt-club-add{
-  border:2px dashed #b9cdb9;
-  background:#f7faf7;
-  color:#285c3b;
-  font-size:25px;
-}
-
-.pt-club-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.pt-club-btn{
-  border:1px solid var(--border,#dce5dc);
-  background:white;
-  color:var(--forest,#285c3b);
-  border-radius:14px;
-  padding:13px;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.pt-club-btn.primary{
-  background:var(--forest,#285c3b);
-  color:white;
-  border-color:var(--forest,#285c3b);
-}
-
-.pt-members-title{
-  font-size:17px;
-  font-weight:850;
-  margin:20px 0 10px;
-}
-
-.pt-member-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px;
-  background:white;
-  border:1px solid var(--border,#dce5dc);
-  border-radius:16px;
-  margin-bottom:8px;
-}
-
-.pt-member-row-avatar{
-  width:42px;
-  height:42px;
-  flex-shrink:0;
-  border-radius:50%;
-  background:#eaf1ea;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  color:#285c3b;
-}
-
-.pt-member-row-info{
-  flex:1;
-}
-
-.pt-member-row-name{
-  font-weight:800;
-  font-size:14px;
-}
-
-.pt-member-row-status{
-  font-size:11px;
-  color:#718071;
-  margin-top:2px;
-}
-
-.pt-modal, .pt-club-modal{
-  position:fixed;
-  inset:0;
-  background:rgba(20,30,24,.55);
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  z-index:500;
-}
-
-.pt-club-modal {
-  align-items:center;
-  padding:20px;
-}
-
-.pt-modal.hidden, .pt-club-modal.hidden{
-  display:none;
-}
-
-.pt-modal-box{
-  width:min(520px,100%);
-  max-height:92vh;
-  overflow:auto;
-  background:var(--cream);
-  border-radius:28px 28px 0 0;
-  padding:24px 22px 30px;
-}
-
-.pt-club-modal-box{
-  width:100%;
-  max-width:420px;
-  background:white;
-  border-radius:24px;
-  padding:20px;
-}
-
-
-.pt-modal-head, .pt-club-modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-
-.pt-modal-title, .pt-club-modal-title{
-  font-size:23px;
-  font-weight:850;
-}
-.pt-club-modal-title{ font-size:20px; }
-
-.pt-close, .pt-club-close{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:12px;
-  background:white;
-  font-size:20px;
-  cursor:pointer;
-}
-.pt-club-close{ background:#f0f3f0; border-radius:11px; width:35px; height:35px; }
-
-
-.pt-label{
-  display:block;
-  margin-top:13px;
-  color:var(--muted);
-  font-size:12px;
-  font-weight:800;
-}
-
-.pt-input, .pt-club-input{
-  width:100%;
-  padding:14px;
-  margin-top:7px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:white;
-  color:var(--text);
-  outline:none;
-}
-.pt-club-input { box-sizing:border-box; border-color:#d7e0d7; border-radius:13px; padding:13px; margin-bottom:10px; margin-top:0;}
-
-.pt-save, .pt-club-modal-btn{
-  width:100%;
-  margin-top:16px;
-  padding:15px;
-  border:0;
-  border-radius:16px;
-  background:var(--forest);
-  color:white;
-  font-weight:850;
-  cursor:pointer;
-}
-.pt-club-modal-btn { border-radius:13px; padding:13px; margin-top:5px; }
-
-.pt-club-note{
-  font-size:11px;
-  color:#718071;
-  line-height:1.5;
-  margin:8px 0 12px;
-}
-
-
-@media(min-width:700px){
-body{padding:25px}
-.app{border-radius:28px;box-shadow:0 20px 70px rgba(0,0,0,.08);overflow:hidden;}
-}
 </style>
 </head>
 <body>
-<div class="app">
 
-<section id="nameScreen" class="screen">
-<div class="logo">P</div>
-<div class="eyebrow">Welcome to PrepTrack</div>
-<h1>What's your name, cutie? 🥰</h1>
-<p class="subtitle">
-Let's personalize your preparation and help you stay consistent every day.
-</p>
-<input id="nameInput" class="input" placeholder="Enter your name">
-<button class="primary" onclick="saveName()">Let's get started →</button>
-</section>
+<div class="ambient-bg"><div class="orb"></div><div class="orb"></div></div>
 
-<section id="examScreen" class="screen hidden">
-<div class="logo">🎯</div>
-<div class="eyebrow">Step 2</div>
-<h1>What are you preparing for? 🎯</h1>
-<p class="subtitle">Choose one or more preparations.</p>
-<div id="examCarousel" class="exam-scroll"></div>
-<div id="examGrid" class="exam-grid"></div>
-<button class="primary" onclick="finishSetup()">Continue →</button>
-</section>
-
-<section id="dashboardScreen" class="screen dashboard hidden">
-<div class="topbar">
-<div>
-<div class="hello" id="greeting"></div>
-<div class="user-name" id="userName"></div>
-</div>
-<div class="avatar" id="avatar"></div>
-</div>
-
-<div class="hero">
-<div class="hero-small">ACTIVE PREPARATION</div>
-<div class="hero-title" id="activeExam"></div>
-<div class="progress-area">
-<div class="ring" id="progressRing" style="--progress:0%">
-<div class="ring-inner" id="progressPercent">0%</div>
-</div>
-<div class="hero-info">
-<b id="completedText">0</b> completed out of <b id="totalText">0</b>
-<br>Today's progress
-</div>
-</div>
-<div class="quote">“Small progress is still progress. 🌱”</div>
-</div>
-
-<div class="section">
-<div class="section-head">
-<div class="section-title">Today's Targets</div>
-<button class="add-btn" onclick="openTargetModal()">+</button>
-</div>
-<div id="targetsList"></div>
-</div>
-</section>
-
-<section id="calendarScreen" class="calendar-screen hidden">
-  <div class="calendar-top">
+<!-- Floating Focus Bar -->
+<div id="uFocusBar" class="focus-bar-wrap">
+  <div class="fb-info">
+    <i class="fa-solid fa-stopwatch" style="color: var(--text-muted);"></i>
     <div>
-      <div class="calendar-heading">Calendar 📅</div>
-      <div class="calendar-subtitle">Plan and track your preparation</div>
-    </div>
-    <div class="calendar-actions">
-      <button class="calendar-nav" onclick="changeCalendarMonth(-1)">‹</button>
-      <button class="calendar-nav" onclick="changeCalendarMonth(1)">›</button>
+      <div class="fb-time" id="fbTime">00:00</div>
+      <div class="fb-title" id="fbTitle">Focus Session</div>
     </div>
   </div>
-  <button class="calendar-today" onclick="goToCalendarToday()">Today</button>
-
-  <div class="calendar-month" style="margin-top:14px">
-    <div id="calendarMonthTitle" class="calendar-month-title"></div>
-    <div class="calendar-weekdays">
-      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-    </div>
-    <div id="calendarDays" class="calendar-days"></div>
+  <div class="fb-actions">
+    <button class="fb-btn fb-pause" id="fbPauseBtn" onclick="App.toggleFocusPause()"><i class="fa-solid fa-pause"></i></button>
+    <button class="fb-btn fb-stop" onclick="App.stopFocus()"><i class="fa-solid fa-square"></i></button>
   </div>
+</div>
 
-  <div class="calendar-selected">
-    <div class="calendar-selected-head">
-      <div id="calendarSelectedTitle" class="calendar-selected-title">Today's Targets</div>
-      <button class="calendar-add" onclick="addTargetFromCalendar()">+</button>
+<!-- Welcome Screen (Shown once) -->
+<div id="welcome-screen">
+  <div class="welcome-logo"><i class="fa-solid fa-infinity"></i></div>
+  <div class="welcome-title">PREPTRACK</div>
+  <div class="welcome-tag">Your preparation. Your progress.</div>
+</div>
+
+<!-- Premium Dialog System -->
+<div id="uDialog" class="overlay">
+  <div class="dialog-box">
+    <div class="dialog-icon" id="dIcon"><i class="fa-solid fa-sparkles"></i></div>
+    <h2 id="dTitle" style="margin-bottom: 8px;">Notice</h2>
+    <p id="dMessage" style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">Message</p>
+    <div id="dInputWrap" class="input-group" style="display:none; margin-top:16px;">
+      <input type="text" id="dInput" class="input" placeholder="Type here...">
     </div>
-    <div id="calendarTargets"></div>
-  </div>
-</section>
-
-<section id="ptPlansScreen" class="pt-extra-screen">
-  <div class="pt-page-head">
-    <div>
-      <div class="pt-page-title">My Plans 🎯</div>
-      <div class="pt-page-subtitle">Organize your preparation</div>
-    </div>
-    <button class="pt-add" onclick="PT.openPlanModal()">+</button>
-  </div>
-  <div id="ptPlansList"></div>
-</section>
-
-<section id="ptProfileScreen" class="pt-extra-screen">
-  <div class="pt-page-head">
-    <div>
-      <div class="pt-page-title">Profile 👤</div>
-      <div class="pt-page-subtitle">Your preparation overview</div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn-glow btn-secondary" id="dCancel" style="display:none; flex:1; padding: 14px;">Cancel</button>
+      <button class="btn-glow" id="dConfirm" style="flex:1; padding: 14px;">Confirm</button>
     </div>
   </div>
+</div>
 
-  <div class="pt-profile-head">
-    <div id="ptProfileAvatar" class="pt-profile-avatar">A</div>
-    <div id="ptProfileName" class="pt-profile-name">Student</div>
-    <div id="ptProfileExam" class="pt-profile-exam">PrepTracks</div>
-  </div>
-
-  <div class="pt-section-title">Study Statistics 📊</div>
-  <div class="pt-stat-grid">
-    <div class="pt-stat">
-      <div class="pt-stat-icon">🎯</div>
-      <div id="ptTotalTargets" class="pt-stat-value">0</div>
-      <div class="pt-stat-label">Total Targets</div>
-    </div>
-    <div class="pt-stat">
-      <div class="pt-stat-icon">✅</div>
-      <div id="ptCompletedTargets" class="pt-stat-value">0</div>
-      <div class="pt-stat-label">Completed</div>
-    </div>
-    <div class="pt-stat">
-      <div class="pt-stat-icon">📊</div>
-      <div id="ptCompletion" class="pt-stat-value">0%</div>
-      <div class="pt-stat-label">Completion</div>
-    </div>
-    <div class="pt-stat">
-      <div class="pt-stat-icon">🔥</div>
-      <div id="ptCurrentStreak" class="pt-stat-value">0</div>
-      <div class="pt-stat-label">Current Streak</div>
-    </div>
-  </div>  <div class="pt-section-title">Streak 🔥</div>
-  <div class="pt-streak">
-    <div style="font-size:12px;opacity:.75;">CURRENT STREAK</div>
-    <div>
-      <span id="ptStreakNumber" class="pt-streak-number">0</span>
-      <span style="font-size:14px;"> days</span>
-    </div>
-    <div style="font-size:12px;opacity:.75;margin-top:3px;">Keep going!</div>
-    <div id="ptStreakDays" class="pt-streak-days"></div>
-  </div>
-
-  <div class="pt-section-title">Weekly Progress 📈</div>
-  <div class="pt-card">
-    <div class="pt-row">
-      <b>This Week</b>
-      <b id="ptWeeklyPercent">0%</b>
-    </div>
-    <div class="pt-progress">
-      <div id="ptWeeklyBar" class="pt-progress-fill"></div>
-    </div>
-  </div>
-
-  <div class="pt-section-title">Study Summary 📝</div>
-  <div id="ptSummary" class="pt-summary">Loading summary...</div>
-
-  <div class="pt-section-title">Goals 🎯</div>
-  <div class="pt-card">
-    <div class="pt-setting-row">
+<!-- Celebration/Milestone Modal -->
+<div id="uCelebration" class="overlay">
+  <div class="cel-modal">
+    <div class="cel-icon" id="celIcon">🎉</div>
+    <h2 id="celTitle" style="font-family: var(--font-display); font-size: 24px; margin-bottom: 6px; letter-spacing: 1px;">DAY COMPLETE</h2>
+    <h1 id="celBigText" style="font-size: 56px; background: linear-gradient(135deg, var(--success), var(--accent-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; font-weight: 900;">100%</h1>
+    <p id="celMessage" style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px; line-height: 1.5;">Excellent work. Keep the momentum going.</p>
+    
+    <div id="celStats" style="display:flex; justify-content: space-around; background: rgba(0,0,0,0.1); padding: 16px; border-radius: var(--radius-md); margin-bottom: 32px; border: 1px solid rgba(150,150,150,0.1);">
       <div>
-        <div class="pt-setting-title">Daily Study</div>
-        <div id="ptDailyGoalText" class="pt-setting-desc">Not set</div>
+        <div style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; letter-spacing: 1px;">Targets</div>
+        <div style="font-size:22px; font-weight:700;" id="celTargets">5 / 5</div>
       </div>
-      <button class="pt-small-btn" onclick="PT.editGoals()">Edit</button>
-    </div>
-    <div class="pt-setting-row">
       <div>
-        <div class="pt-setting-title">Weekly Targets</div>
-        <div id="ptWeeklyGoalText" class="pt-setting-desc">Not set</div>
+        <div style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; letter-spacing: 1px;">Streak</div>
+        <div style="font-size:22px; font-weight:700; color:var(--warning);"><i class="fa-solid fa-fire" style="font-size: 18px;"></i> <span id="celStreak">12</span></div>
       </div>
     </div>
-    <div class="pt-setting-row">
-      <div>
-        <div class="pt-setting-title">Target Score</div>
-        <div id="ptScoreGoalText" class="pt-setting-desc">Not set</div>
+    <button class="btn-glow" onclick="App.closeCelebration()">Continue <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<div class="app-container">
+  
+  <div class="screens-wrapper">
+    <!-- Setup 1: Name -->
+    <section id="scr-name" class="screen" style="justify-content: center; align-items: center; text-align: center;">
+      <div class="icon-hero"><i class="fa-solid fa-user-astronaut"></i></div>
+      <h1 class="text-gradient">Identify Yourself</h1>
+      <p class="subtitle">Welcome to Elite PrepTrack. Initialize your operational alias.</p>
+      <div class="input-group" style="width: 100%;">
+        <label class="input-label">Alias</label>
+        <input type="text" id="inName" class="input" placeholder="e.g. Alex" autocomplete="off">
       </div>
-    </div>
-  </div>
+      <button class="btn-glow" onclick="App.nextSetupExams()">Initialize <i class="fa-solid fa-arrow-right"></i></button>
+    </section>
 
-  <div class="pt-section-title">Settings ⚙️</div>
-  <div class="pt-card">
-    <div class="pt-setting-row">
-      <div>
-        <div class="pt-setting-title">Notifications</div>
-        <div class="pt-setting-desc">Study reminders</div>
+    <!-- Setup 2: Exams -->
+    <section id="scr-exams" class="screen">
+      <div class="icon-hero"><i class="fa-solid fa-crosshairs"></i></div>
+      <h1 class="text-gradient">Set Targets</h1>
+      <p class="subtitle">Select your primary operational domains.</p>
+      <div class="exam-grid-premium" id="examGrid"></div>
+      <button class="btn-glow" onclick="App.nextSetupDate()">Proceed <i class="fa-solid fa-arrow-right"></i></button>
+    </section>
+
+    <!-- Setup 3: Exam Date -->
+    <section id="scr-date" class="screen" style="justify-content: center; align-items: center; text-align: center;">
+      <div class="icon-hero"><i class="fa-solid fa-calendar-check"></i></div>
+      <h1 class="text-gradient">The Deadline</h1>
+      <p class="subtitle">When is your primary examination? We will track the days remaining.</p>
+      <div class="input-group" style="width: 100%;">
+        <label class="input-label">Exam Date</label>
+        <input type="date" id="inDate" class="input">
       </div>
-      <button id="ptNotificationToggle" class="pt-toggle" onclick="PT.toggleSetting('notifications')"></button>
-    </div>
-    <div class="pt-setting-row">
-      <div>
-        <div class="pt-setting-title">Dark Mode</div>
-        <div class="pt-setting-desc">Change appearance</div>
+      <button class="btn-glow" onclick="App.finishSetup()">Finalize Protocol <i class="fa-solid fa-check"></i></button>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="scr-dash" class="screen">
+      <div class="top-nav">
+        <div>
+          <div class="greeting" id="dashGreet">Good Morning, Operator</div>
+          <div class="user-subtitle-display" id="dashSub">Ready for today's mission?</div>
+        </div>
+        <div class="profile-avatar" id="dashAvatar" onclick="App.switchScr('scr-prof', document.querySelector('[data-tab=\'scr-prof\']'))">O</div>
       </div>
-      <button id="ptDarkToggle" class="pt-toggle" onclick="PT.toggleSetting('dark')"></button>
-    </div>
-  </div>
 
-  <div class="pt-section-title">Data 💾</div>
-  <div class="pt-card">
-    <button class="pt-small-btn" style="width:100%;margin-bottom:8px;" onclick="PT.exportData()">Export Progress</button>
-    <button class="pt-small-btn" style="width:100%;" onclick="PT.resetData()">Reset PrepTracks Data</button>
-  </div>
-</section>
-
-<section id="ptClubScreen" class="pt-club-screen">
-  <div class="pt-club-head">
-    <div>
-      <div class="pt-club-title">My Club 👥</div>
-      <div class="pt-club-subtitle">Study together. Grow together.</div>
-    </div>
-    <button class="pt-club-settings" onclick="PTClub.openClubSettings()">⚙️</button>
-  </div>
-
-  <div class="pt-club-card">
-    <div id="ptClubName" class="pt-club-name">My Study Club</div>
-    <div id="ptClubCount" class="pt-club-count">1 / 6 members</div>
-
-    <!-- CIRCLE -->
-    <div id="ptClubCircle" class="pt-club-circle">
-      <!-- YOU -->
-      <div class="pt-club-center">
-        <div id="ptClubMyAvatar" class="pt-club-center-avatar">👤</div>
-        <div id="ptClubMyName" class="pt-club-center-name">You</div>
+      <!-- Smart Score Card -->
+      <div class="score-card" id="dashScoreCard" onclick="Dialog.alert('Score is calculated based on today\'s completed targets versus total assigned targets. Consistency builds momentum.', '<i class=\'fa-solid fa-chart-line\'></i>')">
+        <div class="sc-left">
+          <h3>Daily Score</h3>
+          <p id="scDesc">Complete tasks to increase score.</p>
+        </div>
+        <div class="sc-right">
+          <div class="sc-val" id="scVal">--</div>
+          <div class="sc-lbl">OUT OF 100</div>
+        </div>
       </div>
-    </div>
 
-    <!-- ACTIONS -->
-    <div class="pt-club-actions">
-      <button class="pt-club-btn primary" onclick="PTClub.openInvite()">➕ Add Member</button>
-      <button class="pt-club-btn" onclick="PTClub.copyInvite()">🔗 Invite Link</button>
-    </div>
+      <div class="dash-grid">
+        <!-- Prominent Days Left Card -->
+        <div class="hero-countdown">
+          <div class="hc-info">
+            <div class="hc-domain" id="dashExamNames">Domains</div>
+            <div class="hc-date" id="dashExamDateStr">Select Date</div>
+          </div>
+          <div class="hc-stats">
+            <h2 id="dashDaysLeft">--</h2>
+            <span id="dashDaysLabel">DAYS LEFT</span>
+          </div>
+        </div>
+
+        <!-- Progress Mini Card -->
+        <div class="mini-stat-card">
+          <div class="progress-circle-wrap">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" id="dashRing" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <text x="18" y="21.5" class="percentage" id="dashPct" transform="rotate(-90 18 18)">0%</text>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <h3>Today</h3>
+            <p><b id="dashComp">0</b> / <span id="dashTot">0</span> Done</p>
+          </div>
+        </div>
+
+        <!-- Streak Mini Card -->
+        <div class="mini-stat-card">
+          <div class="progress-circle-wrap" style="display:flex; justify-content:center; align-items:center; background: rgba(245, 87, 108, 0.1); border-radius: 50%;">
+            <i class="fa-solid fa-fire" style="font-size: 24px; color: var(--accent-4);"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Streak</h3>
+            <p><b id="dashStreak">0</b> Days</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auto Daily Quote Card -->
+      <div class="daily-quote-card">
+        <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+        <div>
+          <div class="quote-text" id="dashQuoteText">"Loading protocol..."</div>
+          <div class="quote-author" id="dashQuoteAuthor">- System</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>Today's Directives</h2>
+        <button class="btn-icon-square" onclick="App.addForDate(true)"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div id="dashList" class="target-list skeleton-container">
+        <div class="target-row skeleton"><div class="chk-elite"></div><div class="t-info"><div class="t-title">Loading...</div></div></div>
+      </div>
+    </section>
+
+    <!-- Calendar Timeline -->
+    <section id="scr-time" class="screen">
+      <h1 class="text-gradient">Timeline</h1>
+      <p class="subtitle">Review past performance and schedule operations.</p>
+      
+      <div class="glass-card" style="padding: 24px; margin-bottom: 32px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <button class="btn-icon-square" style="width:36px; height:36px; border-radius:10px;" onclick="App.calShift(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <div id="calTitle" style="font-family: var(--font-display); font-size: 18px; font-weight: 700;">Month Year</div>
+          <button class="btn-icon-square" style="width:36px; height:36px; border-radius:10px;" onclick="App.calShift(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        
+        <div class="cal-grid" style="margin-bottom:12px;">
+          <div class="cal-day-name">S</div><div class="cal-day-name">M</div><div class="cal-day-name">T</div>
+          <div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div>
+        </div>
+        <div class="cal-grid" id="calDaysGrid"></div>
+      </div>
+
+      <div class="section-header">
+        <h2 id="calSelDateText">Selected Date</h2>
+        <button class="btn-icon-square" onclick="App.addForDate(false)"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div id="calList" class="target-list"></div>
+    </section>
+
+    <!-- Strategies (Plans) -->
+    <section id="scr-strat" class="screen">
+      <h1 class="text-gradient">Strategies</h1>
+      <p class="subtitle">Macro planning for optimal results.</p>
+      <button class="btn-glow" style="margin-bottom: 24px;" onclick="App.openSheet('sheet-plan')"><i class="fa-solid fa-chess-knight"></i> New Strategy</button>
+      <div id="planList" class="target-list"></div>
+    </section>
+
+    <!-- Syndicate (Club) -->
+    <section id="scr-club" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+        <div>
+          <h1 class="text-gradient" style="margin:0;">Syndicate</h1>
+          <p class="subtitle" style="margin:0;">Multiplayer Progression</p>
+        </div>
+        <button class="btn-icon-square" onclick="Dialog.alert('Editing squad details is disabled during development.', '<i class=\'fa-solid fa-lock\'></i>')"><i class="fa-solid fa-pen"></i></button>
+      </div>
+      
+      <!-- Coming Soon Notice -->
+      <div class="club-notice">
+        <div class="cn-icon"><i class="fa-solid fa-person-digging"></i></div>
+        <div class="cn-text">
+          <h4>Under Construction <span class="cn-badge">SOON</span></h4>
+          <p>We're currently forging the Club & Members experience. Squad tracking and multiplayer features will be deployed in a future update.</p>
+        </div>
+      </div>
+
+      <h2 id="clubName" style="text-align:center; margin-top:16px; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; font-size:16px;">Offline Squad</h2>
+
+      <div class="orbit-stage">
+        <div class="orbit-ring" id="orbitRing"></div>
+        <div class="orbit-center">
+          <i class="fa-solid fa-user-astronaut" style="font-size:26px; margin-bottom:4px;"></i>
+          <span style="font-size:9px; font-weight:800; text-transform:uppercase;">You</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:16px; margin-top:16px;">
+        <button class="btn-glow btn-secondary" style="flex:2; opacity: 0.5; cursor: not-allowed;" onclick="Dialog.alert('Recruitment is offline while under development.', '<i class=\'fa-solid fa-lock\'></i>')"><i class="fa-solid fa-user-plus"></i> Recruit</button>
+        <button class="btn-glow btn-secondary" style="flex:1; opacity: 0.5; cursor: not-allowed;" onclick="Dialog.alert('Link generation disabled.', '<i class=\'fa-solid fa-link-slash\'></i>')"><i class="fa-solid fa-link"></i></button>
+      </div>
+    </section>
+
+    <!-- Profile & Analytics -->
+    <section id="scr-prof" class="screen">
+      
+      <!-- Exportable Personal Prep Card -->
+      <div id="prep-card-export" class="prep-card-wrap">
+        <div class="pc-bg-glow"></div>
+        <div class="pc-header">
+          <div class="pc-brand"><i class="fa-solid fa-infinity"></i> PREPTRACK</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-avatar" id="pcAvatar">O</div>
+          <h2 class="pc-name" id="pcName">Operator</h2>
+          <div class="pc-exam" id="pcExam">Domains</div>
+          <div class="pc-exam-date" id="pcDate">Exam Date</div>
+          
+          <div class="pc-big-stat">
+            <h3 id="pcDaysLeft">--</h3>
+            <span id="pcDaysLabel">DAYS LEFT</span>
+          </div>
+          
+          <div class="pc-bottom-stats">
+            <div class="pc-stat"><i class="fa-solid fa-fire" style="color:var(--accent-4); font-size:14px;"></i> <span id="pcStreak">0 DAY STREAK</span></div>
+            <div class="pc-stat"><i class="fa-solid fa-chart-pie" style="color:var(--accent-1); font-size:14px;"></i> <span id="pcProgress">0% PREPARED</span></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Prep Card Actions -->
+      <div class="pc-actions">
+        <button class="btn-glow btn-secondary" style="flex:1; font-size: 14px;" onclick="App.shareCard()"><i class="fa-solid fa-share-nodes"></i> Share</button>
+        <button class="btn-glow" style="flex:2; font-size: 14px;" onclick="App.saveCard()"><i class="fa-solid fa-download"></i> Save Card</button>
+      </div>
+
+      <div class="section-header">
+        <h2>Premium Analytics</h2>
+      </div>
+      
+      <div class="glass-card" style="margin-bottom: 24px; padding: 24px 20px;">
+        <div style="display:flex; justify-content:space-between; text-align:center;">
+          <div><div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px;">Completion</div><div style="font-size:24px; font-weight:700; color:var(--accent-1);"><span id="statComp">0</span>%</div></div>
+          <div><div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px;">Total Tasks</div><div style="font-size:24px; font-weight:700;"><span id="statTot">0</span></div></div>
+          <div><div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px;">Best Streak</div><div style="font-size:24px; font-weight:700; color:var(--warning);"><i class="fa-solid fa-fire"></i> <span id="statBestStrk">0</span></div></div>
+        </div>
+        
+        <div style="margin-top: 32px;">
+          <h3 style="font-size:14px; font-weight:700; margin-bottom: 8px;">Weekly Effort</h3>
+          <div class="chart-container" id="weeklyChart">
+            <!-- Bars injected via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>Settings</h2>
+      </div>
+
+      <div class="glass-card" style="padding:0 20px;">
+        <div class="settings-row" onclick="App.openSheet('sheet-edit-profile')">
+          <div><div style="font-weight:700; font-size:15px;">Edit Profile & Avatar</div><div style="font-size:12px; color:var(--text-muted);">Change alias, exams & look</div></div>
+          <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+        </div>
+        <div class="settings-row" onclick="App.openSheet('sheet-edit-exam')">
+          <div><div style="font-weight:700; font-size:15px;">Exam Settings</div><div style="font-size:12px; color:var(--text-muted);">Update target deadline</div></div>
+          <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+        </div>
+        <div class="settings-row" onclick="App.openSheet('sheet-appearance')">
+          <div><div style="font-weight:700; font-size:15px;">Appearance</div><div style="font-size:12px; color:var(--text-muted);">Theme & Accent Color</div></div>
+          <i class="fa-solid fa-palette" style="color:var(--text-muted);"></i>
+        </div>
+        
+        <div class="settings-row" onclick="App.openSheet('sheet-about')">
+          <div><div style="font-weight:700; font-size:15px;">About PrepTrack</div><div style="font-size:12px; color:var(--text-muted);">Learn what PrepTrack is & can do</div></div>
+          <i class="fa-solid fa-circle-info" style="color:var(--text-muted);"></i>
+        </div>
+        <div class="settings-row" onclick="App.openSheet('sheet-how-to')">
+          <div><div style="font-weight:700; font-size:15px;">How to Use</div><div style="font-size:12px; color:var(--text-muted);">Learn how to get started</div></div>
+          <i class="fa-solid fa-book-open" style="color:var(--text-muted);"></i>
+        </div>
+
+        <div class="settings-row" onclick="App.resetData()">
+          <div><div style="font-weight:700; font-size:15px; color:var(--danger);">System Reset</div><div style="font-size:12px; color:var(--text-muted);">Erase all local data</div></div>
+          <button class="btn-icon-square" style="width:32px; height:32px; background:rgba(255,23,68,0.1); color:var(--danger); border-color:var(--danger);"><i class="fa-solid fa-triangle-exclamation" style="font-size: 12px;"></i></button>
+        </div>
+      </div>
+      
+      <div class="dev-credit">Crafted with <span>🤍</span> by Ayush</div>
+    </section>
   </div>
 
-  <!-- MEMBER LIST -->
-  <div class="pt-members-title">Club Members 👥</div>
-  <div id="ptClubMemberList"></div>
-</section>
+  <nav class="floating-nav" id="botNav" style="display:none;">
+    <div class="nav-indicator" id="navInd"></div>
+    <button class="nav-btn active" data-tab="scr-dash" onclick="App.switchScr('scr-dash', this)"><i class="fa-solid fa-house"></i></button>
+    <button class="nav-btn" data-tab="scr-time" onclick="App.switchScr('scr-time', this)"><i class="fa-solid fa-calendar-days"></i></button>
+    <button class="nav-btn" data-tab="scr-strat" onclick="App.switchScr('scr-strat', this)"><i class="fa-solid fa-chess-knight"></i></button>
+    <button class="nav-btn" data-tab="scr-club" onclick="App.switchScr('scr-club', this)"><i class="fa-solid fa-users-rays"></i></button>
+    <button class="nav-btn" data-tab="scr-prof" onclick="App.switchScr('scr-prof', this)"><i class="fa-solid fa-chart-simple"></i></button>
+  </nav>
 
-
-<!-- ADD TARGET MODAL -->
-<div id="targetModal" class="modal hidden">
-<div class="modal-box">
-<div class="modal-head">
-<div class="modal-title">Add Target 🎯</div>
-<button class="close" onclick="closeTargetModal()">×</button>
-</div>
-<label class="label">Exam / Plan</label>
-<select id="targetExam" class="select"></select>
-<label class="label">Subject</label>
-<select id="targetSubject" class="select">
-<option value="">Select subject</option>
-</select>
-<label class="label">Chapter / Topic</label>
-<input id="targetChapter" class="input" placeholder="e.g. Human Physiology">
-<label class="label">Task Type</label>
-<select id="targetType" class="select">
-<option>📖 Lecture</option>
-<option>🔁 Revision</option>
-<option>📝 Practice</option>
-<option>❓ PYQs</option>
-<option>🧪 Mock Test</option>
-<option>📚 Reading</option>
-<option>✍️ Notes</option>
-<option>🧠 Flashcards</option>
-<option>🎯 Custom</option>
-</select>
-<label class="label">Target Title</label>
-<input id="targetTitle" class="input" placeholder="e.g. Revise Digestion chapter">
-<label class="label">Date</label>
-<input id="targetDate" class="input" type="date">
-<label class="label">Estimated Study Time</label>
-<select id="targetTime" class="select">
-<option>15 minutes</option>
-<option>30 minutes</option>
-<option>45 minutes</option>
-<option>1 hour</option>
-<option>1.5 hours</option>
-<option>2 hours</option>
-<option>3 hours</option>
-</select>
-<label class="label">Notes (optional)</label>
-<textarea id="targetNotes" class="textarea" placeholder="Anything you want to remember..."></textarea>
-<button class="primary" onclick="saveTarget()">Save Target ✓</button>
-</div>
 </div>
 
-<!-- CREATE PLAN MODAL -->
-<div id="ptPlanModal" class="pt-modal hidden">
-  <div class="pt-modal-box">
-    <div class="pt-modal-head">
-      <div class="pt-modal-title">Create Plan 🎯</div>
-      <button class="pt-close" onclick="PT.closePlanModal()">×</button>
+<!-- Modals / Bottom Sheets -->
+<div class="sheet-wrap" id="sheet-add">
+  <div class="sheet-content" id="sheet-add-c">
+    <div class="sheet-drag"></div>
+    <h2 style="margin-bottom:24px;">New Directive</h2>
+    <div class="input-group">
+      <label class="input-label">Domain</label>
+      <select id="tEx" class="select" onchange="App.updSub()"></select>
     </div>
-    <label class="pt-label">Plan Name</label>
-    <input id="ptPlanName" class="pt-input" placeholder="e.g. SSC CHSL Preparation">
-    <label class="pt-label">Exam</label>
-    <select id="ptPlanExam" class="pt-input"></select>
-    <label class="pt-label">Start Date</label>
-    <input id="ptPlanStart" class="pt-input" type="date">
-    <label class="pt-label">Exam / End Date</label>
-    <input id="ptPlanEnd" class="pt-input" type="date">
-    <label class="pt-label">Daily Study Hours</label>
-    <select id="ptPlanHours" class="pt-input">
-      <option value="1">1 hour</option>
-      <option value="2">2 hours</option>
-      <option value="3">3 hours</option>
-      <option value="4">4 hours</option>
-      <option value="5" selected>5 hours</option>
-      <option value="6">6 hours</option>
-      <option value="8">8 hours</option>
-      <option value="10">10 hours</option>
-    </select>
-    <label class="pt-label">Priority</label>
-    <select id="ptPlanPriority" class="pt-input">
-      <option>Low</option>
-      <option selected>Medium</option>
-      <option>High</option>
-    </select>
-    <label class="pt-label">Target Score</label>
-    <input id="ptPlanScore" class="pt-input" placeholder="e.g. 140/160">
-    <label class="pt-label">Notes</label>
-    <textarea id="ptPlanNotes" class="pt-input" style="min-height:90px;" placeholder="Your plan notes..."></textarea>
-    <button class="pt-save" onclick="PT.savePlan()">Save Plan ✓</button>
+    <div class="input-group">
+      <label class="input-label">Module</label>
+      <select id="tSub" class="select"></select>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Type</label>
+      <select id="tTyp" class="select"><option>Learn</option><option>Revise</option><option>Practice</option><option>Mock Test</option></select>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Name</label>
+      <input type="text" id="tTit" class="input" placeholder="e.g. Quantum Mechanics">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Execution Date</label>
+      <input type="date" id="tDat" class="input">
+    </div>
+    <div style="display:flex; gap:12px; margin-top:24px;">
+      <button class="btn-glow btn-secondary" style="flex:1; padding: 14px;" onclick="App.closeSheet('sheet-add')">Abort</button>
+      <button class="btn-glow" style="flex:2; padding: 14px;" onclick="App.saveT()">Deploy</button>
+    </div>
   </div>
 </div>
 
-<!-- INVITE MODAL -->
-<div id="ptClubInviteModal" class="pt-club-modal hidden">
-  <div class="pt-club-modal-box">
-    <div class="pt-club-modal-head">
-      <div class="pt-club-modal-title">Add Member 👥</div>
-      <button class="pt-club-close" onclick="PTClub.closeInvite()">×</button>
+<div class="sheet-wrap" id="sheet-plan">
+  <div class="sheet-content" id="sheet-plan-c">
+    <div class="sheet-drag"></div>
+    <h2 style="margin-bottom:24px;">New Strategy</h2>
+    <div class="input-group"><label class="input-label">Codename</label><input type="text" id="pNam" class="input" placeholder="e.g. Operation 90 Days"></div>
+    <div class="input-group"><label class="input-label">Domain</label><select id="pEx" class="select"></select></div>
+    <div style="display:flex; gap:12px;">
+      <div class="input-group" style="flex:1;"><label class="input-label">Start</label><input type="date" id="pSt" class="input"></div>
+      <div class="input-group" style="flex:1;"><label class="input-label">End</label><input type="date" id="pEn" class="input"></div>
     </div>
-    <div class="pt-club-note">
-      Share your club invite link with your friend.
-      Maximum 6 members can be in one club.
+    <div style="display:flex; gap:12px; margin-top:16px;">
+      <button class="btn-glow btn-secondary" style="flex:1; padding: 14px;" onclick="App.closeSheet('sheet-plan')">Abort</button>
+      <button class="btn-glow" style="flex:2; padding: 14px;" onclick="App.saveP()">Compile</button>
     </div>
-    <input id="ptClubInviteLink" class="pt-club-input" readonly placeholder="Invite link">
-    <button class="pt-club-modal-btn" onclick="PTClub.copyInvite()">📋 Copy Invite Link</button>
   </div>
 </div>
 
-<!-- CLUB SETTINGS MODAL -->
-<div id="ptClubSettingsModal" class="pt-club-modal hidden">
-  <div class="pt-club-modal-box">
-    <div class="pt-club-modal-head">
-      <div class="pt-club-modal-title">Club Settings ⚙️</div>
-      <button class="pt-club-close" onclick="PTClub.closeClubSettings()">×</button>
+<div class="sheet-wrap" id="sheet-edit-exam">
+  <div class="sheet-content" id="sheet-edit-exam-c">
+    <div class="sheet-drag"></div>
+    <h2 style="margin-bottom:24px;">Update Deadline</h2>
+    <div class="input-group">
+      <label class="input-label">Exam Date</label>
+      <input type="date" id="editDateInput" class="input">
     </div>
-    <input id="ptClubNewName" class="pt-club-input" placeholder="Club name">
-    <button class="pt-club-modal-btn" onclick="PTClub.saveClubName()">Save Club Name</button>
+    <div style="display:flex; gap:12px; margin-top:16px;">
+      <button class="btn-glow btn-secondary" style="flex:1; padding: 14px;" onclick="App.closeSheet('sheet-edit-exam')">Cancel</button>
+      <button class="btn-glow" style="flex:2; padding: 14px;" onclick="App.saveEditedDate()">Save Changes</button>
+    </div>
   </div>
 </div>
 
-<nav id="bottomNav" class="bottom-nav hidden">
-<button class="nav-btn active" id="navHome">
-<span class="nav-icon">🏠</span>Home
-</button>
-<button class="nav-btn" id="navCalendar">
-<span class="nav-icon">📅</span>Calendar
-</button>
-<button class="nav-btn" id="navPlans">
-<span class="nav-icon">🎯</span>Plans
-</button>
-<button class="nav-btn" id="navFriends">
-<span class="nav-icon">👥</span>Friends
-</button>
-<button class="nav-btn" id="navProfile">
-<span class="nav-icon">👤</span>Profile
-</button>
-</nav>
+<div class="sheet-wrap" id="sheet-edit-profile">
+  <div class="sheet-content" id="sheet-edit-profile-c">
+    <div class="sheet-drag"></div>
+    <h2 style="margin-bottom:24px;">Edit Profile</h2>
+    
+    <p class="input-label" style="margin-bottom: 8px;">Avatar Style</p>
+    <div class="avatar-picker-wrap" id="avatarPicker">
+      <div class="a-opt" style="background: linear-gradient(135deg, var(--accent-3), var(--accent-4));" data-bg="linear-gradient(135deg, var(--accent-3), var(--accent-4))"></div>
+      <div class="a-opt" style="background: linear-gradient(135deg, #00f2fe, #4facfe);" data-bg="linear-gradient(135deg, #00f2fe, #4facfe)"></div>
+      <div class="a-opt" style="background: linear-gradient(135deg, #43e97b, #38f9d7);" data-bg="linear-gradient(135deg, #43e97b, #38f9d7)"></div>
+      <div class="a-opt" style="background: linear-gradient(135deg, #fa709a, #fee140);" data-bg="linear-gradient(135deg, #fa709a, #fee140)"></div>
+      <div class="a-opt" style="background: #1e1e24;" data-bg="#1e1e24"></div>
+      <div class="a-opt" style="background: url('https://api.dicebear.com/7.x/bottts/svg?seed=Prep&backgroundColor=transparent') center/cover; background-color: var(--accent-1);" data-bg="url('https://api.dicebear.com/7.x/bottts/svg?seed=Prep&backgroundColor=transparent') center/cover, var(--accent-1)"></div>
+      <div class="a-opt" style="background: url('https://api.dicebear.com/7.x/fun-emoji/svg?seed=Track') center/cover; background-color: var(--accent-3);" data-bg="url('https://api.dicebear.com/7.x/fun-emoji/svg?seed=Track') center/cover, var(--accent-3)"></div>
+    </div>
 
+    <div class="input-group">
+      <label class="input-label">Alias</label>
+      <input type="text" id="editNameInput" class="input">
+    </div>
+    <p class="input-label" style="margin-bottom: 12px;">Active Domains</p>
+    <div class="exam-grid-premium" id="editExamGrid" style="margin-bottom: 24px;"></div>
+    <div style="display:flex; gap:12px;">
+      <button class="btn-glow btn-secondary" style="flex:1; padding: 14px;" onclick="App.closeSheet('sheet-edit-profile')">Cancel</button>
+      <button class="btn-glow" style="flex:2; padding: 14px;" onclick="App.saveEditedProfile()">Save Profile</button>
+    </div>
+  </div>
 </div>
+
+<div class="sheet-wrap" id="sheet-appearance">
+  <div class="sheet-content" id="sheet-appearance-c">
+    <div class="sheet-drag"></div>
+    <h2 style="margin-bottom:24px;">Appearance</h2>
+    
+    <div class="settings-row" onclick="App.toggleTheme()" style="padding: 12px 0;">
+      <div><div style="font-weight:700; font-size:15px;">Light Mode</div><div style="font-size:12px; color:var(--text-muted);">Toggle interface theme</div></div>
+      <div class="toggle-switch" id="themeToggle"></div>
+    </div>
+
+    <p class="input-label" style="margin: 24px 0 12px;">Accent Color</p>
+    <div class="color-picker-wrap" id="colorPicker">
+      <div class="c-dot" style="background: #00f2fe;" data-p="#00f2fe" data-s="#4facfe"></div>
+      <div class="c-dot" style="background: #0077ff;" data-p="#0077ff" data-s="#0044cc"></div>
+      <div class="c-dot" style="background: #a855f7;" data-p="#a855f7" data-s="#7e22ce"></div>
+      <div class="c-dot" style="background: #10b981;" data-p="#10b981" data-s="#059669"></div>
+      <div class="c-dot" style="background: #f59e0b;" data-p="#f59e0b" data-s="#d97706"></div>
+      <div class="c-dot" style="background: #f43f5e;" data-p="#f43f5e" data-s="#e11d48"></div>
+    </div>
+    
+    <button class="btn-glow" style="margin-top: 32px; padding: 14px;" onclick="App.closeSheet('sheet-appearance')">Done</button>
+  </div>
+</div>
+
+<!-- About PrepTrack Sheet -->
+<div class="sheet-wrap" id="sheet-about">
+  <div class="sheet-content" id="sheet-about-c">
+    <div class="sheet-drag"></div>
+    <div style="text-align:center; margin-bottom: 24px;">
+      <i class="fa-solid fa-infinity" style="font-size: 42px; background: linear-gradient(135deg, var(--accent-3), var(--accent-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px;"></i>
+      <h2 style="margin-bottom: 4px;">PrepTrack</h2>
+      <p style="font-size:12px; color:var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Version 1.5 • Made for focused preparation</p>
+    </div>
+    <p style="font-size:14px; line-height:1.6; color:var(--text-muted); margin-bottom:24px; text-align:center;">
+      PrepTrack is a personal exam-preparation and study-management app designed to help students organize their preparation, track daily progress, manage study plans, monitor their exam countdown, and stay consistent.
+    </p>
+    <h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: var(--text-main);">Core Capabilities</h3>
+    <ul style="list-style:none; padding:0; display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-calendar-check" style="color:var(--accent-1); width:16px;"></i> Exam Date</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-hourglass-half" style="color:var(--accent-2); width:16px;"></i> Countdown</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-bullseye" style="color:var(--accent-3); width:16px;"></i> Daily Targets</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-chess-knight" style="color:var(--accent-4); width:16px;"></i> Study Plans</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-calendar-days" style="color:var(--success); width:16px;"></i> Calendar</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-chart-line" style="color:var(--warning); width:16px;"></i> Progress</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-fire" style="color:var(--danger); width:16px;"></i> Streaks</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-stopwatch" style="color:var(--accent-1); width:16px;"></i> Focus Timer</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-id-card" style="color:var(--accent-2); width:16px;"></i> Prep Card</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-chart-pie" style="color:var(--accent-3); width:16px;"></i> Analytics</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-palette" style="color:var(--text-main); width:16px;"></i> Custom Theme</li>
+      <li style="display:flex; align-items:center; gap:8px; font-size:13px;"><i class="fa-solid fa-hard-drive" style="color:var(--text-muted); width:16px;"></i> Data Mgmt</li>
+    </ul>
+    <button class="btn-glow btn-secondary" style="margin-top: 32px; padding: 14px;" onclick="App.closeSheet('sheet-about')">Close</button>
+  </div>
+</div>
+
+<!-- How to Use Sheet -->
+<div class="sheet-wrap" id="sheet-how-to">
+  <div class="sheet-content" id="sheet-how-to-c">
+    <div class="sheet-drag"></div>
+    <h2 style="margin-bottom:8px; text-align:center;">How to Use</h2>
+    <p style="text-align:center; color:var(--text-muted); font-size:14px; margin-bottom:24px;">Your quick start guide to Elite PrepTrack.</p>
+    
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      
+      <div class="how-to-card">
+        <div class="ht-icon">1</div>
+        <div class="ht-text">
+          <h4>Get Started</h4>
+          <p>Enter your operational alias, select your target domains (exams), and set your exam date to initialize your workspace.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">2</div>
+        <div class="ht-text">
+          <h4>Exam Countdown</h4>
+          <p>The dashboard automatically calculates and prominently displays the exact days remaining until your target exam date.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">3</div>
+        <div class="ht-text">
+          <h4>Dashboard & Focus</h4>
+          <p>Your command center. View daily progress, study streak, and daily motivation. Start a focus session by swiping left on a target and pressing Play.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">4</div>
+        <div class="ht-text">
+          <h4>Daily Targets</h4>
+          <p>Add new study modules. Tap the checkbox to complete them. Swipe left on a row to reveal Focus Timer and Delete actions.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">5</div>
+        <div class="ht-text">
+          <h4>Study Plans</h4>
+          <p>Create macro strategies with specific start and end dates to successfully map out your long-term execution.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">6</div>
+        <div class="ht-text">
+          <h4>Calendar</h4>
+          <p>Navigate the timeline to review past performance, check historical streaks, and schedule future study operations directly on specific dates.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">7</div>
+        <div class="ht-text">
+          <h4>Progress & Analytics</h4>
+          <p>Monitor lifetime completion percentages, view daily/weekly streaks, and visualize your recent efforts with premium charts in the Profile section.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">8</div>
+        <div class="ht-text">
+          <h4>Club & Members</h4>
+          <p>The multiplayer Syndicate area is currently under construction, but will allow squad progression in the future.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">9</div>
+        <div class="ht-text">
+          <h4>Personal Prep Card</h4>
+          <p>View, seamlessly download, or share a beautiful, personalized summary card of your current prep status directly from your Profile.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">10</div>
+        <div class="ht-text">
+          <h4>Settings & Appearance</h4>
+          <p>Edit your profile alias, active exams, or deadline. Customize your app with Dark Mode and dynamic accent colors in Appearance.</p>
+        </div>
+      </div>
+
+      <div class="how-to-card">
+        <div class="ht-icon">11</div>
+        <div class="ht-text">
+          <h4>Data & Backup</h4>
+          <p>Your data is securely saved locally on your device. Use the System Reset option to completely erase local data if a fresh start is needed.</p>
+        </div>
+      </div>
+
+    </div>
+    <button class="btn-glow btn-secondary" style="margin-top: 32px; padding: 14px;" onclick="App.closeSheet('sheet-how-to')">Got it</button>
+  </div>
+</div>
+
 <script>
-// ==================== DASHBOARD LOGIC ====================
-const exams = [
-{name:"NEET",icon:"🧬",desc:"Medical entrance"},
-{name:"JEE",icon:"⚙️",desc:"Engineering entrance"},
-{name:"SSC",icon:"🏛️",desc:"SSC examinations"},
-{name:"UPSC",icon:"🇮🇳",desc:"Civil services"},
-{name:"Banking",icon:"🏦",desc:"Banking exams"},
-{name:"Railway",icon:"🚆",desc:"Railway exams"},
-{name:"Defence",icon:"🪖",desc:"Defence exams"},
-{name:"CUET",icon:"🎓",desc:"University entrance"},
-{name:"CAT",icon:"📊",desc:"Management entrance"},
-{name:"GATE",icon:"💻",desc:"Engineering exam"},
-{name:"State Exams",icon:"🏢",desc:"Government exams"},
-{name:"School / Board",icon:"📚",desc:"School preparation"}
-];
-
-const subjects={
-NEET:["Physics","Chemistry","Biology"],
-JEE:["Physics","Chemistry","Mathematics"],
-SSC:["Maths","Reasoning","English","General Awareness"],
-UPSC:["History","Geography","Polity","Economy","Environment","Current Affairs"],
-Banking:["Quantitative Aptitude","Reasoning","English","General Awareness","Banking Awareness"],
-Railway:["Mathematics","Reasoning","General Science","General Awareness"],
-Defence:["Mathematics","Reasoning","English","General Knowledge","Science"],
-CUET:["Language","General Test","Domain Subjects"],
-CAT:["Quantitative Aptitude","VARC","DILR"],
-GATE:["Engineering Mathematics","Core Subject","General Aptitude"],
-"State Exams":["General Knowledge","Reasoning","Maths","Language"],
-"School / Board":["Mathematics","Science","English","Social Science"]
+// --- HAPTIC FEEDBACK WRAPPER ---
+const Haptic = {
+  vibrate: (pattern) => { if (navigator.vibrate) { try { navigator.vibrate(pattern); } catch(e){} } },
+  tap: () => Haptic.vibrate(10),
+  success: () => Haptic.vibrate([10, 30, 20]),
+  error: () => Haptic.vibrate([20, 40, 20, 40, 30])
 };
 
-let selectedExams=[];
-let targets = [];
+const Dialog = {
+  el: document.getElementById('uDialog'), t: document.getElementById('dTitle'), m: document.getElementById('dMessage'),
+  i: document.getElementById('dIcon'), w: document.getElementById('dInputWrap'), in: document.getElementById('dInput'),
+  bc: document.getElementById('dCancel'), bk: document.getElementById('dConfirm'), cb: null,
+  show: function(tit, msg, ico, prmpt, fn) {
+    this.t.textContent=tit; this.m.textContent=msg; this.i.innerHTML=ico; this.cb=fn;
+    if(prmpt || fn) this.bc.style.display='block'; else this.bc.style.display='none';
+    if(prmpt) { this.w.style.display='block'; this.in.value=''; } else this.w.style.display='none';
+    this.el.classList.add('show');
+    Haptic.tap();
+  },
+  close: function() { this.el.classList.remove('show'); },
+  alert: function(m, i) { this.show('Alert', m, i||'<i class="fa-solid fa-bell"></i>'); },
+  confirm: function(m, fn) { this.show('Confirm', m, '<i class="fa-solid fa-shield"></i>', false, fn); },
+  prompt: function(m, fn) { this.show('Input', m, '<i class="fa-solid fa-keyboard"></i>', true, fn); }
+};
+document.getElementById('dCancel').onclick = () => { Haptic.tap(); Dialog.close(); };
+document.getElementById('dConfirm').onclick = () => { 
+  Haptic.tap();
+  if(Dialog.cb) { Dialog.w.style.display==='block' ? Dialog.cb(Dialog.in.value) : Dialog.cb(); } 
+  Dialog.close(); 
+};
 
-try {
-  targets = JSON.parse(localStorage.getItem("prepTrackTargets") || "[]");
-} catch(e) {
-  targets = [];
-}
-
-function today(){
-  const d=new Date();
-  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-
-function escapeHTML(text){
-  return String(text||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-}
-
-function saveName(){
-  const name=document.getElementById("nameInput").value.trim();
-  if(!name){alert("Please enter your name.");return;}
-  localStorage.setItem("prepTrackName",name);
-  document.getElementById("nameScreen").classList.add("hidden");
-  document.getElementById("examScreen").classList.remove("hidden");
-  renderExams();
-}
-
-function renderExams(){
-  const carousel=document.getElementById("examCarousel");
-  const grid=document.getElementById("examGrid");
-  carousel.innerHTML=""; grid.innerHTML="";
-  exams.slice(0,6).forEach(exam=>{ carousel.innerHTML+=examCard(exam); });
-  exams.slice(6).forEach(exam=>{ grid.innerHTML+=miniExam(exam); });
-}
-
-function examCard(exam){
-  const selected=selectedExams.includes(exam.name)?"selected":"";
-  return `<button class="exam-card ${selected}" onclick="selectExam('${exam.name}')">
-  <div class="exam-icon">${exam.icon}</div>
-  <div class="exam-name">${exam.name}</div>
-  <div class="exam-desc">${exam.desc}</div></button>`;
-}
-
-function miniExam(exam){
-  const selected=selectedExams.includes(exam.name)?"selected":"";
-  return `<button class="mini-exam ${selected}" onclick="selectExam('${exam.name}')">
-  <div class="exam-icon">${exam.icon}</div>
-  <div class="exam-name">${exam.name}</div>
-  <div class="exam-desc">${exam.desc}</div></button>`;
-}
-
-function selectExam(name){
-  if(selectedExams.includes(name)){ selectedExams=selectedExams.filter(x=>x!==name); }
-  else { selectedExams.push(name); }
-  renderExams();
-}
-
-function finishSetup(){
-  if(selectedExams.length===0){ alert("Please select at least one preparation."); return; }
-  localStorage.setItem("prepTrackExams",JSON.stringify(selectedExams));
-  showDashboard();
-}
-
-function showDashboard(){
-  const name=localStorage.getItem("prepTrackName");
-  document.getElementById("nameScreen").classList.add("hidden");
-  document.getElementById("examScreen").classList.add("hidden");
-  document.getElementById("dashboardScreen").classList.remove("hidden");
-  document.getElementById("bottomNav").classList.remove("hidden");
-  document.getElementById("userName").textContent=name;
-  document.getElementById("avatar").textContent=name.charAt(0).toUpperCase();
-  document.getElementById("activeExam").textContent=selectedExams.join(" • ");
-  setGreeting();
-  populateExamSelect();
-  renderTargets();
-}
-
-function setGreeting(){
-  const hour=new Date().getHours();
-  let text="Good evening 🌙";
-  if(hour<12) text="Good morning ☀️";
-  else if(hour<18) text="Good afternoon 🌿";
-  document.getElementById("greeting").textContent=text;
-}
-
-function populateExamSelect(){
-  const select=document.getElementById("targetExam");
-  select.innerHTML="";
-  selectedExams.forEach(exam=>{ select.innerHTML+=`<option value="${exam}">${exam}</option>`; });
-  updateSubjects();
-}
-
-document.getElementById("targetExam").addEventListener("change",updateSubjects);
-
-function updateSubjects(){
-  const exam=document.getElementById("targetExam").value;
-  const select=document.getElementById("targetSubject");
-  select.innerHTML='<option value="">Select subject</option>';
-  (subjects[exam]||[]).forEach(subject=>{ select.innerHTML+=`<option value="${subject}">${subject}</option>`; });
-}
-
-function openTargetModal(){
-  document.getElementById("targetModal").classList.remove("hidden");
-  document.getElementById("targetDate").value=today();
-  populateExamSelect();
-}
-
-function closeTargetModal(){ document.getElementById("targetModal").classList.add("hidden"); }
-
-function saveTarget(){
-  const exam=document.getElementById("targetExam").value;
-  const subject=document.getElementById("targetSubject").value;
-  const chapter=document.getElementById("targetChapter").value.trim();
-  const type=document.getElementById("targetType").value;
-  const title=document.getElementById("targetTitle").value.trim();
-  const date=document.getElementById("targetDate").value;
-  const time=document.getElementById("targetTime").value;
-  const notes=document.getElementById("targetNotes").value.trim();
-
-  if(!exam||!subject||!title||!date){ alert("Please fill Exam, Subject, Target Title and Date."); return; }
-
-  const target={ id:Date.now(), exam, subject, chapter, type, title, date, time, notes, completed:false, createdAt:new Date().toISOString() };
-  targets.push(target);
-  localStorage.setItem("prepTrackTargets",JSON.stringify(targets));
+const App = (function(){
+  const EXAMS = [{n:"NEET",i:"fa-dna"},{n:"JEE",i:"fa-gears"},{n:"UPSC",i:"fa-landmark"},{n:"SSC",i:"fa-building-columns"},{n:"Banking",i:"fa-vault"},{n:"School",i:"fa-graduation-cap"}];
+  const SUBS = {NEET:["Physics","Chemistry","Biology"],JEE:["Physics","Chemistry","Maths"],UPSC:["History","Polity","Geography","Economy"],SSC:["Maths","Reasoning","English","GK"],Banking:["Quants","Reasoning","English"],School:["Science","Maths","Languages"]};
   
-  closeTargetModal();
-  clearTargetForm();
-  renderTargets();
-  
-  if(!document.getElementById("calendarScreen").classList.contains("hidden")){
-    renderCalendar();
-  }
-}
+  const QUOTES = [
+    { text: "Discipline is choosing between what you want now and what you want most.", author: "Abraham Lincoln" },
+    { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+    { text: "Don't stop when you're tired. Stop when you're done.", author: "David Goggins" },
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+    { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+    { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+    { text: "Great things never come from comfort zones.", author: "Roy T. Bennett" }
+  ];
 
-function clearTargetForm(){
-  document.getElementById("targetChapter").value="";
-  document.getElementById("targetTitle").value="";
-  document.getElementById("targetNotes").value="";
-  document.getElementById("targetSubject").value="";
-}
-
-function renderTargets(){
-  const list=document.getElementById("targetsList");
-  const todayTargets=targets.filter(t=>t.date===today());
-  if(todayTargets.length===0){
-    list.innerHTML=`<div class="empty"><div class="empty-icon">🌱</div><b>No targets yet</b><p style="margin-top:6px">Add your first target for today.</p></div>`;
-  }else{
-    list.innerHTML="";
-    todayTargets.forEach(target=>{
-      list.innerHTML+=`
-      <div class="target-card ${target.completed?"done":""}">
-        <button class="check" onclick="toggleTarget(${target.id})">${target.completed?"✓":""}</button>
-        <div>
-          <div class="target-title">${escapeHTML(target.title)}</div>
-          <div class="target-meta">${escapeHTML(target.subject)} ${target.chapter?" • "+escapeHTML(target.chapter):""}<br>${escapeHTML(target.type)} • ${escapeHTML(target.time)}</div>
-        </div>
-        <button class="delete-target" onclick="deleteTarget(${target.id})">🗑️</button>
-      </div>`;
-    });
-  }
-  updateProgress();
-}
-
-function toggleTarget(id){
-  targets=targets.map(target=>{ if(target.id===id){ return {...target, completed:!target.completed}; } return target; });
-  localStorage.setItem("prepTrackTargets",JSON.stringify(targets));
-  renderTargets();
-  if(!document.getElementById("calendarScreen").classList.contains("hidden")){
-    renderCalendar();
-  }
-}
-
-function deleteTarget(id){
-  if(!confirm("Delete this target?")) return;
-  targets=targets.filter(t=>t.id!==id);
-  localStorage.setItem("prepTrackTargets",JSON.stringify(targets));
-  renderTargets();
-  if(!document.getElementById("calendarScreen").classList.contains("hidden")){
-    renderCalendar();
-  }
-}
-
-function updateProgress(){
-  const todayTargets=targets.filter(t=>t.date===today());
-  const total=todayTargets.length;
-  const completed=todayTargets.filter(t=>t.completed).length;
-  const percentage=total===0?0:Math.round((completed/total)*100);
-  document.getElementById("completedText").textContent=completed;
-  document.getElementById("totalText").textContent=total;
-  document.getElementById("progressPercent").textContent=percentage+"%";
-  document.getElementById("progressRing").style.setProperty("--progress",percentage+"%");
-}
-
-// ==================== CALENDAR LOGIC ====================
-let calendarDate = new Date();
-let selectedCalendarDate = today();
-
-function formatCalendarDate(date){
-  return date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
-}
-
-function renderCalendar(){
-  const year = calendarDate.getFullYear();
-  const month = calendarDate.getMonth();
-  const monthTitle = new Date(year,month,1).toLocaleDateString("en-US", { month:"long", year:"numeric" });
-  document.getElementById("calendarMonthTitle").textContent = monthTitle;
-  
-  const daysContainer = document.getElementById("calendarDays");
-  daysContainer.innerHTML="";
-  
-  const firstDay = new Date(year,month,1).getDay();
-  const daysInMonth = new Date(year,month+1,0).getDate();
-  const previousMonthDays = new Date(year,month,0).getDate();
-
-  for(let i=firstDay-1;i>=0;i--){
-    const dayNumber = previousMonthDays-i;
-    const d = new Date(year,month-1,dayNumber);
-    addCalendarDay(daysContainer,d,true);
-  }
-
-  for(let day=1;day<=daysInMonth;day++){
-    const d = new Date(year,month,day);
-    addCalendarDay(daysContainer,d,false);
-  }
-
-  const totalCells = firstDay+daysInMonth;
-  const remaining = (7-(totalCells%7))%7;
-  for(let day=1;day<=remaining;day++){
-    const d = new Date(year,month+1,day);
-    addCalendarDay(daysContainer,d,true);
-  }
-
-  renderCalendarTargets();
-}
-
-function addCalendarDay(container,date,otherMonth){
-  const dateString = formatCalendarDate(date);
-  const button = document.createElement("button");
-  button.className="calendar-day";
-  
-  if(otherMonth) button.classList.add("other-month");
-  if(dateString===today()) button.classList.add("today");
-  if(dateString===selectedCalendarDate) button.classList.add("selected");
-  button.textContent = date.getDate();
-  
-  const hasTargets = targets.some(target=>target.date===dateString);
-  if(hasTargets){
-    const dot = document.createElement("span");
-    dot.className="calendar-dot";
-    button.appendChild(dot);
-  }
-
-  button.onclick=function(){
-    selectedCalendarDate=dateString;
-    renderCalendar();
+  let store = {
+    n: localStorage.getItem('pe_n')||'',
+    e: JSON.parse(localStorage.getItem('pe_e')||'[]'),
+    ed: localStorage.getItem('pe_ed')||'', 
+    t: JSON.parse(localStorage.getItem('pe_t')||'[]'),
+    p: JSON.parse(localStorage.getItem('pe_p')||'[]'),
+    c: localStorage.getItem('pe_c')||'Offline Squad',
+    l: localStorage.getItem('pe_l')==='true',
+    av: localStorage.getItem('pe_av')||"linear-gradient(135deg, #f093fb, #f5576c)", // default avatar bg
+    acP: localStorage.getItem('pe_acP')||"#00f2fe", // primary accent
+    acS: localStorage.getItem('pe_acS')||"#4facfe", // secondary accent
+    ms: JSON.parse(localStorage.getItem('pe_ms')||'[]'), // reached milestones
+    fs: JSON.parse(localStorage.getItem('pe_fs')||'[]') // focus sessions
   };
-  container.appendChild(button);
-}
 
-function changeCalendarMonth(direction){
-  calendarDate.setMonth(calendarDate.getMonth()+direction);
-  renderCalendar();
-}
+  let tempSetupExams = [...store.e];
+  let currentNav = 'scr-dash';
 
-function goToCalendarToday(){
-  const now=new Date();
-  calendarDate=new Date(now.getFullYear(),now.getMonth(),1);
-  selectedCalendarDate=today();
-  renderCalendar();
-}
+  // Focus Timer State
+  let focusInt = null;
+  let focusSec = 0;
+  let focusActiveId = null;
+  let focusRunning = false;
 
-function renderCalendarTargets(){
-  const container = document.getElementById("calendarTargets");
-  const title = document.getElementById("calendarSelectedTitle");
-  const selectedDate = new Date(selectedCalendarDate+"T00:00:00");
-  
-  title.textContent = selectedDate.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
-  
-  const dayTargets = targets.filter(target=>target.date===selectedCalendarDate);
-  if(dayTargets.length===0){
-    container.innerHTML=`<div class="calendar-empty"><div class="calendar-empty-icon">🌱</div><b>No targets for this day</b><p style="margin-top:6px">Tap + to add a target.</p></div>`;
-    return;
+  function save() {
+    localStorage.setItem('pe_n',store.n); localStorage.setItem('pe_e',JSON.stringify(store.e));
+    localStorage.setItem('pe_ed',store.ed); localStorage.setItem('pe_t',JSON.stringify(store.t)); 
+    localStorage.setItem('pe_p',JSON.stringify(store.p)); localStorage.setItem('pe_c',store.c); 
+    localStorage.setItem('pe_l',store.l); localStorage.setItem('pe_av',store.av);
+    localStorage.setItem('pe_acP',store.acP); localStorage.setItem('pe_acS',store.acS);
+    localStorage.setItem('pe_ms',JSON.stringify(store.ms)); localStorage.setItem('pe_fs',JSON.stringify(store.fs));
+  }
+  function today() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+  function esc(s) { return String(s||"").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function getEmpty(icon, title, desc, actionTxt, actionFn) {
+    let btn = actionTxt ? `<button class="btn-glow btn-secondary" style="padding: 10px 20px; font-size:12px;" onclick="${actionFn}">${actionTxt}</button>` : '';
+    return `<div class="premium-empty"><i class="fa-solid ${icon}"></i><h3>${title}</h3><p>${desc}</p>${btn}</div>`;
   }
 
-  container.innerHTML="";
-  dayTargets.forEach(target=>{
-    const card = document.createElement("div");
-    card.className = "calendar-target "+(target.completed?"done":"");
-    card.innerHTML=`
-      <button class="calendar-check" onclick="toggleCalendarTarget(${target.id})">${target.completed?"✓":""}</button>
-      <div class="calendar-target-content">
-        <div class="calendar-target-title">${escapeHTML(target.title)}</div>
-        <div class="calendar-target-meta">${escapeHTML(target.subject)} ${target.chapter?" • "+escapeHTML(target.chapter):""}<br>${escapeHTML(target.type)} • ${escapeHTML(target.time)}</div>
-      </div>
-      <button class="calendar-delete" onclick="deleteCalendarTarget(${target.id})">🗑️</button>`;
-    container.appendChild(card);
-  });
-}
+  let cDat = new Date(), sDat = today();
 
-function toggleCalendarTarget(id){
-  toggleTarget(id); 
-}
-
-function deleteCalendarTarget(id){
-  deleteTarget(id);
-}
-
-function addTargetFromCalendar(){
-  openTargetModal();
-  document.getElementById("targetDate").value=selectedCalendarDate;
-}
-
-// ==================== PT ADD-ON MODULE (PLANS + PROFILE) ====================
-window.PT = (function(){
-  let plans = JSON.parse(localStorage.getItem("prepTrackPlans") || "[]");
-  let goals = JSON.parse(localStorage.getItem("prepTrackGoals") || "{}");
-  let settings = JSON.parse(localStorage.getItem("prepTrackSettings") || "{}");
-
-  function getTargets(){
-    try{ return JSON.parse(localStorage.getItem("prepTrackTargets") || "[]"); }
-    catch(e){ return []; }
+  function applyTheme() {
+    if(store.l) { document.body.classList.add('light-mode'); document.getElementById('themeToggle').classList.add('on'); }
+    else { document.body.classList.remove('light-mode'); document.getElementById('themeToggle').classList.remove('on'); }
+    
+    document.documentElement.style.setProperty('--sys-accent-primary', store.acP);
+    document.documentElement.style.setProperty('--sys-accent-secondary', store.acS);
   }
 
-  function getName(){ return localStorage.getItem("prepTrackName") || "Student"; }
+  function init() {
+    applyTheme();
 
-  function getExams(){
-    try{ return JSON.parse(localStorage.getItem("prepTrackExams") || "[]"); }
-    catch(e){ return []; }
-  }
-
-  function savePlans(){
-    localStorage.setItem("prepTrackPlans", JSON.stringify(plans));
-  }
-
-  function hideExtraScreens(){
-    document.getElementById("ptPlansScreen")?.classList.remove("active");
-    document.getElementById("ptProfileScreen")?.classList.remove("active");
-    document.getElementById("ptClubScreen")?.classList.remove("active");
-  }
-
-  function showPlans(){
-    hideExtraScreens();
-    document.getElementById("dashboardScreen")?.classList.add("hidden");
-    document.getElementById("calendarScreen")?.classList.add("hidden");
-    document.getElementById("ptPlansScreen")?.classList.add("active");
-    renderPlans();
-  }
-
-  function showProfile(){
-    hideExtraScreens();
-    document.getElementById("dashboardScreen")?.classList.add("hidden");
-    document.getElementById("calendarScreen")?.classList.add("hidden");
-    document.getElementById("ptProfileScreen")?.classList.add("active");
-    renderProfile();
-  }
-
-  function openPlanModal(){
-    const modal = document.getElementById("ptPlanModal");
-    if(!modal) return;
-    modal.classList.remove("hidden");
-
-    const examSelect = document.getElementById("ptPlanExam");
-    examSelect.innerHTML = "";
-    const examsList = getExams();
-
-    if(examsList.length){
-      examsList.forEach(exam=>{
-        examSelect.innerHTML += `<option value="${escapeHTML(exam)}">${escapeHTML(exam)}</option>`;
-      });
+    // Welcome Screen Logic
+    if (!localStorage.getItem('prepTrackWelcomeSeen')) {
+      const welc = document.getElementById('welcome-screen');
+      welc.style.display = 'flex';
+      setTimeout(() => {
+        welc.style.opacity = '0';
+        setTimeout(() => {
+          welc.style.display = 'none';
+          localStorage.setItem('prepTrackWelcomeSeen', '1');
+          routeInit();
+        }, 800);
+      }, 2500); 
     } else {
-      examSelect.innerHTML = `<option value="">Select exam</option>`;
+      document.getElementById('welcome-screen').style.display = 'none';
+      routeInit();
     }
-    document.getElementById("ptPlanStart").value = today();
+    
+    initSwipeGestures();
   }
 
-  function closePlanModal(){
-    document.getElementById("ptPlanModal")?.classList.add("hidden");
+  function routeInit() {
+    if(store.n && store.e.length>0 && store.ed) { 
+      document.getElementById('botNav').style.display='flex'; 
+      switchScr('scr-dash', document.querySelector('[data-tab="scr-dash"]')); 
+    } else if(store.n && store.e.length>0 && !store.ed) {
+      renderSetupExams(); switchScr('scr-date');
+    } else if(store.n) {
+      renderSetupExams(); switchScr('scr-exams');
+    } else {
+      switchScr('scr-name');
+      document.getElementById('scr-name').classList.add('active');
+    }
+    
+    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+    const q = QUOTES[dayOfYear % QUOTES.length];
+    document.getElementById('dashQuoteText').textContent = `"${q.text}"`;
+    document.getElementById('dashQuoteAuthor').textContent = `- ${q.author}`;
   }
 
-  function savePlan(){
-    const name = document.getElementById("ptPlanName").value.trim();
-    const exam = document.getElementById("ptPlanExam").value;
-    const start = document.getElementById("ptPlanStart").value;
-    const end = document.getElementById("ptPlanEnd").value;
-    const hours = document.getElementById("ptPlanHours").value;
-    const priority = document.getElementById("ptPlanPriority").value;
-    const score = document.getElementById("ptPlanScore").value.trim();
-    const notes = document.getElementById("ptPlanNotes").value.trim();
-
-    if(!name){ alert("Please enter a plan name."); return; }
-    if(!start){ alert("Please select a start date."); return; }
-
-    const plan = {
-      id: Date.now(),
-      name, exam, start, end, hours, priority, score, notes,
-      createdAt: new Date().toISOString()
-    };
-
-    plans.push(plan);
-    savePlans();
-    closePlanModal();
-
-    document.getElementById("ptPlanName").value="";
-    document.getElementById("ptPlanEnd").value="";
-    document.getElementById("ptPlanScore").value="";
-    document.getElementById("ptPlanNotes").value="";
-
-    renderPlans();
+  function switchScr(id, btn) {
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    currentNav = id;
+    
+    if(btn && document.getElementById('botNav').style.display !== 'none') {
+      document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      const ind = document.getElementById('navInd');
+      ind.style.left = btn.offsetLeft + 'px';
+      Haptic.tap();
+    }
+    
+    setTimeout(() => {
+      if(id==='scr-dash') drawDash(); if(id==='scr-time') drawCal(); 
+      if(id==='scr-strat') drawPlan(); if(id==='scr-club') { /* Not dynamic atm */ } 
+      if(id==='scr-prof') drawProf();
+    }, 50); 
   }
 
-  function planProgress(plan){
-    const tgs = getTargets();
-    let related = tgs.filter(t => {
-      if(t.exam !== plan.exam) return false;
-      if(plan.start && t.date < plan.start) return false;
-      if(plan.end && t.date > plan.end) return false;
-      return true;
-    });
-
-    if(!related.length) return 0;
-    const completed = related.filter(t=>t.completed).length;
-    return Math.round((completed / related.length) * 100);
+  /* Setup Flow */
+  function nextSetupExams() { 
+    const v=document.getElementById('inName').value.trim(); 
+    if(!v) return Dialog.alert('Alias empty.'); 
+    store.n=v; save(); Haptic.success(); renderSetupExams(); switchScr('scr-exams'); 
+  }
+  function renderSetupExams() {
+    const g=document.getElementById('examGrid'); g.innerHTML=''; 
+    EXAMS.forEach(x=>g.innerHTML+=`<div class="exam-item ${tempSetupExams.includes(x.n)?'selected':''}" onclick="App.togE('${x.n}')"><i class="fa-solid ${x.i}"></i><div class="name">${x.n}</div></div>`);
+  }
+  function togE(n) { 
+    Haptic.tap();
+    tempSetupExams.includes(n) ? tempSetupExams=tempSetupExams.filter(x=>x!==n) : tempSetupExams.push(n); 
+    renderSetupExams(); 
+  }
+  function nextSetupDate() { 
+    if(tempSetupExams.length===0) return Dialog.alert('Select at least one domain.'); 
+    store.e = [...tempSetupExams]; save(); Haptic.success(); switchScr('scr-date'); 
+  }
+  function finishSetup() { 
+    const d=document.getElementById('inDate').value; 
+    if(!d) return Dialog.alert('Set a target deadline.'); 
+    store.ed = d; save(); Haptic.success();
+    document.getElementById('botNav').style.display='flex'; 
+    switchScr('scr-dash', document.querySelector('[data-tab="scr-dash"]')); 
   }
 
-  function daysRemaining(plan){
-    if(!plan.end) return "No end date";
-    const end = new Date(plan.end + "T23:59:59");
-    const now = new Date();
-    const diff = Math.ceil((end-now) / 86400000);
-    if(diff < 0) return "Ended";
-    if(diff === 0) return "Today";
-    return diff + " days left";
-  }  function renderPlans(){
-    const list = document.getElementById("ptPlansList");
-    if(!list) return;
+  /* Dashboard */
+  function setAvatar(el) {
+    if(store.av.startsWith("url")) { el.textContent = ""; el.style.background = store.av; }
+    else { el.textContent = store.n.charAt(0).toUpperCase(); el.style.background = store.av; }
+  }
 
-    if(plans.length === 0){
-      list.innerHTML = `
-      <div class="pt-empty">
-        <div class="pt-empty-icon">🎯</div>
-        <b>No plans yet</b>
-        <div class="pt-muted" style="margin-top:5px">Create a study plan to organize your prep.</div>
+  function drawDash() {
+    updateDynamicGreeting();
+    setAvatar(document.getElementById('dashAvatar'));
+    document.getElementById('dashExamNames').textContent = store.e.join(' • ');
+
+    calcAndRenderDaysLeft();
+    checkMilestones(); // Check for countdown milestones
+
+    const tgs = store.t.filter(t=>t.d===today()); const cmp = tgs.filter(t=>t.c).length; const tot = tgs.length;
+    const pct = tot===0?0: Math.round((cmp/tot)*100);
+    document.getElementById('dashComp').textContent=cmp; document.getElementById('dashTot').textContent=tot;
+    document.getElementById('dashPct').textContent=pct+"%"; document.getElementById('dashRing').setAttribute('stroke-dasharray',`${pct}, 100`);
+
+    const strk = calculateStreak();
+    document.getElementById('dashStreak').textContent = strk;
+
+    // Calculate Daily Score
+    calcDailyScore(pct, strk);
+
+    const list = document.getElementById('dashList');
+    if(tot===0) list.innerHTML = getEmpty('fa-mug-hot', 'No targets for today', 'Add your first target to start your day.', 'Add Target', 'App.addForDate(true)');
+    else {
+      list.innerHTML = '';
+      tgs.forEach(t => {
+        const isFoc = focusActiveId === t.id;
+        list.innerHTML+=`
+      <div class="target-row ${t.c?'done':''}" data-id="${t.id}" id="tr-${t.id}">
+        <div class="swipe-actions">
+          <button class="swipe-btn sb-focus" onclick="App.startFocus(${t.id}, '${esc(t.t)}')"><i class="fa-solid ${isFoc?'fa-stopwatch':'fa-play'}"></i></button>
+          <button class="swipe-btn sb-del" onclick="App.delT(${t.id})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="t-content-wrap">
+          <div class="chk-elite" onclick="App.toggleT(${t.id})"><i class="fa-solid fa-check"></i></div>
+          <div class="t-info"><div class="t-title">${esc(t.t)}</div><div class="t-meta"><span class="badge sub">${esc(t.s)}</span><span class="badge typ">${esc(t.ty)}</span></div></div>
+        </div>
       </div>`;
-      return;
+      });
     }
-
-    list.innerHTML = "";
-    plans.forEach(plan => {
-      const prog = planProgress(plan);
-      const rem = daysRemaining(plan);
-      list.innerHTML += `
-      <div class="pt-card">
-        <div class="pt-row">
-          <div class="pt-card-title">${escapeHTML(plan.name)}</div>
-          <button class="delete-target" style="padding:0" onclick="PT.deletePlan(${plan.id})">🗑️</button>
-        </div>
-        <div class="pt-plan-meta">
-          <div class="pt-pill">${escapeHTML(plan.exam)}</div>
-          <div class="pt-pill">⏳ ${rem}</div>
-          ${plan.score ? `<div class="pt-pill">🎯 ${escapeHTML(plan.score)}</div>` : ''}
-        </div>
-        <div class="pt-progress">
-          <div class="pt-progress-fill" style="width:${prog}%"></div>
-        </div>
-        <div class="pt-progress-text">
-          <span>Progress</span>
-          <span>${prog}%</span>
-        </div>
-      </div>`;
-    });
+    const e1=document.getElementById('tEx'), e2=document.getElementById('pEx'); e1.innerHTML=''; e2.innerHTML='';
+    store.e.forEach(x=>{ e1.innerHTML+=`<option value="${x}">${x}</option>`; e2.innerHTML+=`<option value="${x}">${x}</option>`; });
+    updSub();
   }
 
-  function deletePlan(id){
-    if(!confirm("Are you sure you want to delete this plan?")) return;
-    plans = plans.filter(p => p.id !== id);
-    savePlans();
-    renderPlans();
+  function calcDailyScore(completionPct, streak) {
+    const scVal = document.getElementById('scVal');
+    const scDesc = document.getElementById('scDesc');
+    const tgs = store.t.filter(t=>t.d===today());
+    
+    if(tgs.length === 0) {
+      scVal.textContent = "--"; scDesc.textContent = "Add targets to build your score."; return;
+    }
+    
+    // Formula: (Completion% * 0.7) + (Consistency * 0.3)
+    // Consistency cap at 30 days (1 point per day)
+    let consPts = Math.min(streak, 30) * (100/30);
+    let finalScore = Math.round((completionPct * 0.7) + (consPts * 0.3));
+    
+    scVal.textContent = finalScore;
+    
+    if(finalScore >= 90) scDesc.textContent = "Outstanding execution today.";
+    else if(finalScore >= 70) scDesc.textContent = "Solid progress. Keep pushing.";
+    else if(finalScore >= 40) scDesc.textContent = "Gaining momentum.";
+    else scDesc.textContent = "Focus required. Get started.";
   }
 
-  function renderProfile(){
-    const userName = getName();
-    document.getElementById("ptProfileName").textContent = userName;
-    document.getElementById("ptProfileAvatar").textContent = userName.charAt(0).toUpperCase();
-    document.getElementById("ptProfileExam").textContent = getExams().join(" • ") || "No exams selected";
+  function updateDynamicGreeting() {
+    const hr = new Date().getHours();
+    let tod = "Night", sub = "Rest and recharge for tomorrow.";
+    if (hr >= 5 && hr < 12) { tod = "Morning"; sub = "Ready for today's mission?"; }
+    else if (hr >= 12 && hr < 17) { tod = "Afternoon"; sub = "Keep your momentum going."; }
+    else if (hr >= 17 && hr < 22) { tod = "Evening"; sub = "Excellent work so far today."; }
+    
+    document.getElementById('dashGreet').textContent = `Good ${tod}, ${store.n}`;
+    document.getElementById('dashSub').textContent = sub;
+  }
 
-    const allTargets = getTargets();
-    const completed = allTargets.filter(t => t.completed).length;
-    const total = allTargets.length;
-    const pct = total ? Math.round((completed / total) * 100) : 0;
+  function calcAndRenderDaysLeft() {
+    const lbl = document.getElementById('dashDaysLabel');
+    const val = document.getElementById('dashDaysLeft');
+    const dtStr = document.getElementById('dashExamDateStr');
+    
+    if(!store.ed) { val.textContent = "--"; dtStr.textContent = "Not Set"; return; }
+    
+    const targetDate = new Date(store.ed); targetDate.setHours(0,0,0,0);
+    const now = new Date(); now.setHours(0,0,0,0);
+    
+    dtStr.textContent = targetDate.toLocaleDateString('en-US', { day:'numeric', month:'long', year:'numeric' });
+    
+    const diffDays = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+    
+    if(diffDays > 0) { val.textContent = diffDays; lbl.textContent = "DAYS LEFT"; }
+    else if(diffDays === 0) { val.textContent = "0"; lbl.textContent = "TODAY IS THE DAY"; }
+    else { val.textContent = "✓"; lbl.textContent = "EXAM CONCLUDED"; }
+  }
 
-    document.getElementById("ptTotalTargets").textContent = total;
-    document.getElementById("ptCompletedTargets").textContent = completed;
-    document.getElementById("ptCompletion").textContent = pct + "%";
+  function getDaysLeftRaw() {
+    if(!store.ed) return { val: "--", label: "DAYS LEFT", num: -1 };
+    const targetDate = new Date(store.ed); targetDate.setHours(0,0,0,0);
+    const now = new Date(); now.setHours(0,0,0,0);
+    const diffDays = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+    if(diffDays > 0) return { val: diffDays, label: "DAYS LEFT", num: diffDays };
+    else if(diffDays === 0) return { val: "0", label: "TODAY IS THE DAY", num: 0 };
+    else return { val: "✓", label: "EXAM CONCLUDED", num: -1 };
+  }
 
-    // Streak Logic
-    let streak = 0;
-    let checkDate = new Date();
-    let todayStr = today();
-    let yestDate = new Date();
-    yestDate.setDate(yestDate.getDate() - 1);
-    let yestStr = yestDate.toISOString().split('T')[0];
+  function calculateStreak() {
+    let strk=0, chk=new Date(), tdy=today(), yst=new Date(); yst.setDate(yst.getDate()-1); let yS=yst.toISOString().split('T')[0];
+    if(!store.t.some(x=>x.d===tdy && x.c) && store.t.some(x=>x.d===yS && x.c)) chk.setDate(chk.getDate()-1);
+    while(true) { if(store.t.some(x=>x.d===chk.toISOString().split('T')[0] && x.c)) { strk++; chk.setDate(chk.getDate()-1); } else break; }
+    return strk;
+  }
 
-    let hasToday = allTargets.some(t => t.date === todayStr && t.completed);
-    let hasYest = allTargets.some(t => t.date === yestStr && t.completed);
+  function updSub() { const s=document.getElementById('tSub'); s.innerHTML=''; (SUBS[document.getElementById('tEx').value]||[]).forEach(x=>s.innerHTML+=`<option value="${x}">${x}</option>`); }
 
-    if(!hasToday && hasYest) {
-      checkDate.setDate(checkDate.getDate() - 1);
+  /* Calendar */
+  function drawCal() {
+    const y=cDat.getFullYear(), m=cDat.getMonth(); const mN = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    document.getElementById('calTitle').textContent = `${mN[m]} ${y}`;
+    const g=document.getElementById('calDaysGrid'); g.innerHTML='';
+    const fd = new Date(y,m,1).getDay(), md = new Date(y,m+1,0).getDate(), pd = new Date(y,m,0).getDate();
+    
+    for(let i=fd-1; i>=0; i--) {
+      let ds = `${m===0?y-1:y}-${m===0?'12':String(m).padStart(2,'0')}-${String(pd-i).padStart(2,'0')}`;
+      g.appendChild(calNode(pd-i, ds, true));
     }
+    for(let i=1; i<=md; i++) {
+      let ds = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+      g.appendChild(calNode(i, ds, false));
+    }
+    const rm = (7-((fd+md)%7))%7;
+    for(let i=1; i<=rm; i++) {
+      let ds = `${m===11?y+1:y}-${m===11?'01':String(m+2).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+      g.appendChild(calNode(i, ds, true));
+    }
+    drawCalT();
+  }
+  
+  function calNode(n, ds, oth) {
+    const d=document.createElement('div');
+    d.className=`cal-date ${oth?'other':''} ${ds===today()?'today':''} ${ds===sDat?'selected':''}`;
+    d.textContent=n;
+    if(store.t.some(x=>x.d===ds)) { const dot=document.createElement('div'); dot.className='cal-dot'; d.appendChild(dot); }
+    d.onclick = () => { Haptic.tap(); sDat=ds; drawCal(); };
+    return d;
+  }
+  function calShift(dir) { Haptic.tap(); cDat.setMonth(cDat.getMonth()+dir); drawCal(); }
+  
+  function drawCalT() {
+    const tgs = store.t.filter(t=>t.d===sDat);
+    const dO = new Date(sDat);
+    document.getElementById('calSelDateText').textContent = dO.toLocaleDateString('en-US',{weekday:'long', month:'short', day:'numeric'});
+    const list = document.getElementById('calList');
+    if(tgs.length===0) list.innerHTML = getEmpty('fa-calendar-xmark', 'Timeline Clear', 'No operations scheduled for this cycle.', 'Schedule Task', 'App.addForDate(false)');
+    else {
+      list.innerHTML = '';
+      tgs.forEach(t => list.innerHTML+=`
+      <div class="target-row ${t.c?'done':''}">
+        <div class="chk-elite" onclick="App.toggleT(${t.id})"><i class="fa-solid fa-check"></i></div>
+        <div class="t-info"><div class="t-title">${esc(t.t)}</div><div class="t-meta"><span class="badge sub">${esc(t.s)}</span></div></div>
+      </div>`);
+    }
+  }
 
-    while(true){
-      let dStr = checkDate.toISOString().split('T')[0];
-      if(allTargets.some(t => t.date === dStr && t.completed)){
-        streak++;
-        checkDate.setDate(checkDate.getDate() - 1);
-      } else {
-        break;
+  /* Swipe Gestures (Dashboard Rows & Sheets) */
+  function initSwipeGestures() {
+    let touchStartX = 0; let touchStartY = 0; let swipedRow = null;
+
+    document.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, {passive:true});
+
+    document.addEventListener('touchend', e => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      
+      const xDiff = touchStartX - touchEndX;
+      const yDiff = Math.abs(touchStartY - touchEndY);
+      
+      // Close bottom sheet on swipe down
+      if(touchEndY - touchStartY > 70 && yDiff > Math.abs(xDiff) && e.target.closest('.sheet-content')) {
+         const sheetId = e.target.closest('.sheet-wrap').id;
+         closeSheet(sheetId);
+         return;
       }
+
+      // Row Swipe (Dashboard only)
+      if(currentNav === 'scr-dash' && yDiff < 40) { // Mostly horizontal
+        const row = e.target.closest('.target-row');
+        if(row) {
+          if (xDiff > 50) { // Swipe Left
+            document.querySelectorAll('.target-row').forEach(r => r.classList.remove('swiped'));
+            row.classList.add('swiped');
+            Haptic.tap();
+          } else if (xDiff < -30) { // Swipe Right (Close)
+            row.classList.remove('swiped');
+          }
+        } else {
+          // Clicked outside, close all swiped
+          document.querySelectorAll('.target-row').forEach(r => r.classList.remove('swiped'));
+        }
+      }
+    }, {passive:true});
+  }
+
+  /* Modals */
+  function addForDate(isToday) { Haptic.tap(); document.getElementById('tDat').value = isToday ? today() : sDat; openSheet('sheet-add'); }
+  function openSheet(id) { document.getElementById(id).classList.add('show'); Haptic.tap(); }
+  function closeSheet(id) { document.getElementById(id).classList.remove('show'); }
+  
+  function saveT() {
+    const t=document.getElementById('tTit').value.trim(), s=document.getElementById('tSub').value, d=document.getElementById('tDat').value;
+    if(!t||!s||!d) return Dialog.alert('Fill required fields.');
+    store.t.push({id:Date.now(), e:document.getElementById('tEx').value, s:s, ty:document.getElementById('tTyp').value, t:t, d:d, c:false});
+    save(); closeSheet('sheet-add'); document.getElementById('tTit').value='';
+    Haptic.success();
+    if(currentNav==='scr-dash') drawDash();
+    if(currentNav==='scr-time') { sDat = d; drawCal(); }
+    checkCelebration();
+  }
+  
+  function toggleT(id) { 
+    store.t=store.t.map(x=>x.id===id?{...x,c:!x.c}:x); 
+    save(); Haptic.tap();
+    if(currentNav==='scr-dash') drawDash();
+    if(currentNav==='scr-time') drawCalT();
+    checkCelebration();
+    checkMilestones(); // Check total targets milestone
+  }
+  
+  function delT(id) { 
+    document.querySelectorAll('.target-row').forEach(r => r.classList.remove('swiped'));
+    Dialog.confirm('Delete directive?',()=>{ 
+      store.t=store.t.filter(x=>x.id!==id); save(); Haptic.success();
+      if(currentNav==='scr-dash') drawDash();
+      if(currentNav==='scr-time') drawCalT();
+    }); 
+  }
+
+  /* Focus Timer System */
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60); const s = sec % 60;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  function updateFocusUI() { document.getElementById('fbTime').textContent = formatTime(focusSec); }
+  
+  function startFocus(id, title) {
+    document.querySelectorAll('.target-row').forEach(r => r.classList.remove('swiped'));
+    if(focusActiveId && focusActiveId !== id) {
+      Dialog.confirm('A session is already active. End it to start this one?', () => { stopFocus(); _runStart(id, title); });
+    } else { _runStart(id, title); }
+  }
+  
+  function _runStart(id, title) {
+    focusActiveId = id; focusRunning = true; focusSec = 0;
+    document.getElementById('fbTitle').textContent = title;
+    document.getElementById('fbPauseBtn').innerHTML = '<i class="fa-solid fa-pause"></i>';
+    document.getElementById('uFocusBar').classList.add('active');
+    updateFocusUI();
+    clearInterval(focusInt);
+    focusInt = setInterval(() => { if(focusRunning) { focusSec++; updateFocusUI(); } }, 1000);
+    Haptic.success();
+    drawDash();
+  }
+
+  function toggleFocusPause() {
+    focusRunning = !focusRunning;
+    document.getElementById('fbPauseBtn').innerHTML = focusRunning ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+    Haptic.tap();
+  }
+
+  function stopFocus() {
+    clearInterval(focusInt);
+    if(focusSec > 60) { // Only save if > 1 min
+      store.fs.push({ d: today(), dur: focusSec, tid: focusActiveId }); save();
     }
+    focusActiveId = null; focusRunning = false;
+    document.getElementById('uFocusBar').classList.remove('active');
+    Haptic.success();
+    drawDash(); // removes stopwatch icon from row
+  }
 
-    document.getElementById("ptCurrentStreak").textContent = streak;
-    document.getElementById("ptStreakNumber").textContent = streak;
+  /* Milestones & Celebrations */
+  function showMilestone(title, msg, icon) {
+    document.getElementById('celIcon').innerHTML = icon || '🌟';
+    document.getElementById('celTitle').textContent = "MILESTONE REACHED";
+    document.getElementById('celBigText').textContent = title;
+    document.getElementById('celBigText').style.fontSize = "36px";
+    document.getElementById('celMessage').textContent = msg;
+    document.getElementById('celStats').style.display = 'none';
+    document.getElementById('uCelebration').classList.add('show');
+    Haptic.success();
+    if(typeof confetti !== 'undefined') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+  }
 
-    const streakDaysContainer = document.getElementById("ptStreakDays");
-    streakDaysContainer.innerHTML = "";
-    const dayNames = ["S","M","T","W","T","F","S"];
-    for(let i=6; i>=0; i--){
-      let d = new Date();
-      d.setDate(d.getDate() - i);
-      let dStr = d.toISOString().split('T')[0];
-      let isDone = allTargets.some(t => t.date === dStr && t.completed);
-      streakDaysContainer.innerHTML += `
-      <div class="pt-day">
-        ${dayNames[d.getDay()]}
-        <div class="pt-day-circle ${isDone ? 'done' : ''}">${isDone ? '✓' : ''}</div>
-      </div>`;
-    }
+  function checkMilestones() {
+    const compTot = store.t.filter(x=>x.c).length;
+    const strk = calculateStreak();
+    const dL = getDaysLeftRaw().num;
 
-    // Weekly Progress
-    let weekStart = new Date();
-    weekStart.setDate(weekStart.getDate() - 7);
-    let weekStartStr = weekStart.toISOString().split('T')[0];
-    let weekTargets = allTargets.filter(t => t.date >= weekStartStr);
-    let weekComp = weekTargets.filter(t => t.completed).length;
-    let weekPct = weekTargets.length ? Math.round((weekComp / weekTargets.length) * 100) : 0;
+    // Helper to check and set
+    const trig = (key, fn) => { if(!store.ms.includes(key)) { store.ms.push(key); save(); fn(); } };
 
-    document.getElementById("ptWeeklyPercent").textContent = weekPct + "%";
-    document.getElementById("ptWeeklyBar").style.width = weekPct + "%";
-
-    document.getElementById("ptSummary").innerHTML = `Awesome job! You have completed <b>${completed}</b> out of <b>${total}</b> total study targets. Keep pushing!`;
-
-    // Goals & Settings
-    document.getElementById("ptDailyGoalText").textContent = goals.daily || "Not set";
-    document.getElementById("ptWeeklyGoalText").textContent = goals.weekly || "Not set";
-    document.getElementById("ptScoreGoalText").textContent = goals.score || "Not set";
-
-    const notifToggle = document.getElementById("ptNotificationToggle");
-    const darkToggle = document.getElementById("ptDarkToggle");
+    if(compTot === 1) trig('m_t1', () => showMilestone("First Target!", "You completed your first objective. The journey begins."));
+    if(compTot === 50) trig('m_t50', () => showMilestone("50 Targets", "Incredible consistency. 50 tasks completed."));
+    if(compTot === 100) trig('m_t100', () => showMilestone("100 Targets", "Century mark! Your dedication is paying off."));
     
-    if(settings.notifications) notifToggle.classList.add("on");
-    else notifToggle.classList.remove("on");
+    if(strk === 7) trig('m_s7', () => showMilestone("7 Day Streak", "One full week of uninterrupted focus."));
+    if(strk === 30) trig('m_s30', () => showMilestone("30 Day Streak", "A whole month of dedication. Elite level."));
 
-    if(settings.dark){
-      darkToggle.classList.add("on");
-      document.body.style.filter = "invert(1) hue-rotate(180deg)";
-    } else {
-      darkToggle.classList.remove("on");
-      document.body.style.filter = "none";
-    }
+    if(dL === 100) trig('m_d100', () => showMilestone("100 Days Left", "The final 100 days. Time to shift gears."));
+    if(dL === 30) trig('m_d30', () => showMilestone("1 Month Left", "30 days until execution. Final preparations."));
+    if(dL === 7) trig('m_d7', () => showMilestone("1 Week Left", "The final stretch. Stay calm, stay focused.", "⚡"));
   }
 
-  function editGoals(){
-    const daily = prompt("Enter daily study goal (e.g., 5 hours):", goals.daily || "");
-    if(daily !== null) goals.daily = daily;
+  function checkCelebration() {
+    const tdy = today();
+    const tgs = store.t.filter(t => t.d === tdy);
+    const tot = tgs.length;
+    const cmp = tgs.filter(t => t.c).length;
     
-    const weekly = prompt("Enter weekly targets goal (e.g., 20 targets):", goals.weekly || "");
-    if(weekly !== null) goals.weekly = weekly;
-    
-    const score = prompt("Enter target score (e.g., 150/200):", goals.score || "");
-    if(score !== null) goals.score = score;
-    
-    localStorage.setItem("prepTrackGoals", JSON.stringify(goals));
-    renderProfile();
-  }
-
-  function toggleSetting(key){
-    settings[key] = !settings[key];
-    localStorage.setItem("prepTrackSettings", JSON.stringify(settings));
-    renderProfile();
-  }
-
-  function exportData(){
-    const data = {
-      name: getName(),
-      exams: getExams(),
-      targets: getTargets(),
-      plans, goals, settings
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "preptrack_backup.json";
-    a.click();
-  }
-
-  function resetData(){
-    if(confirm("Warning: This will permanently delete ALL your PrepTrack data! Are you sure?")){
-      localStorage.clear();
-      location.reload();
-    }
-  }  return {
-    hideExtraScreens,
-    showPlans,
-    showProfile,
-    openPlanModal,
-    closePlanModal,
-    savePlan,
-    deletePlan,
-    editGoals,
-    toggleSetting,
-    exportData,
-    resetData
-  };
-
-})();
-
-// ==================== PT CLUB MODULE ====================
-window.PTClub = (function(){
-  const MAX_MEMBERS = 6;
-  let club = null;
-  let members = [];
-
-  function getCurrentUser(){
-    const name = localStorage.getItem("prepTrackName") || "Student";
-    return {
-      id: localStorage.getItem("prepTrackUserId") || "local-user",
-      name: name
-    };
-  }
-
-  function loadLocalClub(){
-    try{
-      club = JSON.parse(localStorage.getItem("prepTrackClub") || "null");
-      members = JSON.parse(localStorage.getItem("prepTrackClubMembers") || "[]");
-    }catch(e){
-      club = null;
-      members = [];
-    }
-
-    if(!club){
-      club = {
-        id: localStorage.getItem("prepTrackClubId") || crypto.randomUUID(),
-        name:"My Study Club"
-      };
-      localStorage.setItem("prepTrackClub", JSON.stringify(club));
-    }
-
-    const user = getCurrentUser();
-
-    if(!members.some(m => m.id === user.id)){
-      members.unshift({
-        id: user.id,
-        name: user.name,
-        isOwner: true
-      });
-    }
-
-    if(members.length > MAX_MEMBERS){
-      members = members.slice(0, MAX_MEMBERS);
-    }
-    saveLocal();
-  }
-
-  function saveLocal(){
-    localStorage.setItem("prepTrackClub", JSON.stringify(club));
-    localStorage.setItem("prepTrackClubMembers", JSON.stringify(members));
-  }
-
-  function showClub(){
-    loadLocalClub();
-    if(window.PT) window.PT.hideExtraScreens();
-    document.getElementById("dashboardScreen")?.classList.add("hidden");
-    document.getElementById("calendarScreen")?.classList.add("hidden");
-    document.getElementById("ptClubScreen")?.classList.add("active");
-    render();
-  }
-
-  function render(){
-    loadLocalClub();
-    const user = getCurrentUser();
-    document.getElementById("ptClubName").textContent = club.name;
-    document.getElementById("ptClubCount").textContent = `${members.length} / ${MAX_MEMBERS} members`;
-    document.getElementById("ptClubMyName").textContent = user.name;
-    renderCircle();
-    renderMemberList();
-  }
-
-  function renderCircle(){
-    const circle = document.getElementById("ptClubCircle");
-    if(!circle) return;
-    
-    circle.querySelectorAll(".pt-club-member").forEach(el => el.remove());
-    
-    const friends = members.filter(m => m.id !== getCurrentUser().id);
-    const totalPositions = 5;
-
-    friends.forEach((member,index)=>{
-      const angle = (360 / totalPositions) * index - 90;
-      const radius = 105;
-      const x = 50 + (radius / 155) * Math.cos(angle * Math.PI / 180) * 50;
-      const y = 50 + (radius / 155) * Math.sin(angle * Math.PI / 180) * 50;
-      
-      const el = document.createElement("div");
-      el.className = "pt-club-member";
-      el.style.left = x + "%";
-      el.style.top = y + "%";
-      
-      const first = (member.name || "U").charAt(0).toUpperCase();
-      el.innerHTML = `
-        <div class="pt-club-member-avatar">${escapeHTML(first)}</div>
-        <div class="pt-club-member-name">${escapeHTML(member.name || "Member")}</div>
-      `;
-      circle.appendChild(el);
-    });
-
-    for(let i = friends.length; i < totalPositions; i++){
-      const angle = (360 / totalPositions) * i - 90;
-      const radius = 105;
-      const x = 50 + (radius / 155) * Math.cos(angle * Math.PI / 180) * 50;
-      const y = 50 + (radius / 155) * Math.sin(angle * Math.PI / 180) * 50;
-      
-      const el = document.createElement("div");
-      el.className = "pt-club-member pt-club-add";
-      el.style.left = x + "%";
-      el.style.top = y + "%";
-      el.innerHTML = "+";
-      el.onclick = openInvite;
-      circle.appendChild(el);
-    }
-  }
-
-  function renderMemberList(){
-    const container = document.getElementById("ptClubMemberList");
-    if(!container) return;
-    container.innerHTML = "";    members.forEach(member=>{
-      const row = document.createElement("div");
-      row.className = "pt-member-row";
-      const first = (member.name || "U").charAt(0).toUpperCase();
-      
-      row.innerHTML = `
-        <div class="pt-member-row-avatar">${escapeHTML(first)}</div>
-        <div class="pt-member-row-info">
-          <div class="pt-member-row-name">${escapeHTML(member.name || "Member")}</div>
-          <div class="pt-member-row-status">${member.isOwner ? "Club Owner" : "Club Member"}</div>
-        </div>
-      `;
-      container.appendChild(row);
-    });
-  }
-
-  function generateInvite(){
-    const base = window.location.origin + window.location.pathname;
-    return (base + "?joinClub=" + encodeURIComponent(club.id));
-  }
-
-  function openInvite(){
-    loadLocalClub();
-    if(members.length >= MAX_MEMBERS){
-      alert("This club is full. Maximum 6 members allowed.");
-      return;
-    }
-    const modal = document.getElementById("ptClubInviteModal");
-    const input = document.getElementById("ptClubInviteLink");
-    input.value = generateInvite();
-    modal.classList.remove("hidden");
-  }
-
-  function closeInvite(){
-    document.getElementById("ptClubInviteModal")?.classList.add("hidden");
-  }
-
-  async function copyInvite(){
-    loadLocalClub();
-    if(members.length >= MAX_MEMBERS){
-      alert("This club is full.");
-      return;
-    }
-    const link = generateInvite();
-    try{
-      await navigator.clipboard.writeText(link);
-      alert("Invite link copied! 🔗");
-    }catch(e){
-      const input = document.getElementById("ptClubInviteLink");
-      if(input){
-        input.value = link;
-        input.select();
-        document.execCommand("copy");
-        alert("Invite link copied! 🔗");
+    if (tot > 0 && cmp === tot) {
+      if (!localStorage.getItem('pe_cel_' + tdy)) {
+        localStorage.setItem('pe_cel_' + tdy, '1');
+        
+        document.getElementById('celIcon').innerHTML = '🎉';
+        document.getElementById('celTitle').textContent = "DAY COMPLETE";
+        document.getElementById('celBigText').textContent = "100%";
+        document.getElementById('celBigText').style.fontSize = "56px";
+        document.getElementById('celMessage').textContent = "Excellent work. Keep the momentum going.";
+        
+        document.getElementById('celStats').style.display = 'flex';
+        document.getElementById('celTargets').textContent = `${tot} / ${tot}`;
+        document.getElementById('celStreak').textContent = calculateStreak();
+        
+        document.getElementById('uCelebration').classList.add('show');
+        Haptic.success();
+        if(typeof confetti !== 'undefined') {
+          confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: [store.acP, '#f093fb', '#00e676'] });
+          confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: [store.acP, '#f093fb', '#00e676'] });
+        }
       }
     }
   }
-
-  function openClubSettings(){
-    loadLocalClub();
-    document.getElementById("ptClubNewName").value = club.name;
-    document.getElementById("ptClubSettingsModal").classList.remove("hidden");
-  }
-
-  function closeClubSettings(){
-    document.getElementById("ptClubSettingsModal")?.classList.add("hidden");
-  }
-
-  function saveClubName(){
-    const input = document.getElementById("ptClubNewName");
-    const name = input.value.trim();
-    if(!name){ alert("Please enter a club name."); return; }
-    club.name = name.substring(0, 40);
-    saveLocal();
-    closeClubSettings();
-    render();
-  }  return {
-    showClub, render, openInvite, closeInvite, copyInvite,
-    openClubSettings, closeClubSettings, saveClubName
-  };
-})();
-
-// Auto open logic from URL
-(function(){
-  const params = new URLSearchParams(window.location.search);
-  const joinClub = params.get("joinClub");
-  if(joinClub){
-    localStorage.setItem("prepTrackPendingClub", joinClub);
-  }
-})();
-
-// ==================== NAVIGATION LOGIC ====================
-function openHome(){
-  if(window.PT) window.PT.hideExtraScreens();
-  document.getElementById("calendarScreen").classList.add("hidden");
-  document.getElementById("dashboardScreen").classList.remove("hidden");
-  renderTargets();
-}
-
-function openCalendar(){
-  if(window.PT) window.PT.hideExtraScreens();
-  document.getElementById("dashboardScreen").classList.add("hidden");
-  document.getElementById("calendarScreen").classList.remove("hidden");
-  renderCalendar();
-}
-
-document.addEventListener("DOMContentLoaded", function(){
-  const navButtons = document.querySelectorAll("#bottomNav .nav-btn");
   
-  const navHome = document.getElementById("navHome");
-  if(navHome){
-      navHome.onclick = function(){
-        navButtons.forEach(btn => btn.classList.remove("active"));
-        this.classList.add("active");
-        openHome();
-      };
+  function closeCelebration() { document.getElementById('uCelebration').classList.remove('show'); }
+
+  /* Strategies */
+  function drawPlan() {
+    const list = document.getElementById('planList');
+    if(store.p.length===0) list.innerHTML=getEmpty('fa-map', 'No study plans yet', 'Create a plan to organize your preparation macro-strategy.', 'Create Plan', 'App.openSheet(\'sheet-plan\')');
+    else {
+      list.innerHTML=''; store.p.forEach(p=>{
+        list.innerHTML+=`<div class="glass-card" style="margin-bottom:12px; padding: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size:16px; font-weight:700;">${esc(p.n)}</h3>
+            <button class="btn-del" style="padding:0" onclick="App.delP(${p.id})"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div style="display:flex; gap:8px;"><span class="badge sub">${esc(p.e)}</span><span class="badge typ"><i class="fa-solid fa-clock"></i> ${p.s} to ${p.en||'TBD'}</span></div>
+        </div>`;
+      });
+    }
+  }
+  function saveP() {
+    const n=document.getElementById('pNam').value.trim(), s=document.getElementById('pSt').value;
+    if(!n||!s) return Dialog.alert('Codename and Start Date required.');
+    store.p.push({id:Date.now(),n:n,e:document.getElementById('pEx').value,s:s,en:document.getElementById('pEn').value});
+    save(); closeSheet('sheet-plan'); document.getElementById('pNam').value=''; Haptic.success(); drawPlan();
+  }
+  function delP(id) { Dialog.confirm('Terminate strategy?',()=>{store.p=store.p.filter(x=>x.id!==id); save(); Haptic.success(); drawPlan();}); }
+
+  /* Profile & Analytics (Prep Card Data) */
+  function drawProf() {
+    // Edit Modals prep
+    document.getElementById('editDateInput').value = store.ed;
+    document.getElementById('editNameInput').value = store.n;
+    
+    let gridHTML = '';
+    EXAMS.forEach(x => {
+      let isSel = store.e.includes(x.n) ? 'selected' : '';
+      gridHTML += `<div class="exam-item ${isSel}" onclick="Haptic.tap(); this.classList.toggle('selected')"><i class="fa-solid ${x.i}"></i><div class="name" data-val="${x.n}">${x.n}</div></div>`;
+    });
+    document.getElementById('editExamGrid').innerHTML = gridHTML;
+
+    // Appearance Selections
+    document.querySelectorAll('.c-dot').forEach(d => {
+      d.classList.remove('selected');
+      if(d.getAttribute('data-p') === store.acP) d.classList.add('selected');
+      d.onclick = () => {
+        store.acP = d.getAttribute('data-p'); store.acS = d.getAttribute('data-s');
+        save(); applyTheme(); Haptic.tap(); drawProf();
+      }
+    });
+
+    document.querySelectorAll('.a-opt').forEach(d => {
+      d.classList.remove('selected');
+      if(d.getAttribute('data-bg') === store.av) d.classList.add('selected');
+      d.onclick = () => {
+        store.av = d.getAttribute('data-bg');
+        save(); Haptic.tap(); drawProf();
+      }
+    });
+
+    // Analytics Calculation
+    const total = store.t.length;
+    const completed = store.t.filter(x=>x.c).length;
+    const compPct = total === 0 ? 0 : Math.round((completed/total)*100);
+    
+    document.getElementById('statComp').textContent = compPct;
+    document.getElementById('statTot').textContent = total;
+    
+    let maxStrk = 0, curStrk = 0, lastDate = null;
+    let dates = [...new Set(store.t.filter(x=>x.c).map(x=>x.d))].sort();
+    
+    for(let i=0; i<dates.length; i++) {
+      if(!lastDate) { curStrk = 1; } 
+      else {
+        const d1 = new Date(dates[i]); const d2 = new Date(lastDate);
+        const diff = (d1-d2)/(1000*60*60*24);
+        if(diff === 1) curStrk++;
+        else curStrk = 1;
+      }
+      if(curStrk > maxStrk) maxStrk = curStrk;
+      lastDate = dates[i];
+    }
+    document.getElementById('statBestStrk').textContent = maxStrk;
+
+    // Update Prep Card Data
+    setAvatar(document.getElementById('pcAvatar'));
+    document.getElementById('pcName').textContent = store.n;
+    document.getElementById('pcExam').textContent = store.e.join(' • ');
+    
+    const dLeftData = getDaysLeftRaw();
+    document.getElementById('pcDaysLeft').textContent = dLeftData.val;
+    document.getElementById('pcDaysLabel').textContent = dLeftData.label;
+    
+    if (store.ed) {
+       const tDate = new Date(store.ed);
+       document.getElementById('pcDate').textContent = tDate.toLocaleDateString('en-US', { day:'numeric', month:'long', year:'numeric' });
+    } else {
+       document.getElementById('pcDate').textContent = "Date Not Set";
+    }
+
+    document.getElementById('pcStreak').textContent = `${calculateStreak()} DAY STREAK`;
+    document.getElementById('pcProgress').textContent = `${compPct}% PREPARED`;
+
+    renderWeeklyChart();
+  }
+  
+  function shareCard() {
+    Haptic.tap();
+    if (navigator.share) {
+      navigator.share({
+        title: 'My PrepTrack Progress',
+        text: `I'm tracking my preparation for ${store.e.join(', ')} with a ${calculateStreak()} day streak on PrepTrack!`,
+        url: window.location.href
+      }).catch(console.error);
+    } else {
+      Dialog.alert('Sharing is not supported on this device natively.', '<i class="fa-solid fa-triangle-exclamation"></i>');
+    }
+  }
+  
+  function saveCard() {
+    Haptic.tap();
+    if (typeof html2canvas === 'undefined') return Dialog.alert('Capture system initializing. Try again in a moment.');
+    const el = document.getElementById('prep-card-export');
+    html2canvas(el, { scale: 2, backgroundColor: store.l ? '#f4f6f8' : '#0a0a0f', useCORS: true }).then(canvas => {
+      const link = document.createElement('a'); link.download = `PrepTrack_${store.n}.png`;
+      link.href = canvas.toDataURL('image/png'); link.click(); Haptic.success();
+    }).catch(err => { console.error(err); Dialog.alert('Failed to generate secure image payload.'); });
   }
 
-  const navCalendar = document.getElementById("navCalendar");
-  if(navCalendar){
-      navCalendar.onclick = function(){
-        navButtons.forEach(btn => btn.classList.remove("active"));
-        this.classList.add("active");
-        openCalendar();
-      };
+  function renderWeeklyChart() {
+    const container = document.getElementById('weeklyChart');
+    container.innerHTML = '';
+    const dayNames = ['S','M','T','W','T','F','S'];
+    
+    let maxT = 1;
+    let weekData = [];
+    
+    for(let i=6; i>=0; i--) {
+      let d = new Date(); d.setDate(d.getDate()-i);
+      let dStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      let tgs = store.t.filter(x => x.d === dStr);
+      let cmp = tgs.filter(x => x.c).length;
+      if(cmp > maxT) maxT = cmp;
+      weekData.push({ day: dayNames[d.getDay()], val: cmp, date: dStr });
+    }
+
+    weekData.forEach(dt => {
+      let hPct = (dt.val / maxT) * 100;
+      if(hPct === 0) hPct = 5; 
+      container.innerHTML += `
+        <div class="chart-bar-wrap">
+          <div class="chart-bar" style="height: ${hPct}%; ${dt.date===today() ? 'background: linear-gradient(to top, rgba(240, 147, 251, 0.2), var(--accent-3));':''}"></div>
+          <div class="chart-lbl" style="${dt.date===today() ? 'color: var(--accent-3);' : ''}">${dt.day}</div>
+        </div>
+      `;
+    });
   }
 
-  // ADD-ON NAV HOOKS (Plans & Profile)
-  const navPlans = document.getElementById("navPlans");
-  if(navPlans){
-    navPlans.onclick = function(){
-      navButtons.forEach(btn => btn.classList.remove("active"));
-      this.classList.add("active");
-      if(window.PT) window.PT.showPlans();
-    };
+  function saveEditedDate() {
+    const val = document.getElementById('editDateInput').value;
+    if(val) { store.ed = val; save(); drawDash(); drawProf(); Haptic.success(); }
+    closeSheet('sheet-edit-exam');
   }
 
-  const navProfile = document.getElementById("navProfile");
-  if(navProfile){
-    navProfile.onclick = function(){
-      navButtons.forEach(btn => btn.classList.remove("active"));
-      this.classList.add("active");
-      if(window.PT) window.PT.showProfile();
-    };
+  function saveEditedProfile() {
+    const n = document.getElementById('editNameInput').value.trim();
+    if(!n) return Dialog.alert('Alias cannot be empty.');
+    
+    let newExams = [];
+    document.querySelectorAll('#editExamGrid .exam-item.selected .name').forEach(el => newExams.push(el.getAttribute('data-val')));
+    if(newExams.length === 0) return Dialog.alert('Select at least one domain.');
+    
+    store.n = n; store.e = newExams; save();
+    drawProf(); drawDash(); Haptic.success();
+    closeSheet('sheet-edit-profile');
   }
 
-  // ADD-ON NAV HOOK (Club / Friends)
-  const navFriends = document.getElementById("navFriends");
-  if(navFriends){
-    navFriends.innerHTML = '<span class="nav-icon">👥</span>Club';
-    navFriends.onclick = function(){
-      navButtons.forEach(btn => btn.classList.remove("active"));
-      this.classList.add("active");
-      if(window.PTClub) window.PTClub.showClub();
-    };
+  function toggleTheme() {
+    store.l = !store.l; save(); Haptic.tap(); applyTheme();
   }
-});// ==================== LOAD SAVED DATA ====================
-const savedName = localStorage.getItem("prepTrackName");
-let savedExams = [];
 
-try {
-  savedExams = JSON.parse(localStorage.getItem("prepTrackExams") || "[]");
-} catch(e) {
-  savedExams = [];
-}
+  function resetData() { Dialog.confirm('CRITICAL: Erase all data permanently?',()=>{localStorage.clear();location.reload();}); }
 
-if(savedName && savedExams.length){
-  selectedExams = savedExams;
-  showDashboard();
-}
+  return { init, togE, nextSetupExams, nextSetupDate, finishSetup, updSub, calShift, addForDate, openSheet, closeSheet, saveT, toggleT, delT, saveP, delP, saveEditedDate, saveEditedProfile, toggleTheme, resetData, switchScr, closeCelebration, shareCard, saveCard, startFocus, stopFocus, toggleFocusPause };
+})();
+
+window.onload = App.init;
 </script>
 </body>
 </html>
